@@ -29,13 +29,9 @@ public class MetaApiService : IMetaApiService
 
         var result = await _httpService.GetAsync(url);
         if (result != null)
-        {
             _logger.LogInformation("Account data: {0}", result);
-        }
         else
-        {
             _logger.LogError("Failed to retrieve account data.");
-        }
     }
 
     public async Task<MetaTraderOrderResponseDto> PlacePendingOrderAsync(MetaTraderOrderRequestDto requestDto)

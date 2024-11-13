@@ -11,7 +11,8 @@ public class OrderProcessor : IOrderProcessor
     private readonly IMetaApiService _metaApiService;
     private readonly ILogger<OrderProcessor> _logger;
 
-    public OrderProcessor(IOrderRepository orderRepository, IMetaApiService metaApiService, ILogger<OrderProcessor> logger)
+    public OrderProcessor(IOrderRepository orderRepository, IMetaApiService metaApiService,
+        ILogger<OrderProcessor> logger)
     {
         _orderRepository = orderRepository;
         _metaApiService = metaApiService;
@@ -30,8 +31,8 @@ public class OrderProcessor : IOrderProcessor
         {
             switch (metaTraderOrder.ActionType)
             {
-
             }
+
             await ProcessTradeOpening(metaTraderOrder);
             // await ProcessCancelOrder(metaTraderOrder);
         }
@@ -73,7 +74,7 @@ public class OrderProcessor : IOrderProcessor
             StopLossUnits = metaTraderOrder.StopLossUnits,
             TakeProfitUnits = metaTraderOrder.TakeProfitUnits,
             StopPriceBase = metaTraderOrder.StopPriceBase,
-            Magic = metaTraderOrder.Magic,
+            Magic = metaTraderOrder.Magic
             // ExpirationType = "ORDER_TIME_GTC",
             // Expiration = expiration
         };
@@ -92,7 +93,8 @@ public class OrderProcessor : IOrderProcessor
             if (orderResponseDto.NumericCode == 10009)
             {
                 metaTraderOrder.Status = OrderStatus.Executed;
-                _logger.LogInformation($"Order was created successfuly, orderId = {metaTraderOrder.MetaTraderOrderId}, metaTraderStringCode = {metaTraderOrder.MetaTraderStringCode}, metatraderOrderId = {metaTraderOrder.MetaTraderOrderId}");
+                _logger.LogInformation(
+                    $"Order was created successfuly, orderId = {metaTraderOrder.MetaTraderOrderId}, metaTraderStringCode = {metaTraderOrder.MetaTraderStringCode}, metatraderOrderId = {metaTraderOrder.MetaTraderOrderId}");
             }
             else
             {
@@ -103,20 +105,16 @@ public class OrderProcessor : IOrderProcessor
         }
     }
 
-    public decimal CalculateVolumeForDollarAmount(decimal dollarAmount, decimal currentPrice, decimal minVolume = 0.01m, decimal maxVolume = 0.1m)
+    public decimal CalculateVolumeForDollarAmount(decimal dollarAmount, decimal currentPrice, decimal minVolume = 0.01m,
+        decimal maxVolume = 0.1m)
     {
         // Calculate initial volume
-        decimal volume = dollarAmount / currentPrice;
+        var volume = dollarAmount / currentPrice;
 
         // Apply a multiplier if the volume is out of the desired range
         if (volume < minVolume)
-        {
             volume = minVolume;
-        }
-        else if (volume > maxVolume)
-        {
-            volume = maxVolume;
-        }
+        else if (volume > maxVolume) volume = maxVolume;
 
         return Math.Round(volume, 2); // Rounds to two decimal places
     }

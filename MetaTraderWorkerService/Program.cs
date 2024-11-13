@@ -11,7 +11,7 @@ using TradeOrderProcessor.Data;
 var builder = Host.CreateApplicationBuilder(args);
 
 // Load configuration from appsettings.json
-builder.Configuration.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+builder.Configuration.AddJsonFile("appsettings.json", true, true);
 
 // Get MetaApi configuration values
 var accountBaseUrl = builder.Configuration["MetaApi:AccountBaseUrl"];

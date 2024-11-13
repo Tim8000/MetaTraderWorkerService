@@ -23,32 +23,23 @@ namespace MetaTraderWorkerService.Dtos;
 
 public class MetaTraderOrderRequestDto
 {
-    [JsonProperty("symbol")]
-    public string? Symbol { get; set; } // Symbol to trade, e.g., "XAUUSD"
+    [JsonProperty("symbol")] public string? Symbol { get; set; } // Symbol to trade, e.g., "XAUUSD"
 
-    [JsonProperty("volume")]
-    public decimal? Volume { get; set; } // Order volume, e.g., 0.1
+    [JsonProperty("volume")] public decimal? Volume { get; set; } // Order volume, e.g., 0.1
 
-    [JsonProperty("actionType")]
-    public string? ActionType { get; set; } // Action type, e.g., "ORDER_TYPE_SELL_LIMIT"
+    [JsonProperty("actionType")] public string? ActionType { get; set; } // Action type, e.g., "ORDER_TYPE_SELL_LIMIT"
 
-    [JsonProperty("openPrice")]
-    public decimal? OpenPrice { get; set; } // Open price for pending orders
+    [JsonProperty("openPrice")] public decimal? OpenPrice { get; set; } // Open price for pending orders
 
-    [JsonProperty("stopLoss")]
-    public decimal? StopLoss { get; set; } // Stop-loss price
+    [JsonProperty("stopLoss")] public decimal? StopLoss { get; set; } // Stop-loss price
 
-    [JsonProperty("takeProfit")]
-    public decimal? TakeProfit { get; set; } // Take-profit price
+    [JsonProperty("takeProfit")] public decimal? TakeProfit { get; set; } // Take-profit price
 
-    [JsonProperty("slippage")]
-    public int? Slippage { get; set; } // Slippage in points
+    [JsonProperty("slippage")] public int? Slippage { get; set; } // Slippage in points
 
-    [JsonProperty("clientId")]
-    public string? ClientId { get; set; } // Client-assigned ID, e.g., "123"
+    [JsonProperty("clientId")] public string? ClientId { get; set; } // Client-assigned ID, e.g., "123"
 
-    [JsonProperty("comment")]
-    public string? Comment { get; set; } // Order comment
+    [JsonProperty("comment")] public string? Comment { get; set; } // Order comment
 
     [JsonProperty("stopLossUnits")]
     public string? StopLossUnits { get; set; } // Stop-loss units, e.g., "ABSOLUTE_PRICE"
@@ -59,8 +50,7 @@ public class MetaTraderOrderRequestDto
     [JsonProperty("stopPriceBase")]
     public string? StopPriceBase { get; set; } // Base price for calculating SL/TP, e.g., "OPEN_PRICE"
 
-    [JsonProperty("magic")]
-    public int? Magic { get; set; } // Magic number for MetaTrader
+    [JsonProperty("magic")] public int? Magic { get; set; } // Magic number for MetaTrader
 
     // [JsonProperty("expirationType")]
     // public string? ExpirationType { get; set; } // Expiration type, e.g., "ORDER_TIME_SPECIFIED"

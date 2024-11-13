@@ -6,5 +6,5 @@ public enum OrderStatus
     Executed = 1,
     Failed = 2,
     Canceled = 3,
-    Created = 4,
+    Created = 4
 }
