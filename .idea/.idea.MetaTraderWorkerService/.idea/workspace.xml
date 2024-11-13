@@ -7,11 +7,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="194ecc76-e850-4399-92c6-6dc93bcb977e" name="Changes" comment="Add initial setup for MetaTraderWorkerService project&#10;&#10;This commit includes the initial structure and key components for the MetaTraderWorkerService project. It adds app settings, HTTP services, data models, interfaces, and repository definitions, alongside essential configuration files like .gitignore and project settings.">
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.MetaTraderWorkerService/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Enums/OrderActionType.cs" afterDir="false" />
+    <list default="true" id="194ecc76-e850-4399-92c6-6dc93bcb977e" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Dtos/CancelOrderDto.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.MetaTraderWorkerService/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.MetaTraderWorkerService/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService/Models/MetaTraderOrder.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Models/MetaTraderOrder.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/MetaTraderWorkerService.sln.DotSettings.user" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService/Models/InitialTradeSignal.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Models/InitialTradeSignal.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService/Models/TradeSignal.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Models/TradeSignal.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService/Repository/IOrderRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Repository/IOrderRepository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService/Repository/OrderRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Repository/OrderRepository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService/Services/IMetaApiService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Services/IMetaApiService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService/Services/MetaApiService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Services/MetaApiService.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService/Services/OrderProcessor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Services/OrderProcessor.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -38,8 +43,10 @@
   }
 }]]></component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="mock:///AIAssistantSnippet." root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/54c2c97bd5bd46e3961ad402640a3dd93818a0/f2/ab321122/Expression.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/99f9cf07abc74d3fb3bed9a41bc5b3141a68b0/63/080ec53a/HttpClient.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/2c8e7ca976f350cba9836d5565dac56b11e0b56656fa786460eb1395857a6fa/ThrowHelper.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/5acc345db3c207bc9d886a36ff14867ef8d65557432172c2a42f19aeac04d1b/Nullable.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/7d81b2d4f22bee75e5438c707251ae43cb0974c207db91ffc159118c84b4eb9/ServiceProvider.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/c439425da351c75ac7d966a1cc8324b51a9c471865af79d2f2f3fcb65e392/HttpClient.cs" root0="FORCE_HIGHLIGHTING" />
@@ -62,8 +69,9 @@
   "keyToString": {
     ".NET Launch Settings Profile.MetaTraderWorkerService.executor": "Debug",
     "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "Publish to custom server.PublishToDebian.executor": "Run",
+    "Publish to folder.PublishToFolder.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "XThreadsFramesViewSplitterKey": "0.5005076",
     "git-widget-placeholder": "master",
     "node.js.detected.package.eslint": "true",
@@ -75,7 +83,15 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager">
+  <component name="RunManager" selected=".NET Launch Settings Profile.MetaTraderWorkerService">
+    <configuration name="PublishToFolder" type="DotNetFolderPublish" factoryName="Publish to folder">
+      <riderPublish configuration="Release" delete_existing_files="true" platform="Any CPU" runtime="linux-x64" target_folder="$PROJECT_DIR$/MetaTraderWorkerService/bin/Release/net8.0/linux-x64/publish" target_framework="net8.0" uuid_high="1871667714893237941" uuid_low="-7699535203307637525" />
+      <method v="2" />
+    </configuration>
+    <configuration name="PublishToDebian" type="DotNetPublishAndUpload" factoryName="Publish to custom server">
+      <riderPublish configuration="Release" platform="Any CPU" runtime="Portable" server_id="a21dd00b-fe91-4a11-96ac-d8db6353509b" serverName="myDebian" target_framework="net8.0" uuid_high="1871667714893237941" uuid_low="-7699535203307637525" />
+      <method v="2" />
+    </configuration>
     <configuration name="MetaTraderWorkerService" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
       <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/MetaTraderWorkerService/MetaTraderWorkerService.csproj" />
       <option name="LAUNCH_PROFILE_TFM" value="net8.0" />
@@ -91,6 +107,11 @@
         <option name="Build" />
       </method>
     </configuration>
+    <list>
+      <item itemvalue=".NET Launch Settings Profile.MetaTraderWorkerService" />
+      <item itemvalue="Publish to custom server.PublishToDebian" />
+      <item itemvalue="Publish to folder.PublishToFolder" />
+    </list>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -101,7 +122,7 @@
       <option name="presentableId" value="Default" />
       <updated>1731421707319</updated>
       <workItem from="1731421708359" duration="14879000" />
-      <workItem from="1731473932716" duration="13332000" />
+      <workItem from="1731473932716" duration="19554000" />
     </task>
     <task id="LOCAL-00001" summary="Add initial implementation for MetaTraderWorkerService&#10;&#10;This commit includes the setup for the MetaTraderWorkerService project. Added configurations, data model, HTTP services, and necessary project files like `appsettings.json`. The project structure and initial classes have been defined to support database interactions and API requests.">
       <option name="closed" value="true" />
@@ -127,7 +148,23 @@
       <option name="project" value="LOCAL" />
       <updated>1731496248954</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Refactor MetaTraderOrder and add OrderActionType enum&#10;&#10;Converted MetaTraderOrder's ActionType field to use the new OrderActionType enum and added a description field for comprehensive details. Implemented partial structure for cancelling orders within OrderProcessor, enhancing future extensibility.">
+      <option name="closed" value="true" />
+      <created>1731500511063</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1731500511063</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Refactor code formatting for consistency&#10;&#10;Consolidated property and method declarations into a single line where appropriate. Simplified conditionals and removed unnecessary braces. This improves readability and maintains a consistent coding style across the project.">
+      <option name="closed" value="true" />
+      <created>1731500533392</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1731500533392</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -154,23 +191,51 @@
     <MESSAGE value="Add initial implementation for MetaTraderWorkerService&#10;&#10;This commit includes the setup for the MetaTraderWorkerService project. Added configurations, data model, HTTP services, and necessary project files like `appsettings.json`. The project structure and initial classes have been defined to support database interactions and API requests." />
     <MESSAGE value="Add .gitignore and refactor OrderProcessor&#10;&#10;Created a .gitignore file to exclude build artifacts and IDE-specific files. Refactored OrderProcessor to split out the trade opening logic into a new method, improving code readability and maintainability." />
     <MESSAGE value="Add initial setup for MetaTraderWorkerService project&#10;&#10;This commit includes the initial structure and key components for the MetaTraderWorkerService project. It adds app settings, HTTP services, data models, interfaces, and repository definitions, alongside essential configuration files like .gitignore and project settings." />
-    <option name="LAST_COMMIT_MESSAGE" value="Add initial setup for MetaTraderWorkerService project&#10;&#10;This commit includes the initial structure and key components for the MetaTraderWorkerService project. It adds app settings, HTTP services, data models, interfaces, and repository definitions, alongside essential configuration files like .gitignore and project settings." />
+    <MESSAGE value="Refactor MetaTraderOrder and add OrderActionType enum&#10;&#10;Converted MetaTraderOrder's ActionType field to use the new OrderActionType enum and added a description field for comprehensive details. Implemented partial structure for cancelling orders within OrderProcessor, enhancing future extensibility." />
+    <MESSAGE value="Refactor code formatting for consistency&#10;&#10;Consolidated property and method declarations into a single line where appropriate. Simplified conditionals and removed unnecessary braces. This improves readability and maintains a consistent coding style across the project." />
+    <option name="LAST_COMMIT_MESSAGE" value="Refactor code formatting for consistency&#10;&#10;Consolidated property and method declarations into a single line where appropriate. Simplified conditionals and removed unnecessary braces. This improves readability and maintains a consistent coding style across the project." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/MetaTraderWorkerService/Services/OrderProcessor.cs</url>
-          <line>106</line>
+          <line>131</line>
           <properties documentPath="E:\Programming\TradingWithGuys\MetaTraderWorkerService\MetaTraderWorkerService\Services\OrderProcessor.cs" containingFunctionPresentation="Method 'CalculateVolumeForDollarAmount'">
             <startOffsets>
-              <option value="4175" />
+              <option value="5196" />
             </startOffsets>
             <endOffsets>
-              <option value="4176" />
+              <option value="5197" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="18" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/MetaTraderWorkerService/Services/OrderProcessor.cs</url>
+          <line>32</line>
+          <properties documentPath="E:\Programming\TradingWithGuys\MetaTraderWorkerService\MetaTraderWorkerService\Services\OrderProcessor.cs" containingFunctionPresentation="Method 'ProcessCreatedOrdersAsync'">
+            <startOffsets>
+              <option value="972" />
+            </startOffsets>
+            <endOffsets>
+              <option value="1007" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="21" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/MetaTraderWorkerService/Services/OrderProcessor.cs</url>
+          <line>51</line>
+          <properties documentPath="E:\Programming\TradingWithGuys\MetaTraderWorkerService\MetaTraderWorkerService\Services\OrderProcessor.cs" containingFunctionPresentation="Method 'ProcessCancelOrder'">
+            <startOffsets>
+              <option value="1648" />
+            </startOffsets>
+            <endOffsets>
+              <option value="1745" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="23" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

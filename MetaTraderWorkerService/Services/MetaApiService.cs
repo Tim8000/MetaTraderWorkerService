@@ -47,4 +47,18 @@ public class MetaApiService : IMetaApiService
 
         return orderResponse;
     }
+
+    public async Task<string> PlaceCancelOrderAsync(CancelOrderDto requestDto)
+    {
+        var url = $"users/current/accounts/{_accountId}/trade";
+
+        var jsonData = JsonConvert.SerializeObject(requestDto);
+        var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
+
+        var result = await _httpService.PostAsync(url, content, false);
+
+        var orderResponse = JsonConvert.DeserializeObject<MetaTraderOrderResponseDto>(result);
+
+        return orderResponse?.Message; // Assuming MetaTraderOrderResponseDto has a Message field
+    }
 }

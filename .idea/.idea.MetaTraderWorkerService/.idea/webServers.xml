@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="a21dd00b-fe91-4a11-96ac-d8db6353509b" name="myDebian">
+        <fileTransfer rootFolder="/opt/dotnet/dotnetservices/trading/metatraderworkerservice" accessType="SFTP" host="192.168.50.164" port="22" sshConfigId="1fb65916-7ee4-4fdb-b260-39c2e447f159" sshConfig="root@192.168.50.164:22 password">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" keepAliveTimeout="0" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

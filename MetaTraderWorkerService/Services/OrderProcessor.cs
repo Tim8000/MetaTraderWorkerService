@@ -1,4 +1,5 @@
 using MetaTraderWorkerService.Dtos;
+using MetaTraderWorkerService.Enums;
 using MetaTraderWorkerService.Models;
 using MetaTraderWorkerService.Repository;
 using TradeOrderProcessor.Enums;
@@ -31,16 +32,39 @@ public class OrderProcessor : IOrderProcessor
         {
             switch (metaTraderOrder.ActionType)
             {
+                case OrderActionType.ORDER_TYPE_SELL_LIMIT:
+                    await ProcessTradeOpening(metaTraderOrder);
+                    continue;
+                case OrderActionType.ORDER_TYPE_BUY_LIMIT:
+                    await ProcessTradeOpening(metaTraderOrder);
+                    continue;
+                case OrderActionType.ORDER_CANCEL:
+                    await ProcessCancelOrder(metaTraderOrder);
+                    continue;
+                default:
+                    continue;
             }
-
-            await ProcessTradeOpening(metaTraderOrder);
-            // await ProcessCancelOrder(metaTraderOrder);
         }
     }
 
     private async Task ProcessCancelOrder(MetaTraderOrder metaTraderOrder)
     {
-        throw new NotImplementedException();
+        var order = await _orderRepository.GetOrderByMetaTraderId(metaTraderOrder.InitialTradeSignal.Id);
+
+        if (order == null)
+            throw new Exception($"Order {metaTraderOrder.MetaTraderOrderId} not found");
+
+        var cancelOrderDto = new CancelOrderDto()
+        {
+            ActionType = metaTraderOrder.ActionType.ToString(),
+            OrderId = order.MetaTraderOrderId,
+        };
+
+        var response = await _metaApiService.PlaceCancelOrderAsync(cancelOrderDto);
+        order.Status = OrderStatus.Canceled;
+        await _orderRepository.UpdateOrderAsync(order);
+        metaTraderOrder.Status = OrderStatus.Executed;
+        await _orderRepository.UpdateOrderAsync(metaTraderOrder);
     }
 
     private async Task ProcessTradeOpening(MetaTraderOrder metaTraderOrder)

@@ -1,13 +1,16 @@
+using MetaTraderWorkerService.Enums;
 using TradeOrderProcessor.Enums;
+using TradeOrderProcessor.Models;
 
-namespace TradeOrderProcessor.Models;
+namespace MetaTraderWorkerService.Models;
 
 public class InitialTradeSignal
 {
     public Guid Id { get; set; }
-    public required string Action { get; set; } // "BUY", "SELL", etc.
+    public required OrderActionType Action { get; set; }
+    public required string ActionDescription { get; set; } // "BUY", "SELL", etc.
     public required string Pair { get; set; } // E.g., "GOLD"
-    public decimal CommandPrice { get; set; } // Entry price
+    public decimal? CommandPrice { get; set; } // Entry price
     public decimal? Sl { get; set; } // Stop-loss
     public decimal? Tp { get; set; } // Take-profit
     public required string MessageText { get; set; } // Original message text

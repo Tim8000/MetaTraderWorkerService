@@ -1,3 +1,4 @@
+using MetaTraderWorkerService.Models;
 using TradeOrderProcessor.Enums;
 
 namespace TradeOrderProcessor.Models;
