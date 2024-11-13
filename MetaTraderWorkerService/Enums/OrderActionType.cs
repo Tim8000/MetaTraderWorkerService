@@ -1,0 +1,21 @@
+namespace MetaTraderWorkerService.Enums;
+
+public enum OrderActionType
+{
+    ORDER_TYPE_SELL = 1,
+    ORDER_TYPE_BUY = 2,
+    ORDER_TYPE_BUY_LIMIT = 3,
+    ORDER_TYPE_SELL_LIMIT = 4,
+    ORDER_TYPE_BUY_STOP = 5,
+    ORDER_TYPE_SELL_STOP = 6,
+    ORDER_TYPE_BUY_STOP_LIMIT = 7,
+    ORDER_TYPE_SELL_STOP_LIMIT = 8,
+    POSITION_MODIFY = 9,
+    POSITION_PARTIAL = 10,
+    POSITION_CLOSE_ID = 11,
+    POSITIONS_CLOSE_SYMBOL = 12,
+    ORDER_MODIFY = 13,
+    ORDER_CANCEL = 14,
+    POSITION_CLOSE_BY = 15,
+    NotAssigned = 404
+}

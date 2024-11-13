@@ -28,9 +28,18 @@ public class OrderProcessor : IOrderProcessor
 
         foreach (var metaTraderOrder in createdOrders)
         {
-            await ProcessTradeOpening(metaTraderOrder);
+            switch (metaTraderOrder.ActionType)
+            {
 
+            }
+            await ProcessTradeOpening(metaTraderOrder);
+            // await ProcessCancelOrder(metaTraderOrder);
         }
+    }
+
+    private async Task ProcessCancelOrder(MetaTraderOrder metaTraderOrder)
+    {
+        throw new NotImplementedException();
     }
 
     private async Task ProcessTradeOpening(MetaTraderOrder metaTraderOrder)
@@ -54,7 +63,7 @@ public class OrderProcessor : IOrderProcessor
         {
             Symbol = metaTraderOrder.Symbol,
             Volume = metaTraderOrder.Volume,
-            ActionType = metaTraderOrder.ActionType,
+            ActionType = metaTraderOrder.ActionType.Value.ToString(),
             OpenPrice = metaTraderOrder.OpenPrice,
             StopLoss = metaTraderOrder.StopLoss,
             TakeProfit = metaTraderOrder.TakeProfit,
@@ -78,6 +87,7 @@ public class OrderProcessor : IOrderProcessor
             metaTraderOrder.MetaTraderOrderId = orderResponseDto.OrderId;
             metaTraderOrder.MetaTraderStringCode = orderResponseDto.StringCode;
             metaTraderOrder.MetaTraderMessage = orderResponseDto.Message;
+            metaTraderOrder.MetaTraderNumericCode = orderResponseDto.NumericCode;
 
             if (orderResponseDto.NumericCode == 10009)
             {

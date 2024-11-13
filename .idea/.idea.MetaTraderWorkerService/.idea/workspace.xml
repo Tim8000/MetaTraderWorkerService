@@ -7,18 +7,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="194ecc76-e850-4399-92c6-6dc93bcb977e" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService/bin/Debug/net8.0/MetaTraderWorkerService.dll" beforeDir="false" afterPath="$PROJECT_DIR$/MetaTraderWorkerService/bin/Debug/net8.0/MetaTraderWorkerService.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService/bin/Debug/net8.0/MetaTraderWorkerService.exe" beforeDir="false" afterPath="$PROJECT_DIR$/MetaTraderWorkerService/bin/Debug/net8.0/MetaTraderWorkerService.exe" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService/bin/Debug/net8.0/MetaTraderWorkerService.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/MetaTraderWorkerService/bin/Debug/net8.0/MetaTraderWorkerService.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService/obj/Debug/net8.0/MetaTraderWorkerService.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MetaTraderWorkerService/obj/Debug/net8.0/MetaTraderWorkerService.AssemblyInfo.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService/obj/Debug/net8.0/MetaTraderWorkerService.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/MetaTraderWorkerService/obj/Debug/net8.0/MetaTraderWorkerService.AssemblyInfoInputs.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService/obj/Debug/net8.0/MetaTraderWorkerService.csproj.FileListAbsolute.txt" beforeDir="false" afterPath="$PROJECT_DIR$/MetaTraderWorkerService/obj/Debug/net8.0/MetaTraderWorkerService.csproj.FileListAbsolute.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService/obj/Debug/net8.0/MetaTraderWorkerService.dll" beforeDir="false" afterPath="$PROJECT_DIR$/MetaTraderWorkerService/obj/Debug/net8.0/MetaTraderWorkerService.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService/obj/Debug/net8.0/MetaTraderWorkerService.pdb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService/obj/Debug/net8.0/apphost.exe" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService/obj/Debug/net8.0/ref/MetaTraderWorkerService.dll" beforeDir="false" afterPath="$PROJECT_DIR$/MetaTraderWorkerService/obj/Debug/net8.0/ref/MetaTraderWorkerService.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService/obj/Debug/net8.0/refint/MetaTraderWorkerService.dll" beforeDir="false" afterPath="$PROJECT_DIR$/MetaTraderWorkerService/obj/Debug/net8.0/refint/MetaTraderWorkerService.dll" afterDir="false" />
+    <list default="true" id="194ecc76-e850-4399-92c6-6dc93bcb977e" name="Changes" comment="Add initial setup for MetaTraderWorkerService project&#10;&#10;This commit includes the initial structure and key components for the MetaTraderWorkerService project. It adds app settings, HTTP services, data models, interfaces, and repository definitions, alongside essential configuration files like .gitignore and project settings.">
+      <change afterPath="$PROJECT_DIR$/.idea/.idea.MetaTraderWorkerService/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Enums/OrderActionType.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.MetaTraderWorkerService/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.MetaTraderWorkerService/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService/Models/MetaTraderOrder.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Models/MetaTraderOrder.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService/Services/OrderProcessor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Services/OrderProcessor.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -67,7 +61,9 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     ".NET Launch Settings Profile.MetaTraderWorkerService.executor": "Debug",
+    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "XThreadsFramesViewSplitterKey": "0.5005076",
     "git-widget-placeholder": "master",
     "node.js.detected.package.eslint": "true",
@@ -105,7 +101,7 @@
       <option name="presentableId" value="Default" />
       <updated>1731421707319</updated>
       <workItem from="1731421708359" duration="14879000" />
-      <workItem from="1731473932716" duration="10086000" />
+      <workItem from="1731473932716" duration="13332000" />
     </task>
     <task id="LOCAL-00001" summary="Add initial implementation for MetaTraderWorkerService&#10;&#10;This commit includes the setup for the MetaTraderWorkerService project. Added configurations, data model, HTTP services, and necessary project files like `appsettings.json`. The project structure and initial classes have been defined to support database interactions and API requests.">
       <option name="closed" value="true" />
@@ -123,7 +119,15 @@
       <option name="project" value="LOCAL" />
       <updated>1731495985271</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Add initial setup for MetaTraderWorkerService project&#10;&#10;This commit includes the initial structure and key components for the MetaTraderWorkerService project. It adds app settings, HTTP services, data models, interfaces, and repository definitions, alongside essential configuration files like .gitignore and project settings.">
+      <option name="closed" value="true" />
+      <created>1731496248954</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1731496248954</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -149,20 +153,21 @@
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
     <MESSAGE value="Add initial implementation for MetaTraderWorkerService&#10;&#10;This commit includes the setup for the MetaTraderWorkerService project. Added configurations, data model, HTTP services, and necessary project files like `appsettings.json`. The project structure and initial classes have been defined to support database interactions and API requests." />
     <MESSAGE value="Add .gitignore and refactor OrderProcessor&#10;&#10;Created a .gitignore file to exclude build artifacts and IDE-specific files. Refactored OrderProcessor to split out the trade opening logic into a new method, improving code readability and maintainability." />
-    <option name="LAST_COMMIT_MESSAGE" value="Add .gitignore and refactor OrderProcessor&#10;&#10;Created a .gitignore file to exclude build artifacts and IDE-specific files. Refactored OrderProcessor to split out the trade opening logic into a new method, improving code readability and maintainability." />
+    <MESSAGE value="Add initial setup for MetaTraderWorkerService project&#10;&#10;This commit includes the initial structure and key components for the MetaTraderWorkerService project. It adds app settings, HTTP services, data models, interfaces, and repository definitions, alongside essential configuration files like .gitignore and project settings." />
+    <option name="LAST_COMMIT_MESSAGE" value="Add initial setup for MetaTraderWorkerService project&#10;&#10;This commit includes the initial structure and key components for the MetaTraderWorkerService project. It adds app settings, HTTP services, data models, interfaces, and repository definitions, alongside essential configuration files like .gitignore and project settings." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/MetaTraderWorkerService/Services/OrderProcessor.cs</url>
-          <line>96</line>
+          <line>106</line>
           <properties documentPath="E:\Programming\TradingWithGuys\MetaTraderWorkerService\MetaTraderWorkerService\Services\OrderProcessor.cs" containingFunctionPresentation="Method 'CalculateVolumeForDollarAmount'">
             <startOffsets>
-              <option value="3809" />
+              <option value="4175" />
             </startOffsets>
             <endOffsets>
-              <option value="3810" />
+              <option value="4176" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="18" />

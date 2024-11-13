@@ -1,3 +1,4 @@
+using MetaTraderWorkerService.Enums;
 using TradeOrderProcessor.Enums;
 using TradeOrderProcessor.Models;
 
@@ -16,7 +17,8 @@ public class MetaTraderOrder
     // MetaTrader-specific fields based on request
     public string? Symbol { get; set; } // Symbol to trade, e.g., "XAUUSD"
     public decimal? Volume { get; set; } // Order volume, e.g., 0.1
-    public string? ActionType { get; set; } // Action type, e.g., "ORDER_TYPE_SELL_LIMIT"
+    public OrderActionType? ActionType { get; set; } // Action type, e.g., "ORDER_TYPE_SELL_LIMIT"
+    public string? ActionTypeDescription { get; set; }
     public decimal? OpenPrice { get; set; } // Open price for pending orders
     public decimal? StopLoss { get; set; } // Stop-loss price
     public decimal? TakeProfit { get; set; } // Take-profit price
