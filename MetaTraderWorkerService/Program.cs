@@ -26,6 +26,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddScoped<IHttpService>(sp => new HttpService(accountBaseUrl, tradeBaseUrl, authToken));
 builder.Services.AddScoped<IOrderProcessor, OrderProcessor>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<IOrderStatusService, OrderStatusService>();
 builder.Services.AddScoped<IMetaApiService, MetaApiService>(sp =>
     new MetaApiService(
         sp.GetRequiredService<IHttpService>(),
@@ -36,6 +37,7 @@ builder.Services.AddScoped<IMetaApiService, MetaApiService>(sp =>
 
 // Register the Worker as a hosted service
 builder.Services.AddHostedService<Worker>();
+builder.Services.AddHostedService<OrderStatusWorker>();
 
 var host = builder.Build();
 host.Run();

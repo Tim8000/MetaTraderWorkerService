@@ -54,7 +54,7 @@ public class Worker : BackgroundService
             // await _metaApiService.PlaceMarketOrderAsync("XAUUSD", 0.1, "BUY");
 
             // Wait for a defined interval before placing the next order
-            await Task.Delay(TimeSpan.FromSeconds(5), stoppingToken);
+            await Task.Delay(TimeSpan.FromSeconds(1), stoppingToken);
         }
     }
 }

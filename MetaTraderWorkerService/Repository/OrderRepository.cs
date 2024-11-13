@@ -27,10 +27,20 @@ public class OrderRepository : IOrderRepository
         await _dbContext.SaveChangesAsync();
     }
 
-    public async Task<MetaTraderOrder?> GetOrderByMetaTraderId(Guid initialTradeSignalId)
+    public async Task<MetaTraderOrder?> GetOrderByInitialTradeSignalId(Guid initialTradeSignalId)
     {
         return await _dbContext.MetaTraderOrders
             .Include(o => o.InitialTradeSignal) // Eagerly load the InitialTradeSignal
             .FirstOrDefaultAsync(o => o.InitialTradeSignal.Id == initialTradeSignalId);
+    }
+
+    public async Task<List<MetaTraderOrder>> GetPendingOrdersAsync()
+    {
+        return await _dbContext.MetaTraderOrders.Where(mo => mo.Status == OrderStatus.Pending).ToListAsync();
+    }
+
+    public async Task<List<MetaTraderOrder>> GetPlacedOrdersAsync()
+    {
+        return await _dbContext.MetaTraderOrders.Where(mo => mo.Status == OrderStatus.ORDER_STATE_PLACED).ToListAsync();
     }
 }

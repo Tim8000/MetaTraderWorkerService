@@ -61,4 +61,13 @@ public class MetaApiService : IMetaApiService
 
         return orderResponse?.Message; // Assuming MetaTraderOrderResponseDto has a Message field
     }
+
+    public Task<string> GetOrderStatusById(string? pendingOrderMetaTraderOrderId)
+    {
+        var url = $"/users/current/accounts/{_accountId}/orders/{pendingOrderMetaTraderOrderId}";
+
+        var result = _httpService.GetAsync(url, false);
+
+        return result;
+    }
 }

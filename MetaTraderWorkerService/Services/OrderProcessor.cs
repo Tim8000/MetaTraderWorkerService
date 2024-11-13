@@ -49,7 +49,7 @@ public class OrderProcessor : IOrderProcessor
 
     private async Task ProcessCancelOrder(MetaTraderOrder metaTraderOrder)
     {
-        var order = await _orderRepository.GetOrderByMetaTraderId(metaTraderOrder.InitialTradeSignal.Id);
+        var order = await _orderRepository.GetOrderByInitialTradeSignalId(metaTraderOrder.InitialTradeSignal.Id);
 
         if (order == null)
             throw new Exception($"Order {metaTraderOrder.MetaTraderOrderId} not found");
@@ -116,7 +116,7 @@ public class OrderProcessor : IOrderProcessor
 
             if (orderResponseDto.NumericCode == 10009)
             {
-                metaTraderOrder.Status = OrderStatus.Executed;
+                metaTraderOrder.Status = OrderStatus.Pending;
                 _logger.LogInformation(
                     $"Order was created successfuly, orderId = {metaTraderOrder.MetaTraderOrderId}, metaTraderStringCode = {metaTraderOrder.MetaTraderStringCode}, metatraderOrderId = {metaTraderOrder.MetaTraderOrderId}");
             }
