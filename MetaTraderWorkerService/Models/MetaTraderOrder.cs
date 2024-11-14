@@ -39,7 +39,7 @@ public class MetaTraderOrder
     public string? Pair { get; set; }
     public Trade? Trade { get; set; }
     public string? MetaTraderOrderId { get; set; } // MetaTrader order ID
-    public int? MetaTraderNumericCode { get; set; }
     public string? MetaTraderStringCode { get; set; }
     public string? MetaTraderMessage { get; set; }
+    public TradeResultCode? MetaTraderTradeResultCode { get; set; }
 }

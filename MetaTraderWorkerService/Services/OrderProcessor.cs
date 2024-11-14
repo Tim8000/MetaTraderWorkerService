@@ -107,16 +107,10 @@ public class OrderProcessor : IOrderProcessor
 
         if (orderResponseDto != null)
         {
-            metaTraderOrder.MetaTraderTradeStartTime = orderResponseDto.TradeStartTime;
-            metaTraderOrder.MetaTraderTradeExecutionTime = orderResponseDto.TradeExecutionTime;
-            metaTraderOrder.MetaTraderOrderId = orderResponseDto.OrderId;
-            metaTraderOrder.MetaTraderStringCode = orderResponseDto.StringCode;
-            metaTraderOrder.MetaTraderMessage = orderResponseDto.Message;
-            metaTraderOrder.MetaTraderNumericCode = orderResponseDto.NumericCode;
-
-            if (orderResponseDto.NumericCode == 10009)
+            if (orderResponseDto.NumericCode == (int)TradeResultCode.Done)
             {
-                metaTraderOrder.Status = OrderStatus.Pending;
+                UpdateMetaTraderOrderFromResponseDto(metaTraderOrder, orderResponseDto);
+                metaTraderOrder.Status = OrderStatus.SentToMetaTrader;
                 _logger.LogInformation(
                     $"Order was created successfuly, orderId = {metaTraderOrder.MetaTraderOrderId}, metaTraderStringCode = {metaTraderOrder.MetaTraderStringCode}, metatraderOrderId = {metaTraderOrder.MetaTraderOrderId}");
             }
@@ -126,6 +120,26 @@ public class OrderProcessor : IOrderProcessor
             }
 
             await _orderRepository.UpdateOrderAsync(metaTraderOrder);
+        }
+    }
+
+    private static void UpdateMetaTraderOrderFromResponseDto(MetaTraderOrder metaTraderOrder,
+        MetaTraderOrderResponseDto orderResponseDto)
+    {
+        metaTraderOrder.MetaTraderTradeStartTime = orderResponseDto.TradeStartTime;
+        metaTraderOrder.MetaTraderTradeExecutionTime = orderResponseDto.TradeExecutionTime;
+        metaTraderOrder.MetaTraderOrderId = orderResponseDto.OrderId;
+        metaTraderOrder.MetaTraderStringCode = orderResponseDto.StringCode;
+        metaTraderOrder.MetaTraderMessage = orderResponseDto.Message;
+
+        if (Enum.IsDefined(typeof(TradeResultCode), orderResponseDto.NumericCode))
+        {
+            metaTraderOrder.MetaTraderTradeResultCode = (TradeResultCode)orderResponseDto.NumericCode;
+        }
+        else
+        {
+            metaTraderOrder.MetaTraderTradeResultCode =
+                TradeResultCode.Unknown; // Assuming you have an "Unknown" enum value
         }
     }
 

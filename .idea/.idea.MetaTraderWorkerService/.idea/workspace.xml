@@ -7,19 +7,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="194ecc76-e850-4399-92c6-6dc93bcb977e" name="Changes" comment="Add order cancellation feature&#10;&#10;Implemented functionality to cancel orders in the MetaTraderWorkerService. This includes the addition of the `CancelOrderDto` class, updates to the `OrderProcessor` class for handling order cancellations, and modifications to the `MetaApiService` and repositories to support the new feature.">
-      <change afterPath="$PROJECT_DIR$/MetaTraderWorkerService/OrderStatusWorker.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Services/IOrderStatusService.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Services/OrderStatusService.cs" afterDir="false" />
+    <list default="true" id="194ecc76-e850-4399-92c6-6dc93bcb977e" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Enums/TradeResultCode.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.MetaTraderWorkerService/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.MetaTraderWorkerService/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService/Enums/OrderStatus.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Enums/OrderStatus.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService/Repository/IOrderRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Repository/IOrderRepository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService/Models/MetaTraderOrder.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Models/MetaTraderOrder.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService/Repository/OrderRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Repository/OrderRepository.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService/Services/IMetaApiService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Services/IMetaApiService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService/Services/MetaApiService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Services/MetaApiService.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService/Services/OrderProcessor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Services/OrderProcessor.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService/Worker.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Worker.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService/Services/OrderStatusService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Services/OrderStatusService.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -32,18 +27,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "Tim8000"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;Tim8000&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/Tim8000/MetaTraderWorkerService",
-    "accountId": "e987b1fe-51d2-4ad5-a6ad-f0af2af17a2c"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Tim8000/MetaTraderWorkerService&quot;,
+    &quot;accountId&quot;: &quot;e987b1fe-51d2-4ad5-a6ad-f0af2af17a2c&quot;
   }
-}]]></component>
+}</component>
   <component name="HighlightingSettingsPerFile">
     <setting file="mock:///AIAssistantSnippet." root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/54c2c97bd5bd46e3961ad402640a3dd93818a0/f2/ab321122/Expression.cs" root0="FORCE_HIGHLIGHTING" />
@@ -67,24 +62,24 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    ".NET Launch Settings Profile.MetaTraderWorkerService.executor": "Debug",
-    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "Publish to custom server.PublishToDebian.executor": "Run",
-    "Publish to folder.PublishToFolder.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "XThreadsFramesViewSplitterKey": "0.50050867",
-    "git-widget-placeholder": "master",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "project.propVCSSupport.DirectoryMappings",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;.NET Launch Settings Profile.MetaTraderWorkerService.executor&quot;: &quot;Debug&quot;,
+    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;Publish to custom server.PublishToDebian.executor&quot;: &quot;Run&quot;,
+    &quot;Publish to folder.PublishToFolder.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;XThreadsFramesViewSplitterKey&quot;: &quot;0.50050867&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;project.propVCSSupport.DirectoryMappings&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected=".NET Launch Settings Profile.MetaTraderWorkerService">
     <configuration name="PublishToFolder" type="DotNetFolderPublish" factoryName="Publish to folder">
       <riderPublish configuration="Release" delete_existing_files="true" platform="Any CPU" runtime="linux-x64" target_folder="$PROJECT_DIR$/MetaTraderWorkerService/bin/Release/net8.0/linux-x64/publish" target_framework="net8.0" uuid_high="1871667714893237941" uuid_low="-7699535203307637525" />
@@ -124,7 +119,8 @@
       <option name="presentableId" value="Default" />
       <updated>1731421707319</updated>
       <workItem from="1731421708359" duration="14879000" />
-      <workItem from="1731473932716" duration="24732000" />
+      <workItem from="1731473932716" duration="24758000" />
+      <workItem from="1731563395704" duration="5008000" />
     </task>
     <task id="LOCAL-00001" summary="Add initial implementation for MetaTraderWorkerService&#10;&#10;This commit includes the setup for the MetaTraderWorkerService project. Added configurations, data model, HTTP services, and necessary project files like `appsettings.json`. The project structure and initial classes have been defined to support database interactions and API requests.">
       <option name="closed" value="true" />
@@ -174,7 +170,15 @@
       <option name="project" value="LOCAL" />
       <updated>1731520563554</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Add order status checking functionality&#10;&#10;Introduced order status checking to enhance order management. This feature includes a new OrderStatusWorker and OrderStatusService, updates to relevant repository methods, and integration in the Program setup. Also added handling for different order states in the MetaApiService and OrderProcessor.">
+      <option name="closed" value="true" />
+      <created>1731526112972</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1731526112972</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -204,20 +208,21 @@
     <MESSAGE value="Refactor MetaTraderOrder and add OrderActionType enum&#10;&#10;Converted MetaTraderOrder's ActionType field to use the new OrderActionType enum and added a description field for comprehensive details. Implemented partial structure for cancelling orders within OrderProcessor, enhancing future extensibility." />
     <MESSAGE value="Refactor code formatting for consistency&#10;&#10;Consolidated property and method declarations into a single line where appropriate. Simplified conditionals and removed unnecessary braces. This improves readability and maintains a consistent coding style across the project." />
     <MESSAGE value="Add order cancellation feature&#10;&#10;Implemented functionality to cancel orders in the MetaTraderWorkerService. This includes the addition of the `CancelOrderDto` class, updates to the `OrderProcessor` class for handling order cancellations, and modifications to the `MetaApiService` and repositories to support the new feature." />
-    <option name="LAST_COMMIT_MESSAGE" value="Add order cancellation feature&#10;&#10;Implemented functionality to cancel orders in the MetaTraderWorkerService. This includes the addition of the `CancelOrderDto` class, updates to the `OrderProcessor` class for handling order cancellations, and modifications to the `MetaApiService` and repositories to support the new feature." />
+    <MESSAGE value="Add order status checking functionality&#10;&#10;Introduced order status checking to enhance order management. This feature includes a new OrderStatusWorker and OrderStatusService, updates to relevant repository methods, and integration in the Program setup. Also added handling for different order states in the MetaApiService and OrderProcessor." />
+    <option name="LAST_COMMIT_MESSAGE" value="Add order status checking functionality&#10;&#10;Introduced order status checking to enhance order management. This feature includes a new OrderStatusWorker and OrderStatusService, updates to relevant repository methods, and integration in the Program setup. Also added handling for different order states in the MetaApiService and OrderProcessor." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/MetaTraderWorkerService/Services/OrderProcessor.cs</url>
-          <line>133</line>
+          <line>147</line>
           <properties documentPath="E:\Programming\TradingWithGuys\MetaTraderWorkerService\MetaTraderWorkerService\Services\OrderProcessor.cs" containingFunctionPresentation="Method 'CalculateVolumeForDollarAmount'">
             <startOffsets>
-              <option value="5314" />
+              <option value="5851" />
             </startOffsets>
             <endOffsets>
-              <option value="5315" />
+              <option value="5852" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="18" />
@@ -250,29 +255,29 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/MetaTraderWorkerService/Services/OrderStatusService.cs</url>
-          <line>20</line>
+          <line>25</line>
           <properties documentPath="E:\Programming\TradingWithGuys\MetaTraderWorkerService\MetaTraderWorkerService\Services\OrderStatusService.cs" containingFunctionPresentation="Method 'CheckOrderStatus'">
             <startOffsets>
-              <option value="654" />
+              <option value="834" />
             </startOffsets>
             <endOffsets>
-              <option value="721" />
+              <option value="922" />
             </endOffsets>
           </properties>
-          <option name="timeStamp" value="29" />
+          <option name="timeStamp" value="31" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/MetaTraderWorkerService/Services/OrderStatusService.cs</url>
-          <line>32</line>
+          <line>23</line>
           <properties documentPath="E:\Programming\TradingWithGuys\MetaTraderWorkerService\MetaTraderWorkerService\Services\OrderStatusService.cs" containingFunctionPresentation="Method 'CheckOrderStatus'">
             <startOffsets>
-              <option value="1140" />
+              <option value="768" />
             </startOffsets>
             <endOffsets>
-              <option value="1205" />
+              <option value="811" />
             </endOffsets>
           </properties>
-          <option name="timeStamp" value="30" />
+          <option name="timeStamp" value="32" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

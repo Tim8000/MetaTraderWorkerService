@@ -1,3 +1,4 @@
+using MetaTraderWorkerService.Enums;
 using MetaTraderWorkerService.Models;
 using Microsoft.EntityFrameworkCore;
 using TradeOrderProcessor.Data;

@@ -1,3 +1,4 @@
+using MetaTraderWorkerService.Enums;
 using MetaTraderWorkerService.Repository;
 using TradeOrderProcessor.Enums;
 
@@ -36,6 +37,7 @@ private readonly IMetaApiService _metaApiService;
             {
                 var placedOrderStatus = await _metaApiService.GetOrderStatusById(placedOrder.MetaTraderOrderId);
             }
+
         }
     }
 }
