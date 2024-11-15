@@ -31,23 +31,10 @@ private readonly IMetaApiService _metaApiService;
             {
                 var orderStatus = JsonConvert.DeserializeObject<OrderStatusResponseDto>(response);
 
-                pendingOrder.Status = orderStatus.State;
+                pendingOrder.OrderState = orderStatus.State;
+                pendingOrder.MetaTraderStringCode = orderStatus.State.ToString();
                 await _orderRepository.UpdateOrderAsync(pendingOrder);
             }
-
-            if (pendingOrder.Status != OrderStatus.ORDER_STATE_PLACED)
-            {
-                pendingOrder.Status = OrderStatus.ORDER_STATE_PLACED;
-                await _orderRepository.UpdateOrderAsync(pendingOrder);
-            }
-
-            var placedOrders = await _orderRepository.GetPlacedOrdersAsync();
-
-            foreach (var placedOrder in placedOrders)
-            {
-                var placedOrderStatus = await _metaApiService.GetOrderStatusById(placedOrder.MetaTraderOrderId);
-            }
-
         }
     }
 }

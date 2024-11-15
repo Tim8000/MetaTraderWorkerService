@@ -34,7 +34,7 @@ public class MetaApiService : IMetaApiService
             _logger.LogError("Failed to retrieve account data.");
     }
 
-    public async Task<MetaTraderOrderResponseDto> PlacePendingOrderAsync(MetaTraderOrderRequestDto requestDto)
+    public async Task<MetaTraderOrderResponseDto> PlacePendingOrderAsync(MetaTraderOpenTradeOrderRequestDto requestDto)
     {
         var url = $"users/current/accounts/{_accountId}/trade";
 

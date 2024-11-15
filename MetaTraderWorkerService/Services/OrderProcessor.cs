@@ -27,7 +27,6 @@ public class OrderProcessor : IOrderProcessor
         if (createdOrders == null)
             return;
 
-
         foreach (var metaTraderOrder in createdOrders)
         {
             switch (metaTraderOrder.ActionType)
@@ -60,48 +59,19 @@ public class OrderProcessor : IOrderProcessor
             OrderId = order.MetaTraderOrderId,
         };
 
+        // TODO: Handle response.
         var response = await _metaApiService.PlaceCancelOrderAsync(cancelOrderDto);
         order.Status = OrderStatus.Canceled;
         await _orderRepository.UpdateOrderAsync(order);
-        metaTraderOrder.Status = OrderStatus.Executed;
+        metaTraderOrder.Status = OrderStatus.SentToMetaTrader;
         await _orderRepository.UpdateOrderAsync(metaTraderOrder);
     }
 
     private async Task ProcessTradeOpening(MetaTraderOrder metaTraderOrder)
     {
-        var expiration = metaTraderOrder.ExpirationType == "ORDER_TIME_GTC"
-            ? null
-            : new
-            {
-                type = metaTraderOrder.ExpirationType,
-                time = DateTime.UtcNow.AddHours(1).ToString("yyyy-MM-ddTHH:mm:ssZ")
-                // time = "2024-11-14T23:59:59Z"
-            };
-
-        // metaTraderOrder.Volume = CalculateVolumeForDollarAmount(600, metaTraderOrder.OpenPrice!.Value);
-        metaTraderOrder.Volume = (decimal)0.01;
-        metaTraderOrder.Status = OrderStatus.Pending;
-
+        SetOrderConfigurations(metaTraderOrder);
         await _orderRepository.UpdateOrderAsync(metaTraderOrder);
-
-        var metaTraderOrderDto = new MetaTraderOrderRequestDto
-        {
-            Symbol = metaTraderOrder.Symbol,
-            Volume = metaTraderOrder.Volume,
-            ActionType = metaTraderOrder.ActionType.Value.ToString(),
-            OpenPrice = metaTraderOrder.OpenPrice,
-            StopLoss = metaTraderOrder.StopLoss,
-            TakeProfit = metaTraderOrder.TakeProfit,
-            Slippage = metaTraderOrder.Slippage,
-            ClientId = metaTraderOrder.ClientId,
-            Comment = metaTraderOrder.Comment,
-            StopLossUnits = metaTraderOrder.StopLossUnits,
-            TakeProfitUnits = metaTraderOrder.TakeProfitUnits,
-            StopPriceBase = metaTraderOrder.StopPriceBase,
-            Magic = metaTraderOrder.Magic
-            // ExpirationType = "ORDER_TIME_GTC",
-            // Expiration = expiration
-        };
+        var metaTraderOrderDto = CreateMetaTraderOpenTradeOrderDto(metaTraderOrder);
 
         var orderResponseDto = await _metaApiService.PlacePendingOrderAsync(metaTraderOrderDto);
 
@@ -109,7 +79,7 @@ public class OrderProcessor : IOrderProcessor
         {
             if (orderResponseDto.NumericCode == (int)TradeResultCode.Done)
             {
-                UpdateMetaTraderOrderFromResponseDto(metaTraderOrder, orderResponseDto);
+                SetValuesToMetaTraderOrderFromResponseDto(metaTraderOrder, orderResponseDto);
                 metaTraderOrder.Status = OrderStatus.SentToMetaTrader;
 
                 _logger.LogInformation(
@@ -124,7 +94,44 @@ public class OrderProcessor : IOrderProcessor
         }
     }
 
-    private static void UpdateMetaTraderOrderFromResponseDto(MetaTraderOrder metaTraderOrder,
+    private static void SetOrderConfigurations(MetaTraderOrder metaTraderOrder)
+    {
+        var expiration = metaTraderOrder.ExpirationType == "ORDER_TIME_GTC"
+            ? null
+            : new
+            {
+                type = metaTraderOrder.ExpirationType,
+                time = DateTime.UtcNow.AddHours(1).ToString("yyyy-MM-ddTHH:mm:ssZ")
+                // time = "2024-11-14T23:59:59Z"
+            };
+
+        // metaTraderOrder.Volume = CalculateVolumeForDollarAmount(600, metaTraderOrder.OpenPrice!.Value);
+        metaTraderOrder.Volume = (decimal)0.01;
+        metaTraderOrder.Status = OrderStatus.Pending;
+    }
+
+    private static MetaTraderOpenTradeOrderRequestDto CreateMetaTraderOpenTradeOrderDto(MetaTraderOrder metaTraderOrder)
+    {
+        var metaTraderOrderDto = new MetaTraderOpenTradeOrderRequestDto
+        {
+            Symbol = metaTraderOrder.Symbol,
+            Volume = metaTraderOrder.Volume,
+            ActionType = metaTraderOrder.ActionType.Value.ToString(),
+            OpenPrice = metaTraderOrder.OpenPrice,
+            StopLoss = metaTraderOrder.StopLoss,
+            TakeProfit = metaTraderOrder.TakeProfit,
+            Slippage = 2, // TODO: Add slippage to configs
+            ClientId = metaTraderOrder.ClientId,
+            Comment = metaTraderOrder.Comment,
+            StopLossUnits = metaTraderOrder.StopLossUnits,
+            TakeProfitUnits = metaTraderOrder.TakeProfitUnits,
+            StopPriceBase = metaTraderOrder.StopPriceBase,
+            Magic = metaTraderOrder.Magic
+        };
+        return metaTraderOrderDto;
+    }
+
+    private static void SetValuesToMetaTraderOrderFromResponseDto(MetaTraderOrder metaTraderOrder,
         MetaTraderOrderResponseDto orderResponseDto)
     {
         metaTraderOrder.MetaTraderTradeStartTime = orderResponseDto.TradeStartTime;

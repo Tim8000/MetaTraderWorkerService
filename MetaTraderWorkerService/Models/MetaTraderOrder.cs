@@ -12,11 +12,12 @@ public class MetaTraderOrder
     public TradeSignal? TradeSignal { get; set; } // Link to the originating trade signal
     public required InitialTradeSignal InitialTradeSignal { get; set; } // Link to the originating initial trade signal
     public OrderStatus Status { get; set; } // Order status, default to "Created"
+    public OrderState? OrderState { get; set; }
+    public ActionType? ActionType { get; set; } // Action type, e.g., "ORDER_TYPE_SELL_LIMIT"
 
     // MetaTrader-specific fields based on request
     public string? Symbol { get; set; } // Symbol to trade, e.g., "XAUUSD"
     public decimal? Volume { get; set; } // Order volume, e.g., 0.1
-    public ActionType? ActionType { get; set; } // Action type, e.g., "ORDER_TYPE_SELL_LIMIT"
     public decimal? OpenPrice { get; set; } // Open price for pending orders
     public decimal? StopLoss { get; set; } // Stop-loss price
     public decimal? TakeProfit { get; set; } // Take-profit price

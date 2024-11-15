@@ -6,7 +6,7 @@ public interface IMetaApiService
 {
     Task InitializeAsync();
 
-    Task<MetaTraderOrderResponseDto> PlacePendingOrderAsync(MetaTraderOrderRequestDto requestDto);
+    Task<MetaTraderOrderResponseDto> PlacePendingOrderAsync(MetaTraderOpenTradeOrderRequestDto requestDto);
     Task<string> PlaceCancelOrderAsync(CancelOrderDto requestDto);
     Task<string> GetOrderStatusById(string? pendingOrderMetaTraderOrderId);
 }

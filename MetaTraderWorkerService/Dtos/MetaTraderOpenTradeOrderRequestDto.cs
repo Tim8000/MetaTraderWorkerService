@@ -2,7 +2,7 @@ using Newtonsoft.Json;
 
 namespace MetaTraderWorkerService.Dtos;
 
-// public class MetaTraderOrderRequestDto
+// public class MetaTraderOpenTradeOrderRequestDto
 // {
 //     public string? Symbol { get; set; } // Symbol to trade, e.g., "XAUUSD"
 //     public decimal? Volume { get; set; } // Order volume, e.g., 0.1
@@ -21,7 +21,7 @@ namespace MetaTraderWorkerService.Dtos;
 //     public object? Expiration { get; set; }
 // }
 
-public class MetaTraderOrderRequestDto
+public class MetaTraderOpenTradeOrderRequestDto
 {
     [JsonProperty("symbol")] public string? Symbol { get; set; } // Symbol to trade, e.g., "XAUUSD"
 

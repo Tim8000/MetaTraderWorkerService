@@ -7,7 +7,7 @@ public class OrderStatusResponseDto
     public string Id { get; set; } // Order ID
     public string Platform { get; set; } // Platform type, e.g., "mt5"
     public string Type { get; set; } // Order type, e.g., "ORDER_TYPE_BUY_LIMIT"
-    public OrderStatus State { get; set; } // Order state, e.g., "ORDER_STATE_PLACED"
+    public OrderState State { get; set; } // Order state, e.g., "ORDER_STATE_PLACED"
     public string Symbol { get; set; } // Trading symbol, e.g., "XAUUSD"
     public int Magic { get; set; } // Magic number
     public DateTime Time { get; set; } // Order time in UTC

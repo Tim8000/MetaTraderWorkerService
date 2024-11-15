@@ -43,6 +43,6 @@ public class OrderRepository : IOrderRepository
 
     public async Task<List<MetaTraderOrder>> GetPlacedOrdersAsync()
     {
-        return await _dbContext.MetaTraderOrders.Where(mo => mo.Status == OrderStatus.ORDER_STATE_PLACED).ToListAsync();
+        return await _dbContext.MetaTraderOrders.Where(mo => mo.OrderState == OrderState.ORDER_STATE_PLACED).ToListAsync();
     }
 }
