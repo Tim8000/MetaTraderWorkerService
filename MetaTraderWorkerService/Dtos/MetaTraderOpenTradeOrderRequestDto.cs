@@ -50,7 +50,7 @@ public class MetaTraderOpenTradeOrderRequestDto
     [JsonProperty("stopPriceBase")]
     public string? StopPriceBase { get; set; } // Base price for calculating SL/TP, e.g., "OPEN_PRICE"
 
-    [JsonProperty("magic")] public int? Magic { get; set; } // Magic number for MetaTrader
+    [JsonProperty("magic")] public long? Magic { get; set; } // Magic number for MetaTrader
 
     // [JsonProperty("expirationType")]
     // public string? ExpirationType { get; set; } // Expiration type, e.g., "ORDER_TIME_SPECIFIED"

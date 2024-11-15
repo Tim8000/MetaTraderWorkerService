@@ -37,8 +37,8 @@ public class OrderRepository : IOrderRepository
 
     public async Task<List<MetaTraderOrder>> GetSentToMetaTraderOrdersAsync()
     {
-        // return await _dbContext.MetaTraderOrders.Where(mo => mo.Status == OrderStatus.SentToMetaTrader).ToListAsync();
-        return await _dbContext.MetaTraderOrders.Where(mo => mo.MetaTraderStringCode == "TRADE_RETCODE_DONE").ToListAsync();
+        return await _dbContext.MetaTraderOrders.Where(mo => mo.Status == OrderStatus.SentToMetaTrader).ToListAsync();
+        // return await _dbContext.MetaTraderOrders.Where(mo => mo.MetaTraderStringCode == "TRADE_RETCODE_DONE").ToListAsync();
     }
 
     public async Task<List<MetaTraderOrder>> GetPlacedOrdersAsync()

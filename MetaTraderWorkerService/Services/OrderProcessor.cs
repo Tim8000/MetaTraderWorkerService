@@ -11,13 +11,15 @@ public class OrderProcessor : IOrderProcessor
     private readonly IOrderRepository _orderRepository;
     private readonly IMetaApiService _metaApiService;
     private readonly ILogger<OrderProcessor> _logger;
+    private readonly string _accountId;
 
     public OrderProcessor(IOrderRepository orderRepository, IMetaApiService metaApiService,
-        ILogger<OrderProcessor> logger)
+        ILogger<OrderProcessor> logger, IConfiguration configuration)
     {
         _orderRepository = orderRepository;
         _metaApiService = metaApiService;
         _logger = logger;
+        _accountId = configuration["MetaApi:ProvisioningProfileId"];
     }
 
     public async Task ProcessCreatedOrdersAsync()
@@ -64,7 +66,7 @@ public class OrderProcessor : IOrderProcessor
         order.Status = OrderStatus.Canceled;
         order.OrderState = OrderState.ORDER_STATE_CANCELED;
         await _orderRepository.UpdateOrderAsync(order);
-        metaTraderOrder.Status = OrderStatus.SentToMetaTrader;
+        metaTraderOrder.Status = OrderStatus.Executed;
         await _orderRepository.UpdateOrderAsync(metaTraderOrder);
     }
 
@@ -98,7 +100,7 @@ public class OrderProcessor : IOrderProcessor
         }
     }
 
-    private static void SetOrderConfigurations(MetaTraderOrder metaTraderOrder)
+    private void SetOrderConfigurations(MetaTraderOrder metaTraderOrder)
     {
         var expiration = metaTraderOrder.ExpirationType == "ORDER_TIME_GTC"
             ? null
@@ -112,6 +114,8 @@ public class OrderProcessor : IOrderProcessor
         // metaTraderOrder.Volume = CalculateVolumeForDollarAmount(600, metaTraderOrder.OpenPrice!.Value);
         metaTraderOrder.Volume = (decimal)0.01;
         metaTraderOrder.Status = OrderStatus.Pending;
+        metaTraderOrder.Slippage = 1;
+        // metaTraderOrder.ClientId = _accountId; // TODO: Implement, guid does not work.
     }
 
     private static MetaTraderOpenTradeOrderRequestDto CreateMetaTraderOpenTradeOrderDto(MetaTraderOrder metaTraderOrder)
@@ -124,13 +128,13 @@ public class OrderProcessor : IOrderProcessor
             OpenPrice = metaTraderOrder.OpenPrice,
             StopLoss = metaTraderOrder.StopLoss,
             TakeProfit = metaTraderOrder.TakeProfit,
-            Slippage = 2, // TODO: Add slippage to configs
+            Slippage = metaTraderOrder.Slippage,
+            Magic = metaTraderOrder.Magic,
             ClientId = metaTraderOrder.ClientId,
             Comment = metaTraderOrder.Comment,
             StopLossUnits = metaTraderOrder.StopLossUnits,
             TakeProfitUnits = metaTraderOrder.TakeProfitUnits,
             StopPriceBase = metaTraderOrder.StopPriceBase,
-            Magic = metaTraderOrder.Magic
         };
         return metaTraderOrderDto;
     }

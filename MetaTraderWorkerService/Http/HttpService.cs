@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -52,7 +53,7 @@ public class HttpService : IHttpService
     public async Task<string> PostAsync(string url, HttpContent content, bool isAccountRequest = true)
     {
         var client = isAccountRequest ? _accountClient : _tradeClient;
-        Console.WriteLine($"Requesting URL: {client.BaseAddress}{url}");
+        Debug.WriteLine($"Requesting URL: {client.BaseAddress}{url}");
 
         var response = await client.PostAsync(url, content);
         if (!response.IsSuccessStatusCode)

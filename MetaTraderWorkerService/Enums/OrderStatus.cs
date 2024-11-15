@@ -7,4 +7,5 @@ public enum OrderStatus
     Failed = 2,
     Canceled = 3,
     Created = 4,
+    Executed = 5,
 }
