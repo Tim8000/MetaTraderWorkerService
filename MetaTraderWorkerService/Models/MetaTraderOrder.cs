@@ -9,8 +9,8 @@ public class MetaTraderOrder
     public Guid Id { get; set; }
 
     // Core fields
-    public TradeSignal? TradeSignal { get; set; } // Link to the originating trade signal
-    public required InitialTradeSignal InitialTradeSignal { get; set; } // Link to the originating initial trade signal
+    public MetaTraderSignal? TradeSignal { get; set; } // Link to the originating trade signal
+    public required MetaTraderInitialTradeSignal MetaTraderInitialTradeSignal { get; set; } // Link to the originating initial trade signal
     public OrderStatus Status { get; set; } // Order status, default to "Created"
     public OrderState? OrderState { get; set; }
     public ActionType? ActionType { get; set; } // Action type, e.g., "ORDER_TYPE_SELL_LIMIT"
@@ -36,7 +36,7 @@ public class MetaTraderOrder
     public DateTime? MetaTraderTradeStartTime { get; set; } // Start time of the trade
     public DateTime? MetaTraderTradeExecutionTime { get; set; } // Execution time of the trade
     public string? Pair { get; set; }
-    public Trade? Trade { get; set; }
+    public MetaTraderTrade? Trade { get; set; }
     public string? MetaTraderOrderId { get; set; } // MetaTrader order ID
     public string? MetaTraderStringCode { get; set; }
     public string? MetaTraderMessage { get; set; }

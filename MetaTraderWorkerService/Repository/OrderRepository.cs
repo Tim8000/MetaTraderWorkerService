@@ -18,7 +18,7 @@ public class OrderRepository : IOrderRepository
     public async Task<List<MetaTraderOrder>?> GetAllCreatedOrdersAsync()
     {
         return await _dbContext.MetaTraderOrders.Where(mo => mo.Status == OrderStatus.Created)
-            .Include(o => o.InitialTradeSignal)
+            .Include(o => o.MetaTraderInitialTradeSignal)
             .ToListAsync();
     }
 
@@ -31,8 +31,8 @@ public class OrderRepository : IOrderRepository
     public async Task<MetaTraderOrder?> GetOrderByInitialTradeSignalId(Guid initialTradeSignalId)
     {
         return await _dbContext.MetaTraderOrders
-            .Include(o => o.InitialTradeSignal) // Eagerly load the InitialTradeSignal
-            .FirstOrDefaultAsync(o => o.InitialTradeSignal.Id == initialTradeSignalId);
+            .Include(o => o.MetaTraderInitialTradeSignal) // Eagerly load the InitialTradeSignal
+            .FirstOrDefaultAsync(o => o.MetaTraderInitialTradeSignal.Id == initialTradeSignalId);
     }
 
     public async Task<List<MetaTraderOrder>> GetSentToMetaTraderOrdersAsync()
