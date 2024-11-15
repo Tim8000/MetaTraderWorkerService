@@ -32,13 +32,13 @@ public class OrderProcessor : IOrderProcessor
         {
             switch (metaTraderOrder.ActionType)
             {
-                case OrderActionType.ORDER_TYPE_SELL_LIMIT:
+                case ActionType.ORDER_TYPE_SELL_LIMIT:
                     await ProcessTradeOpening(metaTraderOrder);
                     continue;
-                case OrderActionType.ORDER_TYPE_BUY_LIMIT:
+                case ActionType.ORDER_TYPE_BUY_LIMIT:
                     await ProcessTradeOpening(metaTraderOrder);
                     continue;
-                case OrderActionType.ORDER_CANCEL:
+                case ActionType.ORDER_CANCEL:
                     await ProcessCancelOrder(metaTraderOrder);
                     continue;
                 default:

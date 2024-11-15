@@ -7,7 +7,7 @@ namespace MetaTraderWorkerService.Models;
 public class InitialTradeSignal
 {
     public Guid Id { get; set; }
-    public required OrderActionType Action { get; set; }
+    public required ActionType Action { get; set; }
     public required string ActionDescription { get; set; } // "BUY", "SELL", etc.
     public required string Pair { get; set; } // E.g., "GOLD"
     public decimal? CommandPrice { get; set; } // Entry price

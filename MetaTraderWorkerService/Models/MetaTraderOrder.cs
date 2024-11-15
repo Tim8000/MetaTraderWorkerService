@@ -12,13 +12,11 @@ public class MetaTraderOrder
     public TradeSignal? TradeSignal { get; set; } // Link to the originating trade signal
     public required InitialTradeSignal InitialTradeSignal { get; set; } // Link to the originating initial trade signal
     public OrderStatus Status { get; set; } // Order status, default to "Created"
-    public string StatusDescription => Status.ToString(); // Returns the string representation of the current status
 
     // MetaTrader-specific fields based on request
     public string? Symbol { get; set; } // Symbol to trade, e.g., "XAUUSD"
     public decimal? Volume { get; set; } // Order volume, e.g., 0.1
-    public OrderActionType? ActionType { get; set; } // Action type, e.g., "ORDER_TYPE_SELL_LIMIT"
-    public string? ActionTypeDescription { get; set; }
+    public ActionType? ActionType { get; set; } // Action type, e.g., "ORDER_TYPE_SELL_LIMIT"
     public decimal? OpenPrice { get; set; } // Open price for pending orders
     public decimal? StopLoss { get; set; } // Stop-loss price
     public decimal? TakeProfit { get; set; } // Take-profit price
@@ -33,7 +31,7 @@ public class MetaTraderOrder
     public DateTime? ExpirationTime { get; set; } // Expiration time if applicable
 
     // Fields to be updated after order placement
-    public DateTime OrderDate { get; set; } = DateTime.UtcNow; // Date when the order was created
+    public DateTime CreateDate { get; set; } = DateTime.UtcNow; // Date when the order was created
     public DateTime? MetaTraderTradeStartTime { get; set; } // Start time of the trade
     public DateTime? MetaTraderTradeExecutionTime { get; set; } // Execution time of the trade
     public string? Pair { get; set; }

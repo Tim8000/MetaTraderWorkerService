@@ -1,6 +1,6 @@
 namespace MetaTraderWorkerService.Enums;
 
-public enum OrderActionType
+public enum ActionType
 {
     ORDER_TYPE_SELL = 1,
     ORDER_TYPE_BUY = 2,
