@@ -4,6 +4,7 @@ using MetaTraderWorkerService;
 using MetaTraderWorkerService.Http;
 using MetaTraderWorkerService.Repository;
 using MetaTraderWorkerService.Services;
+using MetaTraderWorkerService.Workers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using TradeOrderProcessor.Data;
@@ -27,6 +28,7 @@ builder.Services.AddScoped<IHttpService>(sp => new HttpService(accountBaseUrl, t
 builder.Services.AddScoped<IOrderProcessor, OrderProcessor>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IOrderStatusService, OrderStatusService>();
+builder.Services.AddScoped<ITradeProcessor, TradeProcessor>();
 builder.Services.AddScoped<IMetaApiService, MetaApiService>(sp =>
     new MetaApiService(
         sp.GetRequiredService<IHttpService>(),
@@ -38,6 +40,7 @@ builder.Services.AddScoped<IMetaApiService, MetaApiService>(sp =>
 // Register the Worker as a hosted service
 builder.Services.AddHostedService<Worker>();
 builder.Services.AddHostedService<OrderStatusWorker>();
+builder.Services.AddHostedService<TradeWorker>();
 
 var host = builder.Build();
 host.Run();

@@ -1,6 +1,6 @@
 using MetaTraderWorkerService.Services;
 
-namespace MetaTraderWorkerService;
+namespace MetaTraderWorkerService.Workers;
 
 public class OrderStatusWorker : BackgroundService
 {

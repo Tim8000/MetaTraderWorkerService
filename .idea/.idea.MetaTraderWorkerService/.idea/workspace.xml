@@ -7,20 +7,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="194ecc76-e850-4399-92c6-6dc93bcb977e" name="Changes" comment="Refactor `OrderActionType` to `ActionType`&#10;&#10;Renamed `OrderActionType` to `ActionType` for consistency. Updated references across multiple files including `MetaTraderOrder`, `InitialTradeSignal`, and `OrderProcessor`.">
-      <change afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Enums/OrderState.cs" afterDir="false" />
+    <list default="true" id="194ecc76-e850-4399-92c6-6dc93bcb977e" name="Changes" comment="Rename MetaTraderOrderResponseDto and update related logic&#10;&#10;Renamed MetaTraderOrderResponseDto to MetaTraderOpenTradeOrderResponseDto for clarity. Updated method signatures, type references, and field assignments to align with the new class name. Enhanced order status management by adding more descriptive fields to MetaTraderOrder.">
+      <change afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Dtos/Mt5Trades/TradeStatusRequestDto.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Dtos/Mt5Trades/TradeStatusResponseDto.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Enums/Mt5Trades/TradeState.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Enums/Mt5Trades/TradeStatus.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Services/ITradeProcessor.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Services/TradeProcessor.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Workers/TradeWorker.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.MetaTraderWorkerService/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.MetaTraderWorkerService/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/MetaTraderWorkerService.sln.DotSettings.user" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService/Dtos/MetaTraderOrderRequestDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Dtos/MetaTraderOpenTradeOrderRequestDto.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService/Dtos/OrderStatusResponseDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Dtos/OrderStatusResponseDto.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService/Enums/OrderStatus.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Enums/OrderStatus.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService/Models/MetaTraderOrder.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Models/MetaTraderOrder.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService/OrderStatusWorker.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MetaTraderWorkerService/OrderStatusWorker.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService/Repository/OrderRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Repository/OrderRepository.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService/Services/IMetaApiService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Services/IMetaApiService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService/Services/MetaApiService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Services/MetaApiService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService/Services/OrderProcessor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Services/OrderProcessor.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService/Services/OrderStatusService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Services/OrderStatusService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService/OrderStatusWorker.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Workers/OrderStatusWorker.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService/Worker.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Workers/Worker.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,6 +53,11 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/c439425da351c75ac7d966a1cc8324b51a9c471865af79d2f2f3fcb65e392/HttpClient.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/e497db2a4ab53bdce6335c79064f15a515e338cd0f9c039a9b6914b9eeb3/AggregateException.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/ebe65732adf281db03e388c6486e28a574c76c8be32d99ca59dcfbecc65/Uri.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://E:/Programming/TradingWithGuys/MetaTraderWorkerService/MetaTraderWorkerService/Services/IMetaApiService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://E:/Programming/TradingWithGuys/MetaTraderWorkerService/MetaTraderWorkerService/Services/IMetaApiService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://E:/Programming/TradingWithGuys/MetaTraderWorkerService/MetaTraderWorkerService/Services/MetaApiService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://E:/Programming/TradingWithGuys/MetaTraderWorkerService/MetaTraderWorkerService/Services/OrderProcessor.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://E:/Programming/TradingWithGuys/MetaTraderWorkerService/MetaTraderWorkerService/Services/OrderStatusService.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProjectColorInfo">{
@@ -207,7 +210,15 @@
       <option name="project" value="LOCAL" />
       <updated>1731657816833</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Rename MetaTraderOrderResponseDto and update related logic&#10;&#10;Renamed MetaTraderOrderResponseDto to MetaTraderOpenTradeOrderResponseDto for clarity. Updated method signatures, type references, and field assignments to align with the new class name. Enhanced order status management by adding more descriptive fields to MetaTraderOrder.">
+      <option name="closed" value="true" />
+      <created>1731694753454</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1731694753454</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -241,7 +252,9 @@
     <MESSAGE value="Add TradeResultCode enum and update MetaTraderOrder&#10;&#10;Introduced TradeResultCode enum for better order status handling. Refactored MetaTraderOrder to use the new enum in place of numeric codes and updated OrderProcessor logic accordingly. Adjusted OrderStatusService to utilize the new enum and refactored code for improved readability." />
     <MESSAGE value="Add OrderStatusResponseDto and refactor order status handling.&#10;&#10;Introduced OrderStatusResponseDto for a better structure of order status responses. Refactored OrderProcessor and OrderStatusService to utilize the new DTO and improved the order status update logic. Also, updated repository method names for clarity." />
     <MESSAGE value="Refactor `OrderActionType` to `ActionType`&#10;&#10;Renamed `OrderActionType` to `ActionType` for consistency. Updated references across multiple files including `MetaTraderOrder`, `InitialTradeSignal`, and `OrderProcessor`." />
-    <option name="LAST_COMMIT_MESSAGE" value="" />
+    <MESSAGE value="Rename and refactor MetaTrader order response DTO&#10;&#10;Renamed MetaTraderOrderResponseDto to MetaTraderOpenTradeOrderResponseDto for clarity. Refactored associated service methods to use the new DTO name and updated the NumericCode property to use an enum type for better type safety. Added handling of additional fields in OrderProcessor to capture more details from the response." />
+    <MESSAGE value="Rename MetaTraderOrderResponseDto and update related logic&#10;&#10;Renamed MetaTraderOrderResponseDto to MetaTraderOpenTradeOrderResponseDto for clarity. Updated method signatures, type references, and field assignments to align with the new class name. Enhanced order status management by adding more descriptive fields to MetaTraderOrder." />
+    <option name="LAST_COMMIT_MESSAGE" value="Rename MetaTraderOrderResponseDto and update related logic&#10;&#10;Renamed MetaTraderOrderResponseDto to MetaTraderOpenTradeOrderResponseDto for clarity. Updated method signatures, type references, and field assignments to align with the new class name. Enhanced order status management by adding more descriptive fields to MetaTraderOrder." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -260,14 +273,14 @@
           <option name="timeStamp" value="23" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/MetaTraderWorkerService/OrderStatusWorker.cs</url>
+          <url>file://$PROJECT_DIR$/MetaTraderWorkerService/Workers/OrderStatusWorker.cs</url>
           <line>22</line>
           <properties documentPath="E:\Programming\TradingWithGuys\MetaTraderWorkerService\MetaTraderWorkerService\OrderStatusWorker.cs" containingFunctionPresentation="Method 'ExecuteAsync'">
             <startOffsets>
-              <option value="753" />
+              <option value="761" />
             </startOffsets>
             <endOffsets>
-              <option value="797" />
+              <option value="805" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="33" />
@@ -284,6 +297,19 @@
             </endOffsets>
           </properties>
           <option name="timeStamp" value="34" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/MetaTraderWorkerService/Workers/TradeWorker.cs</url>
+          <line>22</line>
+          <properties documentPath="E:\Programming\TradingWithGuys\MetaTraderWorkerService\MetaTraderWorkerService\Workers\TradeWorker.cs" containingFunctionPresentation="Method 'ExecuteAsync'">
+            <startOffsets>
+              <option value="758" />
+            </startOffsets>
+            <endOffsets>
+              <option value="822" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="41" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
