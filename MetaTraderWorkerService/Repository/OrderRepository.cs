@@ -35,9 +35,10 @@ public class OrderRepository : IOrderRepository
             .FirstOrDefaultAsync(o => o.InitialTradeSignal.Id == initialTradeSignalId);
     }
 
-    public async Task<List<MetaTraderOrder>> GetPendingOrdersAsync()
+    public async Task<List<MetaTraderOrder>> GetSentToMetaTraderOrdersAsync()
     {
-        return await _dbContext.MetaTraderOrders.Where(mo => mo.Status == OrderStatus.Pending).ToListAsync();
+        // return await _dbContext.MetaTraderOrders.Where(mo => mo.Status == OrderStatus.SentToMetaTrader).ToListAsync();
+        return await _dbContext.MetaTraderOrders.Where(mo => mo.MetaTraderStringCode == "TRADE_RETCODE_DONE").ToListAsync();
     }
 
     public async Task<List<MetaTraderOrder>> GetPlacedOrdersAsync()

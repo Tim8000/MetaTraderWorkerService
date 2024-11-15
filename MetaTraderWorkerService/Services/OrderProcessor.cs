@@ -111,6 +111,7 @@ public class OrderProcessor : IOrderProcessor
             {
                 UpdateMetaTraderOrderFromResponseDto(metaTraderOrder, orderResponseDto);
                 metaTraderOrder.Status = OrderStatus.SentToMetaTrader;
+
                 _logger.LogInformation(
                     $"Order was created successfuly, orderId = {metaTraderOrder.MetaTraderOrderId}, metaTraderStringCode = {metaTraderOrder.MetaTraderStringCode}, metatraderOrderId = {metaTraderOrder.MetaTraderOrderId}");
             }

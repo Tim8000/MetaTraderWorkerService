@@ -1,5 +1,7 @@
+using MetaTraderWorkerService.Dtos;
 using MetaTraderWorkerService.Enums;
 using MetaTraderWorkerService.Repository;
+using Newtonsoft.Json;
 using TradeOrderProcessor.Enums;
 
 namespace MetaTraderWorkerService.Services;
@@ -19,11 +21,19 @@ private readonly IMetaApiService _metaApiService;
 
     public async Task CheckOrderStatus()
     {
-        var pendingOrders = await _orderRepository.GetPendingOrdersAsync();
+        var pendingOrders = await _orderRepository.GetSentToMetaTraderOrdersAsync();
 
         foreach (var pendingOrder in pendingOrders)
         {
             var response = await _metaApiService.GetOrderStatusById(pendingOrder.MetaTraderOrderId);
+
+            if (!string.IsNullOrWhiteSpace(response))
+            {
+                var orderStatus = JsonConvert.DeserializeObject<OrderStatusResponseDto>(response);
+
+                pendingOrder.Status = orderStatus.State;
+                await _orderRepository.UpdateOrderAsync(pendingOrder);
+            }
 
             if (pendingOrder.Status != OrderStatus.ORDER_STATE_PLACED)
             {
