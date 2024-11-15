@@ -1,8 +1,10 @@
+using MetaTraderWorkerService.Enums;
+
 namespace MetaTraderWorkerService.Dtos;
 
-public class MetaTraderOrderResponseDto
+public class MetaTraderOpenTradeOrderResponseDto
 {
-    public int NumericCode { get; set; }
+    public TradeResultCode NumericCode { get; set; }
     public string StringCode { get; set; }
     public string Message { get; set; }
     public string OrderId { get; set; }

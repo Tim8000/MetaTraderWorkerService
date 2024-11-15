@@ -32,7 +32,6 @@ private readonly IMetaApiService _metaApiService;
                 var orderStatus = JsonConvert.DeserializeObject<OrderStatusResponseDto>(response);
 
                 pendingOrder.OrderState = orderStatus.State;
-                pendingOrder.MetaTraderStringCode = orderStatus.State.ToString();
                 await _orderRepository.UpdateOrderAsync(pendingOrder);
             }
         }

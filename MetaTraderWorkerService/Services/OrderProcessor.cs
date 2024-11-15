@@ -62,6 +62,7 @@ public class OrderProcessor : IOrderProcessor
         // TODO: Handle response.
         var response = await _metaApiService.PlaceCancelOrderAsync(cancelOrderDto);
         order.Status = OrderStatus.Canceled;
+        order.OrderState = OrderState.ORDER_STATE_CANCELED;
         await _orderRepository.UpdateOrderAsync(order);
         metaTraderOrder.Status = OrderStatus.SentToMetaTrader;
         await _orderRepository.UpdateOrderAsync(metaTraderOrder);
@@ -77,7 +78,7 @@ public class OrderProcessor : IOrderProcessor
 
         if (orderResponseDto != null)
         {
-            if (orderResponseDto.NumericCode == (int)TradeResultCode.Done)
+            if (orderResponseDto.NumericCode == TradeResultCode.Done)
             {
                 SetValuesToMetaTraderOrderFromResponseDto(metaTraderOrder, orderResponseDto);
                 metaTraderOrder.Status = OrderStatus.SentToMetaTrader;
@@ -88,6 +89,9 @@ public class OrderProcessor : IOrderProcessor
             else
             {
                 metaTraderOrder.Status = OrderStatus.Failed;
+                metaTraderOrder.MetaTraderStringCode = orderResponseDto.StringCode;
+                metaTraderOrder.MetaTraderTradeResultCode = orderResponseDto.NumericCode;
+                metaTraderOrder.MetaTraderMessage = orderResponseDto.Message;
             }
 
             await _orderRepository.UpdateOrderAsync(metaTraderOrder);
@@ -132,17 +136,17 @@ public class OrderProcessor : IOrderProcessor
     }
 
     private static void SetValuesToMetaTraderOrderFromResponseDto(MetaTraderOrder metaTraderOrder,
-        MetaTraderOrderResponseDto orderResponseDto)
+        MetaTraderOpenTradeOrderResponseDto openTradeOrderResponseDto)
     {
-        metaTraderOrder.MetaTraderTradeStartTime = orderResponseDto.TradeStartTime;
-        metaTraderOrder.MetaTraderTradeExecutionTime = orderResponseDto.TradeExecutionTime;
-        metaTraderOrder.MetaTraderOrderId = orderResponseDto.OrderId;
-        metaTraderOrder.MetaTraderStringCode = orderResponseDto.StringCode;
-        metaTraderOrder.MetaTraderMessage = orderResponseDto.Message;
+        metaTraderOrder.MetaTraderTradeStartTime = openTradeOrderResponseDto.TradeStartTime;
+        metaTraderOrder.MetaTraderTradeExecutionTime = openTradeOrderResponseDto.TradeExecutionTime;
+        metaTraderOrder.MetaTraderOrderId = openTradeOrderResponseDto.OrderId;
+        metaTraderOrder.MetaTraderStringCode = openTradeOrderResponseDto.StringCode;
+        metaTraderOrder.MetaTraderMessage = openTradeOrderResponseDto.Message;
 
-        if (Enum.IsDefined(typeof(TradeResultCode), orderResponseDto.NumericCode))
+        if (Enum.IsDefined(typeof(TradeResultCode), openTradeOrderResponseDto.NumericCode))
         {
-            metaTraderOrder.MetaTraderTradeResultCode = (TradeResultCode)orderResponseDto.NumericCode;
+            metaTraderOrder.MetaTraderTradeResultCode = (TradeResultCode)openTradeOrderResponseDto.NumericCode;
         }
         else
         {

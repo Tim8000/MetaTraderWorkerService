@@ -34,7 +34,7 @@ public class MetaApiService : IMetaApiService
             _logger.LogError("Failed to retrieve account data.");
     }
 
-    public async Task<MetaTraderOrderResponseDto> PlacePendingOrderAsync(MetaTraderOpenTradeOrderRequestDto requestDto)
+    public async Task<MetaTraderOpenTradeOrderResponseDto> PlacePendingOrderAsync(MetaTraderOpenTradeOrderRequestDto requestDto)
     {
         var url = $"users/current/accounts/{_accountId}/trade";
 
@@ -43,7 +43,7 @@ public class MetaApiService : IMetaApiService
 
         var result = await _httpService.PostAsync(url, content, false);
 
-        var orderResponse = JsonConvert.DeserializeObject<MetaTraderOrderResponseDto>(result);
+        var orderResponse = JsonConvert.DeserializeObject<MetaTraderOpenTradeOrderResponseDto>(result);
 
         return orderResponse;
     }
@@ -57,9 +57,9 @@ public class MetaApiService : IMetaApiService
 
         var result = await _httpService.PostAsync(url, content, false);
 
-        var orderResponse = JsonConvert.DeserializeObject<MetaTraderOrderResponseDto>(result);
+        var orderResponse = JsonConvert.DeserializeObject<MetaTraderOpenTradeOrderResponseDto>(result);
 
-        return orderResponse?.Message; // Assuming MetaTraderOrderResponseDto has a Message field
+        return orderResponse?.Message; // Assuming MetaTraderOpenTradeOrderResponseDto has a Message field
     }
 
     public Task<string> GetOrderStatusById(string? pendingOrderMetaTraderOrderId)
