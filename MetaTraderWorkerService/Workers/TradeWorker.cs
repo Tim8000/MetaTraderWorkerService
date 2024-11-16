@@ -21,11 +21,11 @@ public class TradeWorker : BackgroundService
             using (var scope = _serviceProvider.CreateScope())
             {
                 var tradeProcessorService = scope.ServiceProvider.GetRequiredService<ITradeProcessor>();
-                var trades = await tradeProcessorService.GetActiveTradesAsync();
+                // var trades = await tradeProcessorService.GetActiveTradesAsync(); // TODO: turn on
             }
 
             // Wait for a defined interval before placing the next order
-            await Task.Delay(TimeSpan.FromSeconds(30), stoppingToken);
+            await Task.Delay(TimeSpan.FromSeconds(60), stoppingToken);
         }
     }
 }

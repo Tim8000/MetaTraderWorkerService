@@ -39,7 +39,7 @@ public class MetaApiService : IMetaApiService
 
         var jsonData = JsonConvert.SerializeObject(requestDto);
         var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
-
+        _logger.LogInformation($"Requesting URL:{url} for trade {requestDto.ActionType}");
         var result = await _httpService.PostAsync(url, content, false);
 
         var orderResponse = JsonConvert.DeserializeObject<MetaTraderOpenTradeOrderResponseDto>(result);
