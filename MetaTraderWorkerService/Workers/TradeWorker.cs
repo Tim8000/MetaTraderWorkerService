@@ -1,4 +1,5 @@
 using MetaTraderWorkerService.Services;
+using MetaTraderWorkerService.Services.TradeServices;
 
 namespace MetaTraderWorkerService.Workers;
 

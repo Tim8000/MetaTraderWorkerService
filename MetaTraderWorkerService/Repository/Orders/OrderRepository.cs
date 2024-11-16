@@ -1,10 +1,9 @@
+using MetaTraderWorkerService.Data;
 using MetaTraderWorkerService.Enums;
 using MetaTraderWorkerService.Models;
 using Microsoft.EntityFrameworkCore;
-using TradeOrderProcessor.Data;
-using TradeOrderProcessor.Enums;
 
-namespace MetaTraderWorkerService.Repository;
+namespace MetaTraderWorkerService.Repository.Orders;
 
 public class OrderRepository : IOrderRepository
 {
@@ -43,6 +42,7 @@ public class OrderRepository : IOrderRepository
 
     public async Task<List<MetaTraderOrder>> GetPlacedOrdersAsync()
     {
-        return await _dbContext.MetaTraderOrders.Where(mo => mo.OrderState == OrderState.ORDER_STATE_PLACED).ToListAsync();
+        return await _dbContext.MetaTraderOrders.Where(mo => mo.OrderState == OrderState.ORDER_STATE_PLACED)
+            .ToListAsync();
     }
 }

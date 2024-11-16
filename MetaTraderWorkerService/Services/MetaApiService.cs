@@ -1,11 +1,9 @@
 using System.Text;
-using System.Threading.Tasks;
 using MetaTraderWorkerService.Dtos;
 using MetaTraderWorkerService.Http;
-using MetaTraderWorkerService.Models;
-using MetaTraderWorkerService.Services;
-using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+
+namespace MetaTraderWorkerService.Services;
 
 public class MetaApiService : IMetaApiService
 {
@@ -34,7 +32,8 @@ public class MetaApiService : IMetaApiService
             _logger.LogError("Failed to retrieve account data.");
     }
 
-    public async Task<MetaTraderOpenTradeOrderResponseDto> PlacePendingOrderAsync(MetaTraderOpenTradeOrderRequestDto requestDto)
+    public async Task<MetaTraderOpenTradeOrderResponseDto> PlacePendingOrderAsync(
+        MetaTraderOpenTradeOrderRequestDto requestDto)
     {
         var url = $"users/current/accounts/{_accountId}/trade";
 

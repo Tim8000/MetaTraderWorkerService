@@ -1,10 +1,9 @@
 using MetaTraderWorkerService.Dtos;
 using MetaTraderWorkerService.Enums;
 using MetaTraderWorkerService.Models;
-using MetaTraderWorkerService.Repository;
-using TradeOrderProcessor.Enums;
+using MetaTraderWorkerService.Repository.Orders;
 
-namespace MetaTraderWorkerService.Services;
+namespace MetaTraderWorkerService.Services.OrderServices;
 
 public class OrderProcessor : IOrderProcessor
 {
@@ -30,7 +29,6 @@ public class OrderProcessor : IOrderProcessor
             return;
 
         foreach (var metaTraderOrder in createdOrders)
-        {
             switch (metaTraderOrder.ActionType)
             {
                 case ActionType.ORDER_TYPE_SELL_LIMIT:
@@ -45,12 +43,12 @@ public class OrderProcessor : IOrderProcessor
                 default:
                     continue;
             }
-        }
     }
 
     private async Task ProcessCancelOrder(MetaTraderOrder metaTraderOrder)
     {
-        var order = await _orderRepository.GetOrderByInitialTradeSignalId(metaTraderOrder.MetaTraderInitialTradeSignal.Id);
+        var order = await _orderRepository.GetOrderByInitialTradeSignalId(metaTraderOrder.MetaTraderInitialTradeSignal
+            .Id);
 
         if (order == null)
             throw new Exception($"Order {metaTraderOrder.MetaTraderOrderId} not found");
@@ -58,7 +56,7 @@ public class OrderProcessor : IOrderProcessor
         var cancelOrderDto = new CancelOrderDto()
         {
             ActionType = metaTraderOrder.ActionType.ToString(),
-            OrderId = order.MetaTraderOrderId,
+            OrderId = order.MetaTraderOrderId
         };
 
         // TODO: Handle response.
@@ -134,7 +132,7 @@ public class OrderProcessor : IOrderProcessor
             Comment = metaTraderOrder.Comment,
             StopLossUnits = metaTraderOrder.StopLossUnits,
             TakeProfitUnits = metaTraderOrder.TakeProfitUnits,
-            StopPriceBase = metaTraderOrder.StopPriceBase,
+            StopPriceBase = metaTraderOrder.StopPriceBase
         };
         return metaTraderOrderDto;
     }
@@ -149,14 +147,10 @@ public class OrderProcessor : IOrderProcessor
         metaTraderOrder.MetaTraderMessage = openTradeOrderResponseDto.Message;
 
         if (Enum.IsDefined(typeof(TradeResultCode), openTradeOrderResponseDto.NumericCode))
-        {
             metaTraderOrder.MetaTraderTradeResultCode = (TradeResultCode)openTradeOrderResponseDto.NumericCode;
-        }
         else
-        {
             metaTraderOrder.MetaTraderTradeResultCode =
                 TradeResultCode.Unknown; // Assuming you have an "Unknown" enum value
-        }
     }
 
     public decimal CalculateVolumeForDollarAmount(decimal dollarAmount, decimal currentPrice, decimal minVolume = 0.01m,

@@ -1,7 +1,6 @@
 using MetaTraderWorkerService.Dtos.Mt5Trades;
-using MetaTraderWorkerService.Enums.Mt5Trades;
 
-namespace MetaTraderWorkerService.Services;
+namespace MetaTraderWorkerService.Services.TradeServices;
 
 public interface ITradeProcessor
 {

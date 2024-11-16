@@ -1,4 +1,4 @@
-namespace MetaTraderWorkerService.Services;
+namespace MetaTraderWorkerService.Services.OrderServices;
 
 public interface IOrderProcessor
 {

@@ -1,7 +1,6 @@
-using MetaTraderWorkerService.Models;
-using TradeOrderProcessor.Enums;
+using MetaTraderWorkerService.Enums;
 
-namespace TradeOrderProcessor.Models;
+namespace MetaTraderWorkerService.Models;
 
 public class MetaTraderSignal
 {

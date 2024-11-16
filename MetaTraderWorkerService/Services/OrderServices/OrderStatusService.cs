@@ -1,18 +1,17 @@
 using MetaTraderWorkerService.Dtos;
-using MetaTraderWorkerService.Enums;
-using MetaTraderWorkerService.Repository;
+using MetaTraderWorkerService.Repository.Orders;
 using Newtonsoft.Json;
-using TradeOrderProcessor.Enums;
 
-namespace MetaTraderWorkerService.Services;
+namespace MetaTraderWorkerService.Services.OrderServices;
 
 public class OrderStatusService : IOrderStatusService
 {
     private readonly ILogger<OrderStatusService> _logger;
     private readonly IOrderRepository _orderRepository;
-private readonly IMetaApiService _metaApiService;
+    private readonly IMetaApiService _metaApiService;
 
-    public OrderStatusService(ILogger<OrderStatusService> logger, IOrderRepository orderRepository, IMetaApiService metaApiService)
+    public OrderStatusService(ILogger<OrderStatusService> logger, IOrderRepository orderRepository,
+        IMetaApiService metaApiService)
     {
         _logger = logger;
         _orderRepository = orderRepository;

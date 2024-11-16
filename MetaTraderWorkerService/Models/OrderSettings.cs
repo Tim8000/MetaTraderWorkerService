@@ -1,4 +1,4 @@
-namespace TradeOrderProcessor.Models;
+namespace MetaTraderWorkerService.Models;
 
 // TODO: Implement trading platform logic so we can open trades for different trading platforms.
 public class OrderSettings

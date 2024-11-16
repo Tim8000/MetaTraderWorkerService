@@ -7,14 +7,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="194ecc76-e850-4399-92c6-6dc93bcb977e" name="Changes" comment="Rename models and properties to include MetaTrader prefix&#10;&#10;Updated various class names and properties to include the MetaTrader prefix for consistency. This includes classes such as MetaTraderTrade, MetaTraderSignal, and MetaTraderInitialTradeSignal. Adjusted related references throughout the project to match the new naming conventions.">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.MetaTraderWorkerService/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.MetaTraderWorkerService/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService/Dtos/MetaTraderOpenTradeOrderRequestDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Dtos/MetaTraderOpenTradeOrderRequestDto.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService/Enums/OrderStatus.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Enums/OrderStatus.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService/Http/HttpService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Http/HttpService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService/Repository/OrderRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Repository/OrderRepository.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService/Services/OrderProcessor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Services/OrderProcessor.cs" afterDir="false" />
-    </list>
+    <list default="true" id="194ecc76-e850-4399-92c6-6dc93bcb977e" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -82,7 +75,7 @@
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
-  <component name="RunManager" selected=".NET Launch Settings Profile.MetaTraderWorkerService">
+  <component name="RunManager" selected="Publish to custom server.PublishToDebian">
     <configuration name="PublishToFolder" type="DotNetFolderPublish" factoryName="Publish to folder">
       <riderPublish configuration="Release" delete_existing_files="true" platform="Any CPU" runtime="linux-x64" target_folder="$PROJECT_DIR$/MetaTraderWorkerService/bin/Release/net8.0/linux-x64/publish" target_framework="net8.0" uuid_high="1871667714893237941" uuid_low="-7699535203307637525" />
       <method v="2" />
@@ -229,7 +222,15 @@
       <option name="project" value="LOCAL" />
       <updated>1731698389778</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="Update MetaTrader order processing and DTOs&#10;&#10;Changed the type of 'Magic' property to long in DTO and updated 'OrderStatus' enum to include 'Executed'. Enhanced OrderProcessor with account ID configuration and modified order status handling for better accuracy. Replaced Console.WriteLine with Debug.WriteLine in HttpService for better debugging.">
+      <option name="closed" value="true" />
+      <created>1731701385266</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1731701385266</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -267,7 +268,8 @@
     <MESSAGE value="Rename MetaTraderOrderResponseDto and update related logic&#10;&#10;Renamed MetaTraderOrderResponseDto to MetaTraderOpenTradeOrderResponseDto for clarity. Updated method signatures, type references, and field assignments to align with the new class name. Enhanced order status management by adding more descriptive fields to MetaTraderOrder." />
     <MESSAGE value="Add TradeWorker and Trade processing features&#10;&#10;Introduced TradeWorker to fetch and process active trades periodically. Added TradeProcessor and related interfaces, DTOs, and enums to manage trade operations. Registered the new worker and services in the application startup." />
     <MESSAGE value="Rename models and properties to include MetaTrader prefix&#10;&#10;Updated various class names and properties to include the MetaTrader prefix for consistency. This includes classes such as MetaTraderTrade, MetaTraderSignal, and MetaTraderInitialTradeSignal. Adjusted related references throughout the project to match the new naming conventions." />
-    <option name="LAST_COMMIT_MESSAGE" value="Rename models and properties to include MetaTrader prefix&#10;&#10;Updated various class names and properties to include the MetaTrader prefix for consistency. This includes classes such as MetaTraderTrade, MetaTraderSignal, and MetaTraderInitialTradeSignal. Adjusted related references throughout the project to match the new naming conventions." />
+    <MESSAGE value="Update MetaTrader order processing and DTOs&#10;&#10;Changed the type of 'Magic' property to long in DTO and updated 'OrderStatus' enum to include 'Executed'. Enhanced OrderProcessor with account ID configuration and modified order status handling for better accuracy. Replaced Console.WriteLine with Debug.WriteLine in HttpService for better debugging." />
+    <option name="LAST_COMMIT_MESSAGE" value="Update MetaTrader order processing and DTOs&#10;&#10;Changed the type of 'Magic' property to long in DTO and updated 'OrderStatus' enum to include 'Executed'. Enhanced OrderProcessor with account ID configuration and modified order status handling for better accuracy. Replaced Console.WriteLine with Debug.WriteLine in HttpService for better debugging." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -284,19 +286,6 @@
             </endOffsets>
           </properties>
           <option name="timeStamp" value="33" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/MetaTraderWorkerService/Services/OrderProcessor.cs</url>
-          <line>78</line>
-          <properties documentPath="E:\Programming\TradingWithGuys\MetaTraderWorkerService\MetaTraderWorkerService\Services\OrderProcessor.cs" containingFunctionPresentation="Method 'ProcessTradeOpening'">
-            <startOffsets>
-              <option value="2886" />
-            </startOffsets>
-            <endOffsets>
-              <option value="2974" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="46" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

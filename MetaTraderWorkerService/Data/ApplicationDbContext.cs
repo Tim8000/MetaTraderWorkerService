@@ -1,8 +1,7 @@
 using MetaTraderWorkerService.Models;
 using Microsoft.EntityFrameworkCore;
-using TradeOrderProcessor.Models;
 
-namespace TradeOrderProcessor.Data;
+namespace MetaTraderWorkerService.Data;
 
 public class ApplicationDbContext : DbContext
 {

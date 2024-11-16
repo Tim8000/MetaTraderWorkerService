@@ -1,4 +1,4 @@
-namespace TradeOrderProcessor.Enums;
+namespace MetaTraderWorkerService.Enums;
 
 public enum TradeSignalStatusCode
 {

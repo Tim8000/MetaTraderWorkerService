@@ -1,6 +1,4 @@
 using MetaTraderWorkerService.Enums;
-using TradeOrderProcessor.Enums;
-using TradeOrderProcessor.Models;
 
 namespace MetaTraderWorkerService.Models;
 
@@ -10,7 +8,10 @@ public class MetaTraderOrder
 
     // Core fields
     public MetaTraderSignal? TradeSignal { get; set; } // Link to the originating trade signal
-    public required MetaTraderInitialTradeSignal MetaTraderInitialTradeSignal { get; set; } // Link to the originating initial trade signal
+
+    public required MetaTraderInitialTradeSignal
+        MetaTraderInitialTradeSignal { get; set; } // Link to the originating initial trade signal
+
     public OrderStatus Status { get; set; } // Order status, default to "Created"
     public OrderState? OrderState { get; set; }
     public ActionType? ActionType { get; set; } // Action type, e.g., "ORDER_TYPE_SELL_LIMIT"

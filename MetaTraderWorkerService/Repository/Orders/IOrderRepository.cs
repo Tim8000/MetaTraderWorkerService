@@ -1,6 +1,6 @@
 using MetaTraderWorkerService.Models;
 
-namespace MetaTraderWorkerService.Repository;
+namespace MetaTraderWorkerService.Repository.Orders;
 
 public interface IOrderRepository
 {

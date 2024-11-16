@@ -1,6 +1,4 @@
 using MetaTraderWorkerService.Enums;
-using TradeOrderProcessor.Enums;
-using TradeOrderProcessor.Models;
 
 namespace MetaTraderWorkerService.Models;
 

@@ -1,13 +1,16 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MetaTraderWorkerService;
+using MetaTraderWorkerService.Data;
 using MetaTraderWorkerService.Http;
 using MetaTraderWorkerService.Repository;
+using MetaTraderWorkerService.Repository.Orders;
 using MetaTraderWorkerService.Services;
+using MetaTraderWorkerService.Services.OrderServices;
+using MetaTraderWorkerService.Services.TradeServices;
 using MetaTraderWorkerService.Workers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using TradeOrderProcessor.Data;
 
 var builder = Host.CreateApplicationBuilder(args);
 

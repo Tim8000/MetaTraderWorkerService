@@ -1,5 +1,5 @@
 using MetaTraderWorkerService.Enums.Mt5Trades;
-using TradeStatus = TradeOrderProcessor.Enums.TradeStatus;
+using TradeStatus = MetaTraderWorkerService.Enums.TradeStatus;
 
 namespace MetaTraderWorkerService.Models;
 
