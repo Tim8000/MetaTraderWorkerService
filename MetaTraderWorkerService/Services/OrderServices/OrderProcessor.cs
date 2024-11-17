@@ -40,9 +40,47 @@ public class OrderProcessor : IOrderProcessor
                 case ActionType.ORDER_CANCEL:
                     await ProcessCancelOrder(metaTraderOrder);
                     continue;
+                case ActionType.POSITION_MODIFY:
+                    await ProcessModifyPositionOrder(metaTraderOrder);
+                    continue;
+                case ActionType.POSITION_PARTIAL:
+                    await ProcessPartialPositionCloseOrder(metaTraderOrder);
+                    continue;
                 default:
                     continue;
             }
+    }
+
+    private async Task ProcessModifyPositionOrder(MetaTraderOrder metaTraderOrder)
+    {
+        switch (metaTraderOrder.SignalCommandCode)
+        {
+            case SignalCommandCode.MoveStopLossToPrice:
+                await ProcessMoveStopLossToPriceOrder(metaTraderOrder);
+                return;
+            case SignalCommandCode.MoveStopLossToBreakEven:
+                await ProcessMoveStopLossToBreakEvenOrder(metaTraderOrder);
+                return;
+                default:
+                    return;
+        }
+    }
+
+    private async Task ProcessPartialPositionCloseOrder(MetaTraderOrder metaTraderOrder)
+    {
+        var trade = metaTraderOrder.Trade;
+
+
+    }
+
+    private async Task ProcessMoveStopLossToBreakEvenOrder(MetaTraderOrder metaTraderOrder)
+    {
+        throw new NotImplementedException();
+    }
+
+    private async Task ProcessMoveStopLossToPriceOrder(MetaTraderOrder metaTraderOrder)
+    {
+        throw new NotImplementedException();
     }
 
     private async Task ProcessCancelOrder(MetaTraderOrder metaTraderOrder)
@@ -53,19 +91,30 @@ public class OrderProcessor : IOrderProcessor
         if (order == null)
             throw new Exception($"Order {metaTraderOrder.MetaTraderOrderId} not found");
 
-        var cancelOrderDto = new CancelOrderDto()
+        if (order.OrderState == OrderState.ORDER_STATE_PLACED )
         {
-            ActionType = metaTraderOrder.ActionType.ToString(),
-            OrderId = order.MetaTraderOrderId
-        };
+            var cancelOrderDto = new CancelOrderDto()
+            {
+                ActionType = metaTraderOrder.ActionType.ToString(),
+                OrderId = order.MetaTraderOrderId
+            };
 
-        // TODO: Handle response.
-        var response = await _metaApiService.PlaceCancelOrderAsync(cancelOrderDto);
-        order.Status = OrderStatus.Canceled;
-        order.OrderState = OrderState.ORDER_STATE_CANCELED;
-        await _orderRepository.UpdateOrderAsync(order);
-        metaTraderOrder.Status = OrderStatus.Executed;
-        await _orderRepository.UpdateOrderAsync(metaTraderOrder);
+            // TODO: Handle response.
+            var response = await _metaApiService.PlaceCancelOrderAsync(cancelOrderDto);
+            order.Status = OrderStatus.Canceled;
+            order.OrderState = OrderState.ORDER_STATE_CANCELED;
+            await _orderRepository.UpdateOrderAsync(order);
+            metaTraderOrder.Status = OrderStatus.Executed;
+            await _orderRepository.UpdateOrderAsync(metaTraderOrder);
+        }
+
+        if (order.MetaTraderOrderId == null)
+        {
+            Console.WriteLine($"Order {metaTraderOrder.MetaTraderOrderId} not found on metatrader platform");
+            metaTraderOrder.Status = OrderStatus.Failed;
+            metaTraderOrder.Comment = "Initial order does not exist on metatrader platform";
+            await _orderRepository.UpdateOrderAsync(metaTraderOrder);
+        }
     }
 
     private async Task ProcessTradeOpening(MetaTraderOrder metaTraderOrder)
@@ -81,7 +130,6 @@ public class OrderProcessor : IOrderProcessor
             if (orderResponseDto.NumericCode == TradeResultCode.Done)
             {
                 SetValuesToMetaTraderOrderFromResponseDto(metaTraderOrder, orderResponseDto);
-                metaTraderOrder.Status = OrderStatus.SentToMetaTrader;
 
                 _logger.LogInformation(
                     $"Order was created successfuly, orderId = {metaTraderOrder.MetaTraderOrderId}, metaTraderStringCode = {metaTraderOrder.MetaTraderStringCode}, metatraderOrderId = {metaTraderOrder.MetaTraderOrderId}");
@@ -145,6 +193,7 @@ public class OrderProcessor : IOrderProcessor
         metaTraderOrder.MetaTraderOrderId = openTradeOrderResponseDto.OrderId;
         metaTraderOrder.MetaTraderStringCode = openTradeOrderResponseDto.StringCode;
         metaTraderOrder.MetaTraderMessage = openTradeOrderResponseDto.Message;
+        metaTraderOrder.Status = OrderStatus.SentToMetaTrader;
 
         if (Enum.IsDefined(typeof(TradeResultCode), openTradeOrderResponseDto.NumericCode))
             metaTraderOrder.MetaTraderTradeResultCode = (TradeResultCode)openTradeOrderResponseDto.NumericCode;

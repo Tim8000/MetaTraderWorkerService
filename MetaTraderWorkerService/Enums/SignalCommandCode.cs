@@ -6,8 +6,10 @@ public enum SignalCommandCode
     Sell = 2,
     CloseTrade = 3,
     PartialProfit = 4,
-    MoveStopLoss = 5,
-    CloseOrder = 6,
+    MoveStopLossToPrice = 5,
+    TryToCloseTrade = 6,
     HoldOrder = 7,
-    CloseOrderAtEntryPoint = 8
+    CloseOrderAtEntryPoint = 8,
+    CancelOrder = 9,
+    MoveStopLossToBreakEven = 10
 }

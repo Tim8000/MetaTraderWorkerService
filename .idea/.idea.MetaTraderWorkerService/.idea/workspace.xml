@@ -7,10 +7,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="194ecc76-e850-4399-92c6-6dc93bcb977e" name="Changes" comment="Refactor namespaces and organize services&#10;&#10;Updated namespaces for consistency and moved relevant files into subdirectories. Enhanced readability by adjusting formatting and removing unused imports. Added `MetaTraderWorkerService.Services.TradeServices` and `MetaTraderWorkerService.Services.OrderServices` namespaces.">
+    <list default="true" id="194ecc76-e850-4399-92c6-6dc93bcb977e" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.MetaTraderWorkerService/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.MetaTraderWorkerService/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService/Services/MetaApiService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Services/MetaApiService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService/Workers/TradeWorker.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Workers/TradeWorker.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService/Enums/SignalCommandCode.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Enums/SignalCommandCode.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService/Models/MetaTraderOrder.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Models/MetaTraderOrder.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService/Services/OrderServices/OrderProcessor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Services/OrderServices/OrderProcessor.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -77,7 +78,7 @@
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
-  <component name="RunManager" selected="Publish to custom server.PublishToDebian">
+  <component name="RunManager" selected=".NET Launch Settings Profile.MetaTraderWorkerService">
     <configuration name="PublishToFolder" type="DotNetFolderPublish" factoryName="Publish to folder">
       <riderPublish configuration="Release" delete_existing_files="true" platform="Any CPU" runtime="linux-x64" target_folder="$PROJECT_DIR$/MetaTraderWorkerService/bin/Release/net8.0/linux-x64/publish" target_framework="net8.0" uuid_high="1871667714893237941" uuid_low="-7699535203307637525" />
       <method v="2" />
@@ -119,7 +120,8 @@
       <workItem from="1731473932716" duration="24758000" />
       <workItem from="1731563395704" duration="8635000" />
       <workItem from="1731656986175" duration="2262000" />
-      <workItem from="1731734045764" duration="2796000" />
+      <workItem from="1731734045764" duration="3512000" />
+      <workItem from="1731830786330" duration="4497000" />
     </task>
     <task id="LOCAL-00001" summary="Add initial implementation for MetaTraderWorkerService&#10;&#10;This commit includes the setup for the MetaTraderWorkerService project. Added configurations, data model, HTTP services, and necessary project files like `appsettings.json`. The project structure and initial classes have been defined to support database interactions and API requests.">
       <option name="closed" value="true" />
@@ -241,7 +243,15 @@
       <option name="project" value="LOCAL" />
       <updated>1731734252505</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="Update log delay and add logging for trade requests&#10;&#10;Increased delay interval in TradeWorker to improve order spacing. Added logging in MetaApiService to track trade requests for better monitoring. Commented out `GetActiveTradesAsync` for future reactivation.">
+      <option name="closed" value="true" />
+      <created>1731739475685</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1731739475685</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -281,7 +291,8 @@
     <MESSAGE value="Rename models and properties to include MetaTrader prefix&#10;&#10;Updated various class names and properties to include the MetaTrader prefix for consistency. This includes classes such as MetaTraderTrade, MetaTraderSignal, and MetaTraderInitialTradeSignal. Adjusted related references throughout the project to match the new naming conventions." />
     <MESSAGE value="Update MetaTrader order processing and DTOs&#10;&#10;Changed the type of 'Magic' property to long in DTO and updated 'OrderStatus' enum to include 'Executed'. Enhanced OrderProcessor with account ID configuration and modified order status handling for better accuracy. Replaced Console.WriteLine with Debug.WriteLine in HttpService for better debugging." />
     <MESSAGE value="Refactor namespaces and organize services&#10;&#10;Updated namespaces for consistency and moved relevant files into subdirectories. Enhanced readability by adjusting formatting and removing unused imports. Added `MetaTraderWorkerService.Services.TradeServices` and `MetaTraderWorkerService.Services.OrderServices` namespaces." />
-    <option name="LAST_COMMIT_MESSAGE" value="Refactor namespaces and organize services&#10;&#10;Updated namespaces for consistency and moved relevant files into subdirectories. Enhanced readability by adjusting formatting and removing unused imports. Added `MetaTraderWorkerService.Services.TradeServices` and `MetaTraderWorkerService.Services.OrderServices` namespaces." />
+    <MESSAGE value="Update log delay and add logging for trade requests&#10;&#10;Increased delay interval in TradeWorker to improve order spacing. Added logging in MetaApiService to track trade requests for better monitoring. Commented out `GetActiveTradesAsync` for future reactivation." />
+    <option name="LAST_COMMIT_MESSAGE" value="Update log delay and add logging for trade requests&#10;&#10;Increased delay interval in TradeWorker to improve order spacing. Added logging in MetaApiService to track trade requests for better monitoring. Commented out `GetActiveTradesAsync` for future reactivation." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -298,6 +309,19 @@
             </endOffsets>
           </properties>
           <option name="timeStamp" value="33" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/MetaTraderWorkerService/Services/MetaApiService.cs</url>
+          <line>56</line>
+          <properties documentPath="E:\Programming\TradingWithGuys\MetaTraderWorkerService\MetaTraderWorkerService\Services\MetaApiService.cs" containingFunctionPresentation="Method 'PlaceCancelOrderAsync'">
+            <startOffsets>
+              <option value="2004" />
+            </startOffsets>
+            <endOffsets>
+              <option value="2067" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="35" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

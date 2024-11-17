@@ -15,6 +15,7 @@ public class MetaTraderOrder
     public OrderStatus Status { get; set; } // Order status, default to "Created"
     public OrderState? OrderState { get; set; }
     public ActionType? ActionType { get; set; } // Action type, e.g., "ORDER_TYPE_SELL_LIMIT"
+    public SignalCommandCode? SignalCommandCode { get; set; }
 
     // MetaTrader-specific fields based on request
     public string? Symbol { get; set; } // Symbol to trade, e.g., "XAUUSD"
