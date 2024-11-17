@@ -52,5 +52,4 @@ public class OrderRepository : IOrderRepository
             .Include(o => o.Trade) // Include associated trade
             .FirstOrDefaultAsync(o => o.Magic == magic && o.Symbol == symbol);
     }
-
 }

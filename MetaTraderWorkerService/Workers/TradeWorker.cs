@@ -18,62 +18,61 @@ public class TradeWorker : BackgroundService
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
-{
-    while (!stoppingToken.IsCancellationRequested)
     {
-        using (var scope = _serviceProvider.CreateScope())
+        while (!stoppingToken.IsCancellationRequested)
         {
-            var tradeProcessorService = scope.ServiceProvider.GetRequiredService<ITradeProcessor>();
-            var orderRepository = scope.ServiceProvider.GetRequiredService<IOrderRepository>();
-
-            try
+            using (var scope = _serviceProvider.CreateScope())
             {
-                // Retrieve active trades from MetaTrader
-                var activeTrades = await tradeProcessorService.GetActiveTradesAsync();
+                var tradeProcessorService = scope.ServiceProvider.GetRequiredService<ITradeProcessor>();
+                var orderRepository = scope.ServiceProvider.GetRequiredService<IOrderRepository>();
 
-                // Process active trades
-                foreach (var trade in activeTrades)
+                try
                 {
-                    // Find the corresponding order in the database
-                    var order = await orderRepository.GetOrderByMagicAndSymbolAsync(trade.Magic, trade.Symbol);
+                    // Retrieve active trades from MetaTrader
+                    var activeTrades = await tradeProcessorService.GetActiveTradesAsync();
 
-                    if (order != null)
+                    // Process active trades
+                    foreach (var trade in activeTrades)
                     {
-                        // Associate trade with the order
-                        order.Trade = new MetaTraderTrade
-                        {
-                            Id = trade.Id,
-                            Platform = trade.Platform,
-                            Symbol = trade.Symbol,
-                            Magic = trade.Magic,
-                            OpenPrice = trade.OpenPrice,
-                            Volume = trade.Volume,
-                            CurrentPrice = trade.CurrentPrice,
-                            StopLoss = trade.StopLoss,
-                            TakeProfit = trade.TakeProfit,
-                            Time = trade.Time,
-                            BrokerTime = trade.BrokerTime,
-                            UpdateTime = trade.UpdateTime,
-                            Profit = trade.Profit,
-                            State = TradeState.Active,
-                            Status = TradeStatus.Open
-                        };
+                        // Find the corresponding order in the database
+                        var order = await orderRepository.GetOrderByMagicAndSymbolAsync(trade.Magic, trade.Symbol);
 
-                        // Update the order in the database
-                        await orderRepository.UpdateOrderAsync(order);
+                        if (order != null)
+                        {
+                            // Associate trade with the order
+                            order.Trade = new MetaTraderTrade
+                            {
+                                Id = trade.Id,
+                                Platform = trade.Platform,
+                                Symbol = trade.Symbol,
+                                Magic = trade.Magic,
+                                OpenPrice = trade.OpenPrice,
+                                Volume = trade.Volume,
+                                CurrentPrice = trade.CurrentPrice,
+                                StopLoss = trade.StopLoss,
+                                TakeProfit = trade.TakeProfit,
+                                Time = trade.Time,
+                                BrokerTime = trade.BrokerTime,
+                                UpdateTime = trade.UpdateTime,
+                                Profit = trade.Profit,
+                                State = TradeState.Active,
+                                Status = TradeStatus.Open
+                            };
+
+                            // Update the order in the database
+                            await orderRepository.UpdateOrderAsync(order);
+                        }
                     }
                 }
+                catch (Exception ex)
+                {
+                    var logger = scope.ServiceProvider.GetRequiredService<ILogger<TradeProcessor>>();
+                    logger.LogError(ex, "Error while processing active trades.");
+                }
             }
-            catch (Exception ex)
-            {
-                var logger = scope.ServiceProvider.GetRequiredService<ILogger<TradeProcessor>>();
-                logger.LogError(ex, "Error while processing active trades.");
-            }
+
+            // Wait for a defined interval before the next iteration
+            await Task.Delay(TimeSpan.FromSeconds(60), stoppingToken);
         }
-
-        // Wait for a defined interval before the next iteration
-        await Task.Delay(TimeSpan.FromSeconds(60), stoppingToken);
     }
-}
-
 }

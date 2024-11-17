@@ -66,210 +66,199 @@ public class OrderProcessor : IOrderProcessor
             case SignalCommandCode.MoveStopLossToBreakEven:
                 await ProcessMoveStopLossToBreakEvenOrder(metaTraderOrder);
                 return;
-                default:
-                    return;
+            default:
+                return;
         }
     }
 
-  private async Task ProcessPartialPositionCloseOrder(MetaTraderOrder metaTraderOrder)
-{
-    if (metaTraderOrder.Trade == null)
+    private async Task ProcessPartialPositionCloseOrder(MetaTraderOrder metaTraderOrder)
     {
-        _logger.LogError($"No active trade found for MetaTraderOrder with ID: {metaTraderOrder.Id}");
-        metaTraderOrder.Status = OrderStatus.Failed;
-        metaTraderOrder.Comment = "No active trade associated with this order.";
-        await _orderRepository.UpdateOrderAsync(metaTraderOrder);
-        return;
-    }
-
-    // Calculate the new partial volume
-    var partialVolume = metaTraderOrder.Volume * 0.5m; // Example: Closing 50% of the volume
-    if (partialVolume <= 0 || metaTraderOrder.Trade.Volume < partialVolume)
-    {
-        _logger.LogError($"Invalid partial volume for MetaTraderOrder with ID: {metaTraderOrder.Id}");
-        metaTraderOrder.Status = OrderStatus.Failed;
-        metaTraderOrder.Comment = "Invalid partial volume.";
-        await _orderRepository.UpdateOrderAsync(metaTraderOrder);
-        return;
-    }
-
-    // Prepare DTO for partial position close
-    var partialCloseDto = new PartialCloseTradeOrderDto
-    {
-        Symbol = metaTraderOrder.Symbol,
-        Volume = partialVolume.Value,
-        TradeId = metaTraderOrder.Trade.Id,
-        Magic = metaTraderOrder.Magic.Value,
-        ClientId = metaTraderOrder.ClientId,
-        Comment = $"Partial close of {partialVolume} volume"
-    };
-
-    // Send request to MetaTrader
-    var response = await _metaApiService.ClosePartialPositionAsync(partialCloseDto);
-
-    // Handle the response
-    if (response != null && response.NumericCode == TradeResultCode.Done)
-    {
-        _logger.LogInformation($"Partial position close successful for Trade ID: {metaTraderOrder.Trade.Id}");
-
-        // Update trade details
-        metaTraderOrder.Trade.Volume -= partialVolume.Value;
-        if (metaTraderOrder.Trade.Volume <= 0)
+        if (metaTraderOrder.Trade == null)
         {
-            metaTraderOrder.Trade.Status = TradeStatus.Closed;
+            _logger.LogError($"No active trade found for MetaTraderOrder with ID: {metaTraderOrder.Id}");
+            metaTraderOrder.Status = OrderStatus.Failed;
+            metaTraderOrder.Comment = "No active trade associated with this order.";
+            await _orderRepository.UpdateOrderAsync(metaTraderOrder);
+            return;
+        }
+
+        // Calculate the new partial volume
+        var partialVolume = metaTraderOrder.Volume * 0.5m; // Example: Closing 50% of the volume
+        if (partialVolume <= 0 || metaTraderOrder.Trade.Volume < partialVolume)
+        {
+            _logger.LogError($"Invalid partial volume for MetaTraderOrder with ID: {metaTraderOrder.Id}");
+            metaTraderOrder.Status = OrderStatus.Failed;
+            metaTraderOrder.Comment = "Invalid partial volume.";
+            await _orderRepository.UpdateOrderAsync(metaTraderOrder);
+            return;
+        }
+
+        // Prepare DTO for partial position close
+        var partialCloseDto = new PartialCloseTradeOrderDto
+        {
+            Symbol = metaTraderOrder.Symbol,
+            Volume = partialVolume.Value,
+            TradeId = metaTraderOrder.Trade.Id,
+            Magic = metaTraderOrder.Magic.Value,
+            ClientId = metaTraderOrder.ClientId,
+            Comment = $"Partial close of {partialVolume} volume"
+        };
+
+        // Send request to MetaTrader
+        var response = await _metaApiService.ClosePartialPositionAsync(partialCloseDto);
+
+        // Handle the response
+        if (response != null && response.NumericCode == TradeResultCode.Done)
+        {
+            _logger.LogInformation($"Partial position close successful for Trade ID: {metaTraderOrder.Trade.Id}");
+
+            // Update trade details
+            metaTraderOrder.Trade.Volume -= partialVolume.Value;
+            if (metaTraderOrder.Trade.Volume <= 0)
+                metaTraderOrder.Trade.Status = TradeStatus.Closed;
+            else
+                metaTraderOrder.Trade.Status = TradeStatus.PartiallyClosed;
+
+            metaTraderOrder.Status = OrderStatus.Executed;
+            metaTraderOrder.MetaTraderTradeResultCode = response.NumericCode;
+            metaTraderOrder.MetaTraderMessage = "Partial close completed successfully.";
         }
         else
         {
-            metaTraderOrder.Trade.Status = TradeStatus.PartiallyClosed;
+            _logger.LogError($"Partial close failed for Trade ID: {metaTraderOrder.Trade.Id}.");
+
+            metaTraderOrder.Status = OrderStatus.Failed;
+            metaTraderOrder.MetaTraderTradeResultCode = response?.NumericCode ?? TradeResultCode.Unknown;
+            metaTraderOrder.MetaTraderMessage = response?.Message ?? "Partial close failed with unknown error.";
         }
 
-        metaTraderOrder.Status = OrderStatus.Executed;
-        metaTraderOrder.MetaTraderTradeResultCode = response.NumericCode;
-        metaTraderOrder.MetaTraderMessage = "Partial close completed successfully.";
-    }
-    else
-    {
-        _logger.LogError($"Partial close failed for Trade ID: {metaTraderOrder.Trade.Id}.");
-
-        metaTraderOrder.Status = OrderStatus.Failed;
-        metaTraderOrder.MetaTraderTradeResultCode = response?.NumericCode ?? TradeResultCode.Unknown;
-        metaTraderOrder.MetaTraderMessage = response?.Message ?? "Partial close failed with unknown error.";
-    }
-
-    // Save updates to the database
-    await _orderRepository.UpdateOrderAsync(metaTraderOrder);
-    if (metaTraderOrder.Trade != null)
-    {
-        await _tradeRepository.UpdateTradeAsync(metaTraderOrder.Trade);
-    }
-}
-
-
-private async Task ProcessMoveStopLossToBreakEvenOrder(MetaTraderOrder metaTraderOrder)
-{
-    // Validate the associated trade
-    if (metaTraderOrder.Trade == null)
-    {
-        _logger.LogError($"No active trade found for MetaTraderOrder ID: {metaTraderOrder.Id}");
-        metaTraderOrder.Status = OrderStatus.Failed;
-        metaTraderOrder.Comment = "No active trade associated with this order.";
+        // Save updates to the database
         await _orderRepository.UpdateOrderAsync(metaTraderOrder);
-        return;
+        if (metaTraderOrder.Trade != null) await _tradeRepository.UpdateTradeAsync(metaTraderOrder.Trade);
     }
 
-    // Determine the break-even price
-    decimal breakEvenPrice = metaTraderOrder.Trade.OpenPrice;
 
-    // Check if the stop-loss is already at break-even
-    if (metaTraderOrder.Trade.StopLoss == breakEvenPrice)
+    private async Task ProcessMoveStopLossToBreakEvenOrder(MetaTraderOrder metaTraderOrder)
     {
-        _logger.LogInformation($"Stop-loss already at break-even for Trade ID: {metaTraderOrder.Trade.Id}");
-        metaTraderOrder.Status = OrderStatus.Executed;
-        metaTraderOrder.Comment = "Stop-loss already at break-even.";
+        // Validate the associated trade
+        if (metaTraderOrder.Trade == null)
+        {
+            _logger.LogError($"No active trade found for MetaTraderOrder ID: {metaTraderOrder.Id}");
+            metaTraderOrder.Status = OrderStatus.Failed;
+            metaTraderOrder.Comment = "No active trade associated with this order.";
+            await _orderRepository.UpdateOrderAsync(metaTraderOrder);
+            return;
+        }
+
+        // Determine the break-even price
+        var breakEvenPrice = metaTraderOrder.Trade.OpenPrice;
+
+        // Check if the stop-loss is already at break-even
+        if (metaTraderOrder.Trade.StopLoss == breakEvenPrice)
+        {
+            _logger.LogInformation($"Stop-loss already at break-even for Trade ID: {metaTraderOrder.Trade.Id}");
+            metaTraderOrder.Status = OrderStatus.Executed;
+            metaTraderOrder.Comment = "Stop-loss already at break-even.";
+            await _orderRepository.UpdateOrderAsync(metaTraderOrder);
+            return;
+        }
+
+        // Prepare ModifyOrderRequestDto for modifying stop-loss
+        var modifyOrderRequest = new ModifyOrderRequestDto
+        {
+            Symbol = metaTraderOrder.Symbol,
+            TradeId = metaTraderOrder.Trade.Id,
+            StopLoss = breakEvenPrice,
+            Magic = metaTraderOrder.Magic.Value,
+            Comment = "Moving stop-loss to break-even price."
+        };
+
+        // Send the request to MetaTrader
+        var response = await _metaApiService.ModifyStopLossAsync(modifyOrderRequest);
+
+        // Handle the response
+        if (response != null && response.NumericCode == TradeResultCode.Done)
+        {
+            _logger.LogInformation($"Stop-loss moved to break-even for Trade ID: {metaTraderOrder.Trade.Id}");
+
+            // Update trade details
+            metaTraderOrder.Trade.StopLoss = breakEvenPrice;
+            metaTraderOrder.Trade.State = TradeState.Modified;
+
+            // Update order status
+            metaTraderOrder.Status = OrderStatus.Executed;
+            metaTraderOrder.MetaTraderTradeResultCode = response.NumericCode;
+            metaTraderOrder.MetaTraderMessage = response.Message ?? "Stop-loss moved to break-even successfully.";
+        }
+        else
+        {
+            _logger.LogError(
+                $"Failed to move stop-loss to break-even for Trade ID: {metaTraderOrder.Trade.Id}. Reason: {response?.Message}");
+
+            metaTraderOrder.Status = OrderStatus.Failed;
+            metaTraderOrder.MetaTraderTradeResultCode = response?.NumericCode ?? TradeResultCode.Unknown;
+            metaTraderOrder.MetaTraderMessage = response?.Message ?? "Failed to move stop-loss with unknown error.";
+        }
+
+        // Save updates to the database
         await _orderRepository.UpdateOrderAsync(metaTraderOrder);
-        return;
+        if (metaTraderOrder.Trade != null) await _tradeRepository.UpdateTradeAsync(metaTraderOrder.Trade);
     }
 
-    // Prepare ModifyOrderRequestDto for modifying stop-loss
-    var modifyOrderRequest = new ModifyOrderRequestDto
+
+    private async Task ProcessMoveStopLossToPriceOrder(MetaTraderOrder metaTraderOrder)
     {
-        Symbol = metaTraderOrder.Symbol,
-        TradeId = metaTraderOrder.Trade.Id,
-        StopLoss = breakEvenPrice,
-        Magic = metaTraderOrder.Magic.Value,
-        Comment = "Moving stop-loss to break-even price."
-    };
+        // Validate the trade associated with the order
+        if (metaTraderOrder.Trade == null)
+        {
+            _logger.LogError($"No active trade found for MetaTraderOrder with ID: {metaTraderOrder.Id}");
+            metaTraderOrder.Status = OrderStatus.Failed;
+            metaTraderOrder.Comment = "No active trade associated with this order.";
+            await _orderRepository.UpdateOrderAsync(metaTraderOrder);
+            return;
+        }
 
-    // Send the request to MetaTrader
-    var response = await _metaApiService.ModifyStopLossAsync(modifyOrderRequest);
+        // Prepare DTO for modifying stop-loss
+        var modifyOrderDto = new ModifyOrderRequestDto()
+        {
+            Symbol = metaTraderOrder.Symbol,
+            TradeId = metaTraderOrder.Trade.Id,
+            StopLoss = metaTraderOrder.StopLoss.Value,
+            Magic = metaTraderOrder.Magic.Value,
+            Comment = "Updating stop-loss to new value."
+        };
 
-    // Handle the response
-    if (response != null && response.NumericCode == TradeResultCode.Done)
-    {
-        _logger.LogInformation($"Stop-loss moved to break-even for Trade ID: {metaTraderOrder.Trade.Id}");
+        // Send request to MetaTrader
+        var response = await _metaApiService.ModifyStopLossAsync(modifyOrderDto);
 
-        // Update trade details
-        metaTraderOrder.Trade.StopLoss = breakEvenPrice;
-        metaTraderOrder.Trade.State = TradeState.Modified;
+        // Handle the response
+        if (response != null && response.NumericCode == TradeResultCode.Done)
+        {
+            _logger.LogInformation($"Stop-loss updated successfully for Trade ID: {metaTraderOrder.Trade.Id}");
 
-        // Update order status
-        metaTraderOrder.Status = OrderStatus.Executed;
-        metaTraderOrder.MetaTraderTradeResultCode = response.NumericCode;
-        metaTraderOrder.MetaTraderMessage = response.Message ?? "Stop-loss moved to break-even successfully.";
-    }
-    else
-    {
-        _logger.LogError($"Failed to move stop-loss to break-even for Trade ID: {metaTraderOrder.Trade.Id}. Reason: {response?.Message}");
+            // Update trade details
+            metaTraderOrder.Trade.StopLoss = metaTraderOrder.StopLoss.Value;
+            metaTraderOrder.Trade.State = TradeState.Modified;
 
-        metaTraderOrder.Status = OrderStatus.Failed;
-        metaTraderOrder.MetaTraderTradeResultCode = response?.NumericCode ?? TradeResultCode.Unknown;
-        metaTraderOrder.MetaTraderMessage = response?.Message ?? "Failed to move stop-loss with unknown error.";
-    }
+            // Update order status
+            metaTraderOrder.Status = OrderStatus.Executed;
+            metaTraderOrder.MetaTraderTradeResultCode = response.NumericCode;
+            metaTraderOrder.MetaTraderMessage = "Stop-loss updated successfully.";
+        }
+        else
+        {
+            _logger.LogError(
+                $"Failed to update stop-loss for Trade ID: {metaTraderOrder.Trade.Id}. Reason: {response?.Message}");
 
-    // Save updates to the database
-    await _orderRepository.UpdateOrderAsync(metaTraderOrder);
-    if (metaTraderOrder.Trade != null)
-    {
-        await _tradeRepository.UpdateTradeAsync(metaTraderOrder.Trade);
-    }
-}
+            metaTraderOrder.Status = OrderStatus.Failed;
+            metaTraderOrder.MetaTraderTradeResultCode = response?.NumericCode ?? TradeResultCode.Unknown;
+            metaTraderOrder.MetaTraderMessage = response?.Message ?? "Failed to update stop-loss with unknown error.";
+        }
 
-
-private async Task ProcessMoveStopLossToPriceOrder(MetaTraderOrder metaTraderOrder)
-{
-    // Validate the trade associated with the order
-    if (metaTraderOrder.Trade == null)
-    {
-        _logger.LogError($"No active trade found for MetaTraderOrder with ID: {metaTraderOrder.Id}");
-        metaTraderOrder.Status = OrderStatus.Failed;
-        metaTraderOrder.Comment = "No active trade associated with this order.";
+        // Save updates to the database
         await _orderRepository.UpdateOrderAsync(metaTraderOrder);
-        return;
+        if (metaTraderOrder.Trade != null) await _tradeRepository.UpdateTradeAsync(metaTraderOrder.Trade);
     }
-
-    // Prepare DTO for modifying stop-loss
-    var modifyOrderDto = new ModifyOrderRequestDto()
-    {
-        Symbol = metaTraderOrder.Symbol,
-        TradeId = metaTraderOrder.Trade.Id,
-        StopLoss = metaTraderOrder.StopLoss.Value,
-        Magic = metaTraderOrder.Magic.Value,
-        Comment = "Updating stop-loss to new value."
-    };
-
-    // Send request to MetaTrader
-    var response = await _metaApiService.ModifyStopLossAsync(modifyOrderDto);
-
-    // Handle the response
-    if (response != null && response.NumericCode == TradeResultCode.Done)
-    {
-        _logger.LogInformation($"Stop-loss updated successfully for Trade ID: {metaTraderOrder.Trade.Id}");
-
-        // Update trade details
-        metaTraderOrder.Trade.StopLoss = metaTraderOrder.StopLoss.Value;
-        metaTraderOrder.Trade.State = TradeState.Modified;
-
-        // Update order status
-        metaTraderOrder.Status = OrderStatus.Executed;
-        metaTraderOrder.MetaTraderTradeResultCode = response.NumericCode;
-        metaTraderOrder.MetaTraderMessage = "Stop-loss updated successfully.";
-    }
-    else
-    {
-        _logger.LogError($"Failed to update stop-loss for Trade ID: {metaTraderOrder.Trade.Id}. Reason: {response?.Message}");
-
-        metaTraderOrder.Status = OrderStatus.Failed;
-        metaTraderOrder.MetaTraderTradeResultCode = response?.NumericCode ?? TradeResultCode.Unknown;
-        metaTraderOrder.MetaTraderMessage = response?.Message ?? "Failed to update stop-loss with unknown error.";
-    }
-
-    // Save updates to the database
-    await _orderRepository.UpdateOrderAsync(metaTraderOrder);
-    if (metaTraderOrder.Trade != null)
-    {
-        await _tradeRepository.UpdateTradeAsync(metaTraderOrder.Trade);
-    }
-}
 
 
     private async Task ProcessCancelOrder(MetaTraderOrder metaTraderOrder)
@@ -280,7 +269,7 @@ private async Task ProcessMoveStopLossToPriceOrder(MetaTraderOrder metaTraderOrd
         if (order == null)
             throw new Exception($"Order {metaTraderOrder.MetaTraderOrderId} not found");
 
-        if (order.OrderState == OrderState.ORDER_STATE_PLACED )
+        if (order.OrderState == OrderState.ORDER_STATE_PLACED)
         {
             var cancelOrderDto = new CancelOrderDto()
             {

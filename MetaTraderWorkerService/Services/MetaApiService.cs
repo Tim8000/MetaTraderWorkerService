@@ -71,7 +71,8 @@ public class MetaApiService : IMetaApiService
         return result;
     }
 
-    public async Task<MetaTradePartialCloseResponseDto> ClosePartialPositionAsync(PartialCloseTradeOrderDto partialCloseDto)
+    public async Task<MetaTradePartialCloseResponseDto> ClosePartialPositionAsync(
+        PartialCloseTradeOrderDto partialCloseDto)
     {
         var url = $"users/current/accounts/{_accountId}/trade/closePartial";
         var jsonData = JsonConvert.SerializeObject(partialCloseDto);
