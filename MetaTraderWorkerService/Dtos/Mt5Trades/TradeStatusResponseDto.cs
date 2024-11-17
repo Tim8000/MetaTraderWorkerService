@@ -12,8 +12,8 @@ public class TradeStatusResponseDto
     public DateTime Time { get; set; } // Time of the trade
     public DateTime BrokerTime { get; set; } // Broker-reported time of the trade
     public DateTime UpdateTime { get; set; } // Last update time for the trade
-    public double OpenPrice { get; set; } // Opening price of the position
-    public double Volume { get; set; } // Volume of the position
+    public decimal OpenPrice { get; set; } // Opening price of the position
+    public decimal Volume { get; set; } // Volume of the position
     public double Swap { get; set; } // Swap fees for the position
     public double Commission { get; set; } // Commission fees for the position
     public double RealizedSwap { get; set; } // Realized swap value
@@ -27,7 +27,7 @@ public class TradeStatusResponseDto
     public double UnrealizedProfit { get; set; } // Unrealized profit
     public double Profit { get; set; } // Total profit (realized + unrealized)
     public double AccountCurrencyExchangeRate { get; set; } // Account currency exchange rate
-    public double StopLoss { get; set; } // Stop loss price
+    public decimal StopLoss { get; set; } // Stop loss price
     public double TakeProfit { get; set; } // Take profit price
     public long UpdateSequenceNumber { get; set; } // Sequence number for updates
 

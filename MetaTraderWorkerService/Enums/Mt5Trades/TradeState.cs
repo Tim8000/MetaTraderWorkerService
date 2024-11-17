@@ -5,5 +5,6 @@ public enum TradeState
     Open,
     Closed,
     Pending,
-    Modified
+    Modified,
+    Active
 }

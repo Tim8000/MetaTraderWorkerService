@@ -9,4 +9,5 @@ public interface IOrderRepository
     Task<MetaTraderOrder?> GetOrderByInitialTradeSignalId(Guid metaTraderOrderId);
     Task<List<MetaTraderOrder>> GetSentToMetaTraderOrdersAsync();
     Task<List<MetaTraderOrder>> GetPlacedOrdersAsync();
+    Task<MetaTraderOrder> GetOrderByMagicAndSymbolAsync(int tradeMagic, string tradeSymbol);
 }

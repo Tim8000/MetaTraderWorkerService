@@ -45,4 +45,12 @@ public class OrderRepository : IOrderRepository
         return await _dbContext.MetaTraderOrders.Where(mo => mo.OrderState == OrderState.ORDER_STATE_PLACED)
             .ToListAsync();
     }
+
+    public async Task<MetaTraderOrder?> GetOrderByMagicAndSymbolAsync(int magic, string symbol)
+    {
+        return await _dbContext.MetaTraderOrders
+            .Include(o => o.Trade) // Include associated trade
+            .FirstOrDefaultAsync(o => o.Magic == magic && o.Symbol == symbol);
+    }
+
 }
