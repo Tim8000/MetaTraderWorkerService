@@ -1,5 +1,6 @@
 using System.Text;
 using MetaTraderWorkerService.Dtos;
+using MetaTraderWorkerService.Dtos.Mt5Trades;
 using MetaTraderWorkerService.Http;
 using Newtonsoft.Json;
 
@@ -68,5 +69,15 @@ public class MetaApiService : IMetaApiService
         var result = _httpService.GetAsync(url, false);
 
         return result;
+    }
+
+    public async Task<MetaTradePartialCloseResponseDto> ClosePartialPositionAsync(PartialCloseTradeOrderDto partialCloseDto)
+    {
+        var url = $"users/current/accounts/{_accountId}/trade/closePartial";
+        var jsonData = JsonConvert.SerializeObject(partialCloseDto);
+        var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
+
+        var result = await _httpService.PostAsync(url, content, false);
+        return JsonConvert.DeserializeObject<MetaTradePartialCloseResponseDto>(result);
     }
 }

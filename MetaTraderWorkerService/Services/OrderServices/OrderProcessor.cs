@@ -1,7 +1,9 @@
 using MetaTraderWorkerService.Dtos;
 using MetaTraderWorkerService.Enums;
+using MetaTraderWorkerService.Enums.Mt5Trades;
 using MetaTraderWorkerService.Models;
 using MetaTraderWorkerService.Repository.Orders;
+using MetaTraderWorkerService.Repository.Trades;
 
 namespace MetaTraderWorkerService.Services.OrderServices;
 
@@ -10,14 +12,16 @@ public class OrderProcessor : IOrderProcessor
     private readonly IOrderRepository _orderRepository;
     private readonly IMetaApiService _metaApiService;
     private readonly ILogger<OrderProcessor> _logger;
+    private readonly ITradeRepository _tradeRepository;
     private readonly string _accountId;
 
     public OrderProcessor(IOrderRepository orderRepository, IMetaApiService metaApiService,
-        ILogger<OrderProcessor> logger, IConfiguration configuration)
+        ILogger<OrderProcessor> logger, IConfiguration configuration, ITradeRepository tradeRepository)
     {
         _orderRepository = orderRepository;
         _metaApiService = metaApiService;
         _logger = logger;
+        _tradeRepository = tradeRepository;
         _accountId = configuration["MetaApi:ProvisioningProfileId"];
     }
 
@@ -66,12 +70,79 @@ public class OrderProcessor : IOrderProcessor
         }
     }
 
-    private async Task ProcessPartialPositionCloseOrder(MetaTraderOrder metaTraderOrder)
+  private async Task ProcessPartialPositionCloseOrder(MetaTraderOrder metaTraderOrder)
+{
+    if (metaTraderOrder.Trade == null)
     {
-        var trade = metaTraderOrder.Trade;
-
-
+        _logger.LogError($"No active trade found for MetaTraderOrder with ID: {metaTraderOrder.Id}");
+        metaTraderOrder.Status = OrderStatus.Failed;
+        metaTraderOrder.Comment = "No active trade associated with this order.";
+        await _orderRepository.UpdateOrderAsync(metaTraderOrder);
+        return;
     }
+
+    // Calculate the new partial volume
+    var partialVolume = metaTraderOrder.Volume * 0.5m; // Example: Closing 50% of the volume
+    if (partialVolume <= 0 || metaTraderOrder.Trade.Volume < partialVolume)
+    {
+        _logger.LogError($"Invalid partial volume for MetaTraderOrder with ID: {metaTraderOrder.Id}");
+        metaTraderOrder.Status = OrderStatus.Failed;
+        metaTraderOrder.Comment = "Invalid partial volume.";
+        await _orderRepository.UpdateOrderAsync(metaTraderOrder);
+        return;
+    }
+
+    // Prepare DTO for partial position close
+    var partialCloseDto = new PartialCloseTradeOrderDto
+    {
+        Symbol = metaTraderOrder.Symbol,
+        Volume = partialVolume.Value,
+        TradeId = metaTraderOrder.Trade.Id,
+        Magic = metaTraderOrder.Magic.Value,
+        ClientId = metaTraderOrder.ClientId,
+        Comment = $"Partial close of {partialVolume} volume"
+    };
+
+    // Send request to MetaTrader
+    var response = await _metaApiService.ClosePartialPositionAsync(partialCloseDto);
+
+    // Handle the response
+    if (response != null && response.NumericCode == TradeResultCode.Done)
+    {
+        _logger.LogInformation($"Partial position close successful for Trade ID: {metaTraderOrder.Trade.Id}");
+
+        // Update trade details
+        metaTraderOrder.Trade.Volume -= partialVolume.Value;
+        if (metaTraderOrder.Trade.Volume <= 0)
+        {
+            metaTraderOrder.Trade.Status = TradeStatus.Closed;
+        }
+        else
+        {
+            metaTraderOrder.Trade.Status = TradeStatus.PartiallyClosed;
+        }
+
+        metaTraderOrder.Status = OrderStatus.Executed;
+        metaTraderOrder.MetaTraderTradeResultCode = response.NumericCode;
+        metaTraderOrder.MetaTraderMessage = "Partial close completed successfully.";
+    }
+    else
+    {
+        _logger.LogError($"Partial close failed for Trade ID: {metaTraderOrder.Trade.Id}.");
+
+        metaTraderOrder.Status = OrderStatus.Failed;
+        metaTraderOrder.MetaTraderTradeResultCode = response?.NumericCode ?? TradeResultCode.Unknown;
+        metaTraderOrder.MetaTraderMessage = response?.Message ?? "Partial close failed with unknown error.";
+    }
+
+    // Save updates to the database
+    await _orderRepository.UpdateOrderAsync(metaTraderOrder);
+    if (metaTraderOrder.Trade != null)
+    {
+        await _tradeRepository.UpdateTradeAsync(metaTraderOrder.Trade);
+    }
+}
+
 
     private async Task ProcessMoveStopLossToBreakEvenOrder(MetaTraderOrder metaTraderOrder)
     {
@@ -161,6 +232,7 @@ public class OrderProcessor : IOrderProcessor
         metaTraderOrder.Volume = (decimal)0.01;
         metaTraderOrder.Status = OrderStatus.Pending;
         metaTraderOrder.Slippage = 1;
+        metaTraderOrder.Magic = GenerateMagic();
         // metaTraderOrder.ClientId = _accountId; // TODO: Implement, guid does not work.
     }
 
@@ -175,7 +247,6 @@ public class OrderProcessor : IOrderProcessor
             StopLoss = metaTraderOrder.StopLoss,
             TakeProfit = metaTraderOrder.TakeProfit,
             Slippage = metaTraderOrder.Slippage,
-            Magic = metaTraderOrder.Magic,
             ClientId = metaTraderOrder.ClientId,
             Comment = metaTraderOrder.Comment,
             StopLossUnits = metaTraderOrder.StopLossUnits,
@@ -214,5 +285,10 @@ public class OrderProcessor : IOrderProcessor
         else if (volume > maxVolume) volume = maxVolume;
 
         return Math.Round(volume, 2); // Rounds to two decimal places
+    }
+
+    private int GenerateMagic()
+    {
+        return (int)(DateTime.UtcNow.Ticks % 1000000); // Last 6 digits of ticks
     }
 }

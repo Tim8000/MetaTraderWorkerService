@@ -1,5 +1,5 @@
 using MetaTraderWorkerService.Enums.Mt5Trades;
-using TradeStatus = MetaTraderWorkerService.Enums.TradeStatus;
+using TradeStatus = MetaTraderWorkerService.Enums.Mt5Trades.TradeStatus;
 
 namespace MetaTraderWorkerService.Models;
 
@@ -14,7 +14,7 @@ public class MetaTraderTrade
     public DateTime BrokerTime { get; set; } // Broker-reported time of the trade
     public DateTime UpdateTime { get; set; } // Last update time for the trade
     public double OpenPrice { get; set; } // Opening price of the position
-    public double Volume { get; set; } // Volume of the position
+    public decimal Volume { get; set; } // Volume of the position
     public double Swap { get; set; } // Swap fees for the position
     public double Commission { get; set; } // Commission fees for the position
     public double RealizedSwap { get; set; } // Realized swap value

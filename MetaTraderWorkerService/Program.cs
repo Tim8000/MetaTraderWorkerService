@@ -5,6 +5,7 @@ using MetaTraderWorkerService.Data;
 using MetaTraderWorkerService.Http;
 using MetaTraderWorkerService.Repository;
 using MetaTraderWorkerService.Repository.Orders;
+using MetaTraderWorkerService.Repository.Trades;
 using MetaTraderWorkerService.Services;
 using MetaTraderWorkerService.Services.OrderServices;
 using MetaTraderWorkerService.Services.TradeServices;
@@ -31,6 +32,7 @@ builder.Services.AddScoped<IHttpService>(sp => new HttpService(accountBaseUrl, t
 builder.Services.AddScoped<IOrderProcessor, OrderProcessor>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IOrderStatusService, OrderStatusService>();
+builder.Services.AddScoped<ITradeRepository, TradeRepository>();
 builder.Services.AddScoped<ITradeProcessor, TradeProcessor>();
 builder.Services.AddScoped<IMetaApiService, MetaApiService>(sp =>
     new MetaApiService(
