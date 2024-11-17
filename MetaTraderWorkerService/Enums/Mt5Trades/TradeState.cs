@@ -4,5 +4,6 @@ public enum TradeState
 {
     Open,
     Closed,
-    Pending
+    Pending,
+    Modified
 }

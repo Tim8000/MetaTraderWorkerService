@@ -28,7 +28,7 @@ public class MetaTraderTrade
     public double UnrealizedProfit { get; set; } // Unrealized profit
     public double Profit { get; set; } // Total profit (realized + unrealized)
     public double AccountCurrencyExchangeRate { get; set; } // Account currency exchange rate
-    public double StopLoss { get; set; } // Stop loss price
+    public decimal StopLoss { get; set; } // Stop loss price
     public double TakeProfit { get; set; } // Take profit price
     public long UpdateSequenceNumber { get; set; } // Sequence number for updates
 

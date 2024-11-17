@@ -80,4 +80,14 @@ public class MetaApiService : IMetaApiService
         var result = await _httpService.PostAsync(url, content, false);
         return JsonConvert.DeserializeObject<MetaTradePartialCloseResponseDto>(result);
     }
+
+    public async Task<ModifyOrderResponseDto> ModifyStopLossAsync(ModifyOrderRequestDto modifyOrderDto)
+    {
+        var url = $"users/current/accounts/{_accountId}/trade/modifyStopLoss";
+        var jsonData = JsonConvert.SerializeObject(modifyOrderDto);
+        var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
+
+        var result = await _httpService.PostAsync(url, content, false);
+        return JsonConvert.DeserializeObject<ModifyOrderResponseDto>(result);
+    }
 }
