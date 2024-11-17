@@ -21,6 +21,7 @@ public class MetaTraderOrder
     public string? Symbol { get; set; } // Symbol to trade, e.g., "XAUUSD"
     public decimal? Volume { get; set; } // Order volume, e.g., 0.1
     public decimal? OpenPrice { get; set; } // Open price for pending orders
+    public decimal? ClosePrice { get; set; }
     public decimal? StopLoss { get; set; } // Stop-loss price
     public decimal? TakeProfit { get; set; } // Take-profit price
     public int? Slippage { get; set; } // Slippage in points
