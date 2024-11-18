@@ -8,7 +8,11 @@ namespace MetaTraderWorkerService.Services.Processors;
 
 public class BuyLimitProcessor : BaseOpenTradeProcessor
 {
-    public BuyLimitProcessor(IOrderRepository orderRepository, ILogger logger, IMetaApiService metaApiService) : base(orderRepository, logger, metaApiService)
+    public BuyLimitProcessor(
+        IOrderRepository orderRepository,
+        IMetaApiService metaApiService,
+        ILogger<BuyLimitProcessor> logger) // Use ILogger<T>
+        : base(orderRepository, metaApiService, logger) // Pass logger to base class
     {
     }
 

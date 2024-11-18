@@ -8,18 +8,18 @@ namespace MetaTraderWorkerService.Services.Processors.BaseProcessors;
 
 public abstract class BaseOpenTradeProcessor : IOrderActionProcessor
 {
-    private readonly IOrderRepository _orderRepository;
-    private readonly ILogger _logger;
-    private readonly IMetaApiService _metaApiService;
+    protected readonly IOrderRepository _orderRepository;
+    protected readonly IMetaApiService _metaApiService;
+    protected readonly ILogger<BaseOpenTradeProcessor> _logger;
 
     protected BaseOpenTradeProcessor(
         IOrderRepository orderRepository,
-        ILogger logger,
-        IMetaApiService metaApiService)
+        IMetaApiService metaApiService,
+        ILogger<BaseOpenTradeProcessor> logger) // Use ILogger<T>
     {
         _orderRepository = orderRepository;
-        _logger = logger;
         _metaApiService = metaApiService;
+        _logger = logger;
     }
 
     public async Task ProcessAsync(MetaTraderOrder metaTraderOrder)
