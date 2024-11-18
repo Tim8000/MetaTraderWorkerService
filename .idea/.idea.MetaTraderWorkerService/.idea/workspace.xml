@@ -7,17 +7,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="194ecc76-e850-4399-92c6-6dc93bcb977e" name="Changes" comment="Add market price trading functionality&#10;&#10;Introduced DTOs for opening trades by market price and updated MetaApiService and OrderProcessor to handle these trades. Implemented error handling for invalid prices by switching to market price orders, ensuring more accurate and efficient trading.">
-      <change afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Services/Processors/BaseProcessors/BaseOpenTradeProcessor.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Services/Processors/BuyLimitProcessor.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Services/Processors/CancelOrderProcessor.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Services/Processors/IOrderActionProcessor.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Services/Processors/PartialPositionCloseProcessor.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Services/Processors/SellLimitProcessor.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Services/Processors/StopLossToBreakEvenProcessor.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Services/Processors/StopLossToPriceProcessor.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.MetaTraderWorkerService/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.MetaTraderWorkerService/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="194ecc76-e850-4399-92c6-6dc93bcb977e" name="Changes" comment="Add new order action processors and refactor OrderProcessor&#10;&#10;Introduced new order action processors: StopLossToPriceProcessor, StopLossToBreakEvenProcessor, PartialPositionCloseProcessor, and SellLimitProcessor. Refactored OrderProcessor to use these processors dynamically, improving the order processing workflow.">
+      <change afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Services/Processors/StopLossProcessor.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService/Services/OrderServices/OrderProcessor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Services/OrderServices/OrderProcessor.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService/Services/Processors/StopLossToBreakEvenProcessor.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService/Services/Processors/StopLossToPriceProcessor.cs" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -134,7 +128,7 @@
       <workItem from="1731656986175" duration="2262000" />
       <workItem from="1731734045764" duration="3512000" />
       <workItem from="1731830786330" duration="10569000" />
-      <workItem from="1731909283008" duration="23945000" />
+      <workItem from="1731909283008" duration="24062000" />
     </task>
     <task id="LOCAL-00001" summary="Add initial implementation for MetaTraderWorkerService&#10;&#10;This commit includes the setup for the MetaTraderWorkerService project. Added configurations, data model, HTTP services, and necessary project files like `appsettings.json`. The project structure and initial classes have been defined to support database interactions and API requests.">
       <option name="closed" value="true" />
@@ -352,7 +346,15 @@
       <option name="project" value="LOCAL" />
       <updated>1731944770225</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="Add new order action processors and refactor OrderProcessor&#10;&#10;Introduced new order action processors: StopLossToPriceProcessor, StopLossToBreakEvenProcessor, PartialPositionCloseProcessor, and SellLimitProcessor. Refactored OrderProcessor to use these processors dynamically, improving the order processing workflow.">
+      <option name="closed" value="true" />
+      <created>1731948552716</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1731948552716</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -376,7 +378,6 @@
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Refactor code formatting for consistency&#10;&#10;Consolidated property and method declarations into a single line where appropriate. Simplified conditionals and removed unnecessary braces. This improves readability and maintains a consistent coding style across the project." />
     <MESSAGE value="Add order cancellation feature&#10;&#10;Implemented functionality to cancel orders in the MetaTraderWorkerService. This includes the addition of the `CancelOrderDto` class, updates to the `OrderProcessor` class for handling order cancellations, and modifications to the `MetaApiService` and repositories to support the new feature." />
     <MESSAGE value="Add order status checking functionality&#10;&#10;Introduced order status checking to enhance order management. This feature includes a new OrderStatusWorker and OrderStatusService, updates to relevant repository methods, and integration in the Program setup. Also added handling for different order states in the MetaApiService and OrderProcessor." />
     <MESSAGE value="Add TradeResultCode enum and update MetaTraderOrder&#10;&#10;Introduced TradeResultCode enum for better order status handling. Refactored MetaTraderOrder to use the new enum in place of numeric codes and updated OrderProcessor logic accordingly. Adjusted OrderStatusService to utilize the new enum and refactored code for improved readability." />
@@ -401,7 +402,8 @@
     <MESSAGE value="Refactor DTOs and update order processing logic&#10;&#10;Standardized DTO classes with consistent JSON property mappings. Introduced ModifyStopLossRequestDto for specific stop-loss modifications. Improved order processing methods by aligning field names and ensuring accurate trade volume updates." />
     <MESSAGE value="Refactor trade processing and history retrieval&#10;&#10;Simplified TradeWorker by moving active trade processing logic to TradeProcessor. Added methods to TradeProcessor for processing active trades and retrieving trade history." />
     <MESSAGE value="Add market price trading functionality&#10;&#10;Introduced DTOs for opening trades by market price and updated MetaApiService and OrderProcessor to handle these trades. Implemented error handling for invalid prices by switching to market price orders, ensuring more accurate and efficient trading." />
-    <option name="LAST_COMMIT_MESSAGE" value="" />
+    <MESSAGE value="Add new order action processors and refactor OrderProcessor&#10;&#10;Introduced new order action processors: StopLossToPriceProcessor, StopLossToBreakEvenProcessor, PartialPositionCloseProcessor, and SellLimitProcessor. Refactored OrderProcessor to use these processors dynamically, improving the order processing workflow." />
+    <option name="LAST_COMMIT_MESSAGE" value="Add new order action processors and refactor OrderProcessor&#10;&#10;Introduced new order action processors: StopLossToPriceProcessor, StopLossToBreakEvenProcessor, PartialPositionCloseProcessor, and SellLimitProcessor. Refactored OrderProcessor to use these processors dynamically, improving the order processing workflow." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

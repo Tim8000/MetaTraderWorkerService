@@ -1,8 +1,7 @@
 using MetaTraderWorkerService.Enums;
 using MetaTraderWorkerService.Repository.Orders;
+using MetaTraderWorkerService.Services.OrderServices;
 using MetaTraderWorkerService.Services.Processors;
-
-namespace MetaTraderWorkerService.Services.OrderServices;
 
 public class OrderProcessor : IOrderProcessor
 {
@@ -12,7 +11,8 @@ public class OrderProcessor : IOrderProcessor
 
     public OrderProcessor(
         IEnumerable<IOrderActionProcessor> processors,
-        ILogger<OrderProcessor> logger, IOrderRepository orderRepository)
+        ILogger<OrderProcessor> logger,
+        IOrderRepository orderRepository)
     {
         _logger = logger;
         _orderRepository = orderRepository;
@@ -25,8 +25,7 @@ public class OrderProcessor : IOrderProcessor
                 nameof(BuyLimitProcessor) => ActionType.ORDER_TYPE_BUY_LIMIT,
                 nameof(CancelOrderProcessor) => ActionType.ORDER_CANCEL,
                 nameof(PartialPositionCloseProcessor) => ActionType.POSITION_PARTIAL,
-                nameof(StopLossToPriceProcessor) => ActionType.POSITION_MODIFY,
-                nameof(StopLossToBreakEvenProcessor) => ActionType.POSITION_MODIFY,
+                nameof(StopLossProcessor) => ActionType.POSITION_MODIFY, // Consolidate StopLoss logic
                 _ => throw new InvalidOperationException("Unknown processor type")
             });
     }
