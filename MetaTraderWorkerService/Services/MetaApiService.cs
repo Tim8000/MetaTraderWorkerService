@@ -119,4 +119,42 @@ public class MetaApiService : IMetaApiService
             return new List<TradeHistoryResponseDto>();
         }
     }
+
+    public async Task<OpenTradeByMarketPriceResponseDto> OpenTradeByMarketPriceAsync(OpenTradeByMarketPriceRequestDto marketOrderDto)
+    {
+        var url = $"users/current/accounts/{_accountId}/trade";
+
+        // Serialize the DTO to JSON
+        var jsonData = JsonConvert.SerializeObject(marketOrderDto);
+
+        // Create HTTP content for the POST request
+        var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
+
+        _logger.LogInformation($"Sending request to URL: {url} to open trade by market price for symbol {marketOrderDto.Symbol}");
+
+        try
+        {
+            // Send the HTTP POST request
+            var result = await _httpService.PostAsync(url, content, false);
+
+            // Deserialize the response to OpenTradeByMarketPriceResponseDto
+            var response = JsonConvert.DeserializeObject<OpenTradeByMarketPriceResponseDto>(result);
+
+            if (response == null)
+            {
+                _logger.LogError("Failed to deserialize response from MetaApi for market order.");
+                return null;
+            }
+
+            // Log the successful response
+            _logger.LogInformation($"Market order created successfully. Symbol: {marketOrderDto.Symbol}, Volume: {marketOrderDto.Volume}, ActionType: {marketOrderDto.ActionType}");
+            return response;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error occurred while placing market order via MetaApi.");
+            throw;
+        }
+    }
+
 }

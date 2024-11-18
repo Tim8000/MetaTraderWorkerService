@@ -313,19 +313,33 @@ public class OrderProcessor : IOrderProcessor
             }
             else
             {
-                // if (orderResponseDto.NumericCode == TradeResultCode.InvalidPrice)
-                // {
-                //     if (metaTraderOrder.ActionType == ActionType.ORDER_TYPE_BUY_LIMIT)
-                //     {
-                //         metaTraderOrderDto.ActionType = ActionType.ORDER_TYPE_BUY.ToString();
-                //     }
-                //
-                //     if (metaTraderOrder.ActionType == ActionType.ORDER_TYPE_SELL_LIMIT)
-                //     {
-                //         metaTraderOrderDto.ActionType = ActionType.ORDER_TYPE_SELL.ToString();
-                //     }
-                //     var response = await _metaApiService.PlacePendingOrderAsync(metaTraderOrderDto);
-                // }
+                if (orderResponseDto.NumericCode == TradeResultCode.InvalidPrice)
+                {
+                    var marketOrderDto = CreateOpenTradeByMarketPriceRequestDto(metaTraderOrder);
+                    ActionType actionType = ActionType.NotAssigned;
+                    if (metaTraderOrder.ActionType == ActionType.ORDER_TYPE_BUY_LIMIT)
+                    {
+                        marketOrderDto.ActionType = ActionType.ORDER_TYPE_BUY.ToString();
+                        actionType = ActionType.ORDER_TYPE_BUY;
+                    }
+
+                    if (metaTraderOrder.ActionType == ActionType.ORDER_TYPE_SELL_LIMIT)
+                    {
+                        marketOrderDto.ActionType = ActionType.ORDER_TYPE_SELL.ToString();
+                        actionType = ActionType.ORDER_TYPE_SELL;
+                    }
+                    // here we need to open trade by market price
+
+                    var marketOrderResponse = await _metaApiService.OpenTradeByMarketPriceAsync(marketOrderDto);
+                    if (marketOrderResponse.PositionId != null)
+                    {
+                        metaTraderOrder.ActionType = actionType;
+                    }
+                    SetValuesToMetaTraderOrderFromOpenByMarketResponseDto(metaTraderOrder, marketOrderResponse);
+
+                    await _orderRepository.UpdateOrderAsync(metaTraderOrder);
+                    return;
+                }
                 
                 metaTraderOrder.Status = OrderStatus.Failed;
                 metaTraderOrder.MetaTraderStringCode = orderResponseDto.StringCode;
@@ -393,6 +407,23 @@ public class OrderProcessor : IOrderProcessor
                 TradeResultCode.Unknown; // Assuming you have an "Unknown" enum value
     }
 
+    private static void SetValuesToMetaTraderOrderFromOpenByMarketResponseDto(MetaTraderOrder metaTraderOrder,
+        OpenTradeByMarketPriceResponseDto openTradeOrderResponseDto)
+    {
+        metaTraderOrder.MetaTraderTradeStartTime = openTradeOrderResponseDto.TradeStartTime;
+        metaTraderOrder.MetaTraderTradeExecutionTime = openTradeOrderResponseDto.TradeExecutionTime;
+        metaTraderOrder.MetaTraderOrderId = openTradeOrderResponseDto.OrderId;
+        metaTraderOrder.MetaTraderStringCode = openTradeOrderResponseDto.StringCode;
+        metaTraderOrder.MetaTraderMessage = openTradeOrderResponseDto.Message;
+        metaTraderOrder.Status = OrderStatus.SentToMetaTrader;
+
+        if (Enum.IsDefined(typeof(TradeResultCode), openTradeOrderResponseDto.NumericCode))
+            metaTraderOrder.MetaTraderTradeResultCode = (TradeResultCode)openTradeOrderResponseDto.NumericCode;
+        else
+            metaTraderOrder.MetaTraderTradeResultCode =
+                TradeResultCode.Unknown; // Assuming you have an "Unknown" enum value
+    }
+
     public decimal CalculateVolumeForDollarAmount(decimal dollarAmount, decimal currentPrice, decimal minVolume = 0.01m,
         decimal maxVolume = 0.1m)
     {
@@ -410,5 +441,19 @@ public class OrderProcessor : IOrderProcessor
     private int GenerateMagic()
     {
         return (int)(DateTime.UtcNow.Ticks % 1000000); // Last 6 digits of ticks
+    }
+
+    private static OpenTradeByMarketPriceRequestDto CreateOpenTradeByMarketPriceRequestDto(MetaTraderOrder metaTraderOrder)
+    {
+        return new OpenTradeByMarketPriceRequestDto
+        {
+            Symbol = metaTraderOrder.Symbol,
+            Volume = metaTraderOrder.Volume.Value,
+            ActionType = metaTraderOrder.ActionType.Value.ToString(), // Adjust ActionType for market order
+            StopLoss = metaTraderOrder.StopLoss,
+            TakeProfit = metaTraderOrder.TakeProfit,
+            ClientId = metaTraderOrder.ClientId,
+            Comment = $"Market order for {metaTraderOrder.Symbol}"
+        };
     }
 }

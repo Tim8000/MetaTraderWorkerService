@@ -14,4 +14,5 @@ public interface IMetaApiService
     Task<MetaTradePartialCloseResponseDto> ClosePartialPositionAsync(PartialCloseTradeOrderDto partialCloseDto);
     Task<ModifyOrderResponseDto> ModifyStopLossAsync(ModifyStopLossRequestDto modifyOrderDto);
     Task<List<TradeHistoryResponseDto>> GetTradeHistoryByPositionIdAsync(string positionId);
+    Task<OpenTradeByMarketPriceResponseDto> OpenTradeByMarketPriceAsync(OpenTradeByMarketPriceRequestDto marketOrderDto);
 }
