@@ -21,11 +21,11 @@ public class CancelOrderProcessor : IOrderActionProcessor
 
     public async Task ProcessAsync(MetaTraderOrder metaTraderOrder)
     {
-        var order = await _orderRepository.GetOrderByInitialTradeSignalId(metaTraderOrder.MetaTraderInitialTradeSignal
-            .Id);
+        var orders = await _orderRepository.GetPlacedOrdersAsync();
 
-        if (order == null)
-            throw new Exception($"Order {metaTraderOrder.MetaTraderOrderId} not found");
+        var order = orders.FirstOrDefault(o => o.OpenPrice == metaTraderOrder.OpenPrice && o.Symbol == metaTraderOrder.Symbol && o.MetaTraderInitialTradeSignal.Id == metaTraderOrder.MetaTraderInitialTradeSignal.Id);
+
+
 
         if (order.OrderState == OrderState.ORDER_STATE_PLACED)
         {

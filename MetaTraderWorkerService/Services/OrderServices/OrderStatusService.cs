@@ -1,4 +1,5 @@
 using MetaTraderWorkerService.Dtos;
+using MetaTraderWorkerService.Enums;
 using MetaTraderWorkerService.Repository.Orders;
 using Newtonsoft.Json;
 
@@ -24,14 +25,17 @@ public class OrderStatusService : IOrderStatusService
 
         foreach (var pendingOrder in pendingOrders)
         {
-            var response = await _metaApiService.GetOrderStatusById(pendingOrder.MetaTraderOrderId);
-
-            if (!string.IsNullOrWhiteSpace(response))
+            if (pendingOrder.OrderState != OrderState.ORDER_STATE_PLACED)
             {
-                var orderStatus = JsonConvert.DeserializeObject<OrderStatusResponseDto>(response);
+                var response = await _metaApiService.GetOrderStatusById(pendingOrder.MetaTraderOrderId);
 
-                pendingOrder.OrderState = orderStatus.State;
-                await _orderRepository.UpdateOrderAsync(pendingOrder);
+                if (!string.IsNullOrWhiteSpace(response))
+                {
+                    var orderStatus = JsonConvert.DeserializeObject<OrderStatusResponseDto>(response);
+
+                    pendingOrder.OrderState = orderStatus.State;
+                    await _orderRepository.UpdateOrderAsync(pendingOrder);
+                }
             }
         }
     }

@@ -32,7 +32,7 @@ public class OrderRepository : IOrderRepository
     {
         return await _dbContext.MetaTraderOrders
             .Include(o => o.MetaTraderInitialTradeSignal) // Eagerly load the InitialTradeSignal
-            .FirstOrDefaultAsync(o => o.MetaTraderInitialTradeSignal.Id == initialTradeSignalId);
+            .FirstOrDefaultAsync(o => o.MetaTraderInitialTradeSignal.Id == initialTradeSignalId && o.Status != OrderStatus.Canceled);
     }
 
     public async Task<List<MetaTraderOrder>> GetSentToMetaTraderOrdersAsync()

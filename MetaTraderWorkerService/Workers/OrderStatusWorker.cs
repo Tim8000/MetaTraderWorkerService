@@ -24,7 +24,7 @@ public class OrderStatusWorker : BackgroundService
                 await orderStatusService.CheckOrderStatus();
             }
 
-            await Task.Delay(TimeSpan.FromMinutes(2), stoppingToken);
+            await Task.Delay(TimeSpan.FromSeconds(1), stoppingToken);
         }
     }
 }
