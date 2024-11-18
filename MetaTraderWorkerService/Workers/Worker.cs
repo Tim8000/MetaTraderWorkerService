@@ -21,10 +21,10 @@ public class Worker : BackgroundService
             using (var scope = _serviceProvider.CreateScope())
             {
                 var metaApiService = scope.ServiceProvider.GetRequiredService<IMetaApiService>();
-
+// await metaApiService.InitializeAsync();
                 var orderProcessor = scope.ServiceProvider.GetRequiredService<IOrderProcessor>();
                 await orderProcessor.ProcessCreatedOrdersAsync();
-                // await metaApiService.InitializeAsync();
+
 
 
                 // Use metaApiService as needed, e.g., metaApiService.PlaceMarketOrderAsync("XAUUSD", 0.1, "BUY");

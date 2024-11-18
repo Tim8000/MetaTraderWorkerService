@@ -2,6 +2,7 @@ using System.Text;
 using MetaTraderWorkerService.Dtos;
 using MetaTraderWorkerService.Dtos.Mt5Trades;
 using MetaTraderWorkerService.Http;
+using MetaTraderWorkerService.Models;
 using Newtonsoft.Json;
 
 namespace MetaTraderWorkerService.Services;
@@ -90,5 +91,32 @@ public class MetaApiService : IMetaApiService
 
         var result = await _httpService.PostAsync(url, content, false);
         return JsonConvert.DeserializeObject<ModifyOrderResponseDto>(result);
+    }
+
+    public async Task<List<TradeHistoryResponseDto>> GetTradeHistoryByPositionIdAsync(string positionId)
+    {
+        var url = @$"/users/current/accounts/{_accountId}/history-deals/position/{positionId}";
+
+        // Send the request
+        var response = await _httpService.GetAsync(url, false);
+
+        // Handle null or error response
+        if (string.IsNullOrEmpty(response))
+        {
+            _logger.LogError($"No response or null response received for position ID: {positionId}");
+            return new List<TradeHistoryResponseDto>();
+        }
+
+        try
+        {
+            // Deserialize the response into a list of TradeHistoryResponseDto
+            var trades = JsonConvert.DeserializeObject<List<TradeHistoryResponseDto>>(response);
+            return trades ?? new List<TradeHistoryResponseDto>();
+        }
+        catch (JsonException ex)
+        {
+            _logger.LogError(ex, $"Failed to deserialize response for position ID: {positionId}");
+            return new List<TradeHistoryResponseDto>();
+        }
     }
 }

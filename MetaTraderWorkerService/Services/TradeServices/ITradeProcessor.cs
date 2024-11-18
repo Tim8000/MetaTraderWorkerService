@@ -5,4 +5,6 @@ namespace MetaTraderWorkerService.Services.TradeServices;
 public interface ITradeProcessor
 {
     Task<List<TradeStatusResponseDto>> GetActiveTradesAsync();
+    Task ProcessActiveTradesAsync();
+    Task ProcessTradeHistoryAsync();
 }

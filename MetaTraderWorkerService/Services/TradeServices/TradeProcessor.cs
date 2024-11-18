@@ -1,5 +1,10 @@
 using MetaTraderWorkerService.Dtos.Mt5Trades;
+using MetaTraderWorkerService.Enums;
+using MetaTraderWorkerService.Enums.Mt5Trades;
 using MetaTraderWorkerService.Http;
+using MetaTraderWorkerService.Models;
+using MetaTraderWorkerService.Repository.Orders;
+using MetaTraderWorkerService.Repository.Trades;
 using Newtonsoft.Json;
 
 namespace MetaTraderWorkerService.Services.TradeServices;
@@ -7,14 +12,23 @@ namespace MetaTraderWorkerService.Services.TradeServices;
 public class TradeProcessor : ITradeProcessor
 {
     private readonly IHttpService _httpService;
+    private readonly IOrderRepository _orderRepository;
+    private readonly ITradeRepository _tradeRepository;
+    private readonly ILogger<TradeProcessor> _logger;
+    private readonly IMetaApiService _metaApiService;
     private readonly string _accountId;
 
     private const string GetPositionsEndpoint = "/users/current/accounts/{0}/positions";
     private const string CreateTradeEndpoint = "/users/current/accounts/{0}/trade";
 
-    public TradeProcessor(IHttpService httpService, IConfiguration configuration)
+    public TradeProcessor(IHttpService httpService, IConfiguration configuration, IOrderRepository orderRepository,
+        ITradeRepository tradeRepository, ILogger<TradeProcessor> logger, IMetaApiService metaApiService)
     {
         _httpService = httpService;
+        _orderRepository = orderRepository;
+        _tradeRepository = tradeRepository;
+        _logger = logger;
+        _metaApiService = metaApiService;
 
         // Retrieve accountId from the configuration
         _accountId = configuration["MetaApi:ProvisioningProfileId"];
@@ -30,5 +44,113 @@ public class TradeProcessor : ITradeProcessor
 
         var trades = JsonConvert.DeserializeObject<List<TradeStatusResponseDto>>(response);
         return trades;
+    }
+
+    /// <summary>
+    /// Processes active trades by retrieving the active trades and updating the corresponding orders and trades.
+    /// </summary>
+    /// <returns>A task that represents the asynchronous operation.</returns>
+    public async Task ProcessActiveTradesAsync()
+    {
+        try
+        {
+            var activeTrades = await GetActiveTradesAsync();
+
+            foreach (var trade in activeTrades)
+            {
+                var order = await _orderRepository.GetOrderByMetaTraderOrderId(trade.Id, trade.Symbol);
+
+                if (order != null)
+                {
+                    var existingTrade = order.Trade;
+
+                    if (existingTrade != null && existingTrade.Id == trade.Id)
+                    {
+                        existingTrade.Platform = trade.Platform;
+                        existingTrade.Symbol = trade.Symbol;
+                        existingTrade.Magic = order.Magic.Value;
+                        existingTrade.OpenPrice = trade.OpenPrice;
+                        existingTrade.Volume = trade.Volume;
+                        existingTrade.CurrentPrice = trade.CurrentPrice;
+                        existingTrade.StopLoss = trade.StopLoss;
+                        existingTrade.TakeProfit = trade.TakeProfit;
+                        existingTrade.Time = trade.Time.ToUniversalTime();
+                        existingTrade.BrokerTime = trade.BrokerTime.ToUniversalTime();
+                        existingTrade.UpdateTime = trade.UpdateTime.ToUniversalTime();
+                        existingTrade.Profit = trade.Profit;
+                        existingTrade.State = TradeState.Active;
+                        existingTrade.Status = TradeStatus.Open;
+                        existingTrade.Type = trade.Type;
+                        existingTrade.Reason = trade.Reason;
+                        existingTrade.Swap = trade.Swap;
+                        existingTrade.Commission = trade.Commission;
+                        existingTrade.RealizedSwap = trade.RealizedSwap;
+                        existingTrade.RealizedCommission = trade.RealizedCommission;
+                        existingTrade.UnrealizedSwap = trade.UnrealizedSwap;
+                        existingTrade.UnrealizedCommission = trade.UnrealizedCommission;
+                        existingTrade.CurrentTickValue = trade.CurrentTickValue;
+                        existingTrade.RealizedProfit = trade.RealizedProfit;
+                        existingTrade.UnrealizedProfit = trade.UnrealizedProfit;
+                        existingTrade.AccountCurrencyExchangeRate = trade.AccountCurrencyExchangeRate;
+                        existingTrade.UpdateSequenceNumber = trade.UpdateSequenceNumber;
+
+                        order.Status = OrderStatus.Executed;
+                        order.OrderState = OrderState.ORDER_STATE_FILLED;
+                        await _tradeRepository.UpdateTradeAsync(existingTrade);
+                    }
+                    else
+                    {
+                        var newTrade = new MetaTraderTrade
+                        {
+                            Id = trade.Id,
+                            Platform = trade.Platform,
+                            Symbol = trade.Symbol,
+                            Magic = order.Magic.Value,
+                            OpenPrice = trade.OpenPrice,
+                            Volume = trade.Volume,
+                            CurrentPrice = trade.CurrentPrice,
+                            StopLoss = trade.StopLoss,
+                            TakeProfit = trade.TakeProfit,
+                            Time = trade.Time.ToUniversalTime(),
+                            BrokerTime = trade.BrokerTime.ToUniversalTime(),
+                            UpdateTime = trade.UpdateTime.ToUniversalTime(),
+                            Profit = trade.Profit,
+                            State = TradeState.Active,
+                            Status = TradeStatus.Open,
+                            Type = trade.Type,
+                            Reason = trade.Reason,
+                            Swap = trade.Swap,
+                            Commission = trade.Commission,
+                            RealizedSwap = trade.RealizedSwap,
+                            RealizedCommission = trade.RealizedCommission,
+                            UnrealizedSwap = trade.UnrealizedSwap,
+                            UnrealizedCommission = trade.UnrealizedCommission,
+                            CurrentTickValue = trade.CurrentTickValue,
+                            RealizedProfit = trade.RealizedProfit,
+                            UnrealizedProfit = trade.UnrealizedProfit,
+                            AccountCurrencyExchangeRate = trade.AccountCurrencyExchangeRate,
+                            UpdateSequenceNumber = trade.UpdateSequenceNumber
+                        };
+
+                        order.Trade = newTrade;
+                        order.Status = OrderStatus.Executed;
+                        order.OrderState = OrderState.ORDER_STATE_FILLED;
+
+                        await _tradeRepository.AddTradeAsync(newTrade);
+                        await _orderRepository.UpdateOrderAsync(order);
+                    }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error while processing active trades.");
+        }
+    }
+
+    public async Task ProcessTradeHistoryAsync()
+    {
+        var trades = await _metaApiService.GetTradeHistoryByPositionIdAsync("39500984");
+        Console.WriteLine("hello");
     }
 }
