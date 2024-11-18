@@ -18,6 +18,7 @@ public class OrderRepository : IOrderRepository
     {
         return await _dbContext.MetaTraderOrders.Where(mo => mo.Status == OrderStatus.Created)
             .Include(o => o.MetaTraderInitialTradeSignal)
+            .Include(o => o.Trade)
             .ToListAsync();
     }
 

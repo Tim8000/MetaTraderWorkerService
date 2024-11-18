@@ -74,7 +74,7 @@ public class MetaApiService : IMetaApiService
     public async Task<MetaTradePartialCloseResponseDto> ClosePartialPositionAsync(
         PartialCloseTradeOrderDto partialCloseDto)
     {
-        var url = $"users/current/accounts/{_accountId}/trade/closePartial";
+        var url = $"users/current/accounts/{_accountId}/trade";
         var jsonData = JsonConvert.SerializeObject(partialCloseDto);
         var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
 
@@ -82,9 +82,9 @@ public class MetaApiService : IMetaApiService
         return JsonConvert.DeserializeObject<MetaTradePartialCloseResponseDto>(result);
     }
 
-    public async Task<ModifyOrderResponseDto> ModifyStopLossAsync(ModifyOrderRequestDto modifyOrderDto)
+    public async Task<ModifyOrderResponseDto> ModifyStopLossAsync(ModifyStopLossRequestDto modifyOrderDto)
     {
-        var url = $"users/current/accounts/{_accountId}/trade/modifyStopLoss";
+        var url = $"users/current/accounts/{_accountId}/trade";
         var jsonData = JsonConvert.SerializeObject(modifyOrderDto);
         var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
 

@@ -28,7 +28,7 @@ public class TradeStatusResponseDto
     public double Profit { get; set; } // Total profit (realized + unrealized)
     public double AccountCurrencyExchangeRate { get; set; } // Account currency exchange rate
     public decimal StopLoss { get; set; } // Stop loss price
-    public double TakeProfit { get; set; } // Take profit price
+    public decimal TakeProfit { get; set; } // Take profit price
     public long UpdateSequenceNumber { get; set; } // Sequence number for updates
 
     public TradeState State { get; set; }

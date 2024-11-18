@@ -83,7 +83,7 @@ public class OrderProcessor : IOrderProcessor
         }
 
         // Calculate the new partial volume
-        var partialVolume = metaTraderOrder.Volume * 0.5m; // Example: Closing 50% of the volume
+        var partialVolume = metaTraderOrder.Trade.Volume * 0.5m; // Example: Closing 50% of the volume
         if (partialVolume <= 0 || metaTraderOrder.Trade.Volume < partialVolume)
         {
             _logger.LogError($"Invalid partial volume for MetaTraderOrder with ID: {metaTraderOrder.Id}");
@@ -96,12 +96,12 @@ public class OrderProcessor : IOrderProcessor
         // Prepare DTO for partial position close
         var partialCloseDto = new PartialCloseTradeOrderDto
         {
-            Symbol = metaTraderOrder.Symbol,
-            Volume = partialVolume.Value,
-            TradeId = metaTraderOrder.Trade.Id,
-            Magic = metaTraderOrder.Magic.Value,
+            Volume = partialVolume,
+            ActionType = ActionType.POSITION_PARTIAL.ToString(),
+            PositionId = metaTraderOrder.Trade.Id,
+            // Magic = metaTraderOrder.Magic.Value,
             ClientId = metaTraderOrder.ClientId,
-            Comment = $"Partial close of {partialVolume} volume"
+            Comment = $"Partial close:{metaTraderOrder.Trade.Id}"
         };
 
         // Send request to MetaTrader
@@ -113,7 +113,7 @@ public class OrderProcessor : IOrderProcessor
             _logger.LogInformation($"Partial position close successful for Trade ID: {metaTraderOrder.Trade.Id}");
 
             // Update trade details
-            metaTraderOrder.Trade.Volume -= partialVolume.Value;
+            metaTraderOrder.Trade.Volume -= partialVolume;
             if (metaTraderOrder.Trade.Volume <= 0)
                 metaTraderOrder.Trade.Status = TradeStatus.Closed;
             else
@@ -134,7 +134,6 @@ public class OrderProcessor : IOrderProcessor
 
         // Save updates to the database
         await _orderRepository.UpdateOrderAsync(metaTraderOrder);
-        if (metaTraderOrder.Trade != null) await _tradeRepository.UpdateTradeAsync(metaTraderOrder.Trade);
     }
 
 
@@ -164,13 +163,12 @@ public class OrderProcessor : IOrderProcessor
         }
 
         // Prepare ModifyOrderRequestDto for modifying stop-loss
-        var modifyOrderRequest = new ModifyOrderRequestDto
+        var modifyOrderRequest = new ModifyStopLossRequestDto()
         {
-            Symbol = metaTraderOrder.Symbol,
-            TradeId = metaTraderOrder.Trade.Id,
+            ActionType = ActionType.POSITION_MODIFY.ToString(),
+            TakeProfit = metaTraderOrder.Trade.TakeProfit,
+            PositionId = metaTraderOrder.Trade.Id,
             StopLoss = breakEvenPrice,
-            Magic = metaTraderOrder.Magic.Value,
-            Comment = "Moving stop-loss to break-even price."
         };
 
         // Send the request to MetaTrader
@@ -219,13 +217,14 @@ public class OrderProcessor : IOrderProcessor
         }
 
         // Prepare DTO for modifying stop-loss
-        var modifyOrderDto = new ModifyOrderRequestDto()
+        var modifyOrderDto = new ModifyStopLossRequestDto()
         {
-            Symbol = metaTraderOrder.Symbol,
-            TradeId = metaTraderOrder.Trade.Id,
+            ActionType = ActionType.POSITION_MODIFY.ToString(),
+            PositionId = metaTraderOrder.Trade.Id,
             StopLoss = metaTraderOrder.StopLoss.Value,
-            Magic = metaTraderOrder.Magic.Value,
-            Comment = "Updating stop-loss to new value."
+            TakeProfit = metaTraderOrder.Trade.TakeProfit,
+            // Magic = metaTraderOrder.Magic.Value,
+            // Comment = "Updating stop-loss to new value."
         };
 
         // Send request to MetaTrader
@@ -314,10 +313,19 @@ public class OrderProcessor : IOrderProcessor
             }
             else
             {
-                if (orderResponseDto.NumericCode == TradeResultCode.InvalidPrice)
-                {
-                    
-                }
+                // if (orderResponseDto.NumericCode == TradeResultCode.InvalidPrice)
+                // {
+                //     if (metaTraderOrder.ActionType == ActionType.ORDER_TYPE_BUY_LIMIT)
+                //     {
+                //         metaTraderOrderDto.ActionType = ActionType.ORDER_TYPE_BUY.ToString();
+                //     }
+                //
+                //     if (metaTraderOrder.ActionType == ActionType.ORDER_TYPE_SELL_LIMIT)
+                //     {
+                //         metaTraderOrderDto.ActionType = ActionType.ORDER_TYPE_SELL.ToString();
+                //     }
+                //     var response = await _metaApiService.PlacePendingOrderAsync(metaTraderOrderDto);
+                // }
                 
                 metaTraderOrder.Status = OrderStatus.Failed;
                 metaTraderOrder.MetaTraderStringCode = orderResponseDto.StringCode;

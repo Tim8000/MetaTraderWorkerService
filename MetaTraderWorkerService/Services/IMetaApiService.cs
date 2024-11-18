@@ -11,5 +11,5 @@ public interface IMetaApiService
     Task<string> PlaceCancelOrderAsync(CancelOrderDto requestDto);
     Task<string> GetOrderStatusById(string? pendingOrderMetaTraderOrderId);
     Task<MetaTradePartialCloseResponseDto> ClosePartialPositionAsync(PartialCloseTradeOrderDto partialCloseDto);
-    Task<ModifyOrderResponseDto> ModifyStopLossAsync(ModifyOrderRequestDto modifyOrderDto);
+    Task<ModifyOrderResponseDto> ModifyStopLossAsync(ModifyStopLossRequestDto modifyOrderDto);
 }
