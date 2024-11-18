@@ -8,6 +8,8 @@ using MetaTraderWorkerService.Repository.Orders;
 using MetaTraderWorkerService.Repository.Trades;
 using MetaTraderWorkerService.Services;
 using MetaTraderWorkerService.Services.OrderServices;
+using MetaTraderWorkerService.Services.Processors;
+using MetaTraderWorkerService.Services.Processors.BaseProcessors;
 using MetaTraderWorkerService.Services.TradeServices;
 using MetaTraderWorkerService.Workers;
 using Microsoft.EntityFrameworkCore;
@@ -34,6 +36,11 @@ builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IOrderStatusService, OrderStatusService>();
 builder.Services.AddScoped<ITradeRepository, TradeRepository>();
 builder.Services.AddScoped<ITradeProcessor, TradeProcessor>();
+builder.Services.AddScoped<IOrderActionProcessor, BuyLimitProcessor>();
+builder.Services.AddScoped<IOrderActionProcessor, CancelOrderProcessor>();
+builder.Services.AddScoped<IOrderActionProcessor, PartialPositionCloseProcessor>();
+builder.Services.AddScoped<IOrderActionProcessor, SellLimitProcessor>();
+builder.Services.AddScoped<IOrderActionProcessor, StopLossProcessor>();
 builder.Services.AddScoped<IMetaApiService, MetaApiService>(sp =>
     new MetaApiService(
         sp.GetRequiredService<IHttpService>(),
