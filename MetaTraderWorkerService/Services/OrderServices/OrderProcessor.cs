@@ -314,6 +314,11 @@ public class OrderProcessor : IOrderProcessor
             }
             else
             {
+                if (orderResponseDto.NumericCode == TradeResultCode.InvalidPrice)
+                {
+                    
+                }
+                
                 metaTraderOrder.Status = OrderStatus.Failed;
                 metaTraderOrder.MetaTraderStringCode = orderResponseDto.StringCode;
                 metaTraderOrder.MetaTraderTradeResultCode = orderResponseDto.NumericCode;

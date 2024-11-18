@@ -7,9 +7,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="194ecc76-e850-4399-92c6-6dc93bcb977e" name="Changes" comment="Refactor TradeWorker and order processing logic&#10;&#10;Reformatted the TradeWorker and order processing methods for better code readability and maintainability. Simplified nested structures and improved error handling consistency across methods. Removed redundant default case statements.">
+    <list default="true" id="194ecc76-e850-4399-92c6-6dc93bcb977e" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.MetaTraderWorkerService/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.MetaTraderWorkerService/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService/Models/MetaTraderOrder.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Models/MetaTraderOrder.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService/Repository/Orders/IOrderRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Repository/Orders/IOrderRepository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService/Repository/Orders/OrderRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Repository/Orders/OrderRepository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService/Workers/TradeWorker.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Workers/TradeWorker.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -76,7 +78,7 @@
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
-  <component name="RunManager" selected=".NET Launch Settings Profile.MetaTraderWorkerService">
+  <component name="RunManager" selected="Publish to custom server.PublishToDebian">
     <configuration name="PublishToFolder" type="DotNetFolderPublish" factoryName="Publish to folder">
       <riderPublish configuration="Release" delete_existing_files="true" platform="Any CPU" runtime="linux-x64" target_folder="$PROJECT_DIR$/MetaTraderWorkerService/bin/Release/net8.0/linux-x64/publish" target_framework="net8.0" uuid_high="1871667714893237941" uuid_low="-7699535203307637525" />
       <method v="2" />
@@ -119,7 +121,8 @@
       <workItem from="1731563395704" duration="8635000" />
       <workItem from="1731656986175" duration="2262000" />
       <workItem from="1731734045764" duration="3512000" />
-      <workItem from="1731830786330" duration="10427000" />
+      <workItem from="1731830786330" duration="10569000" />
+      <workItem from="1731909283008" duration="2974000" />
     </task>
     <task id="LOCAL-00001" summary="Add initial implementation for MetaTraderWorkerService&#10;&#10;This commit includes the setup for the MetaTraderWorkerService project. Added configurations, data model, HTTP services, and necessary project files like `appsettings.json`. The project structure and initial classes have been defined to support database interactions and API requests.">
       <option name="closed" value="true" />
@@ -297,7 +300,15 @@
       <option name="project" value="LOCAL" />
       <updated>1731846822133</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="Add ClosePrice to MetaTraderOrder&#10;&#10;Introduced the ClosePrice property to the MetaTraderOrder model for better handling of order closing prices. This change augments existing order data and enhances the precision of order processing logic.">
+      <option name="closed" value="true" />
+      <created>1731862288203</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1731862288203</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -345,7 +356,8 @@
     <MESSAGE value="Update TradeWorker to process active trades and associate orders&#10;&#10;This commit enhances the TradeWorker to retrieve and process active trades, associating them with corresponding orders in the database. It also includes updates to TradeState and TradeStatusResponseDto, and adds a new method in IOrderRepository for fetching orders by magic and symbol." />
     <MESSAGE value="Update TradeWorker for active trade processing&#10;&#10;Enhance TradeWorker to retrieve and associate active trades with orders in the database. Minor adjustments include updates to TradeState and TradeStatusResponseDto, and a new method in IOrderRepository for fetching orders by magic and symbol." />
     <MESSAGE value="Refactor TradeWorker and order processing logic&#10;&#10;Reformatted the TradeWorker and order processing methods for better code readability and maintainability. Simplified nested structures and improved error handling consistency across methods. Removed redundant default case statements." />
-    <option name="LAST_COMMIT_MESSAGE" value="Refactor TradeWorker and order processing logic&#10;&#10;Reformatted the TradeWorker and order processing methods for better code readability and maintainability. Simplified nested structures and improved error handling consistency across methods. Removed redundant default case statements." />
+    <MESSAGE value="Add ClosePrice to MetaTraderOrder&#10;&#10;Introduced the ClosePrice property to the MetaTraderOrder model for better handling of order closing prices. This change augments existing order data and enhances the precision of order processing logic." />
+    <option name="LAST_COMMIT_MESSAGE" value="Add ClosePrice to MetaTraderOrder&#10;&#10;Introduced the ClosePrice property to the MetaTraderOrder model for better handling of order closing prices. This change augments existing order data and enhances the precision of order processing logic." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

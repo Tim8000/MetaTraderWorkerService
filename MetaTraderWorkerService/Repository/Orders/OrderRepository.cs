@@ -52,4 +52,11 @@ public class OrderRepository : IOrderRepository
             .Include(o => o.Trade) // Include associated trade
             .FirstOrDefaultAsync(o => o.Magic == magic && o.Symbol == symbol);
     }
+
+    public async Task<MetaTraderOrder> GetOrderByMetaTraderOrderId(string metaTraderOrderId, string tradeSymbol)
+    {
+        return await _dbContext.MetaTraderOrders
+            .Include(o => o.Trade) // Include associated trade
+            .FirstOrDefaultAsync(o => o.MetaTraderOrderId == metaTraderOrderId.ToString() && o.Symbol == tradeSymbol);
+    }
 }
