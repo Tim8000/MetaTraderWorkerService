@@ -7,12 +7,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="194ecc76-e850-4399-92c6-6dc93bcb977e" name="Changes" comment="Refactor logger injection in order processors&#10;&#10;Reorganized logger dependency injection in `SellLimitProcessor`, `BuyLimitProcessor`, and `BaseOpenTradeProcessor` classes. This adjustment ensures that `ILogger&lt;T&gt;` instances are properly utilized and passed to the base processor class.">
+    <list default="true" id="194ecc76-e850-4399-92c6-6dc93bcb977e" name="Changes" comment="Optimize order status checking and processing logic&#10;&#10;Refactored the order status checking process to skip orders not in &quot;ORDER_STATE_PLACED&quot;. Changed the delay for OrderStatusWorker to 1 second. Updated CancelOrderProcessor to handle order cancellations more accurately.">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.MetaTraderWorkerService/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.MetaTraderWorkerService/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService/Repository/Orders/OrderRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Repository/Orders/OrderRepository.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService/Services/OrderServices/OrderStatusService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Services/OrderServices/OrderStatusService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService/Services/Processors/CancelOrderProcessor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Services/Processors/CancelOrderProcessor.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService/Workers/OrderStatusWorker.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Workers/OrderStatusWorker.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/MetaTraderWorkerService.sln.DotSettings.user" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService/Services/Processors/PartialPositionCloseProcessor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Services/Processors/PartialPositionCloseProcessor.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,23 +36,17 @@
   }
 }</component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="mock:///AIAssistantSnippet." root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///AIAssistantSnippet." root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/54c2c97bd5bd46e3961ad402640a3dd93818a0/f2/ab321122/Expression.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/99f9cf07abc74d3fb3bed9a41bc5b3141a68b0/63/080ec53a/HttpClient.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/13e79b2a7b78394ccf591d3454bff5bfb14e692da011a7e38b66c2312b365a/String.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/2c8e7ca976f350cba9836d5565dac56b11e0b56656fa786460eb1395857a6fa/ThrowHelper.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/5acc345db3c207bc9d886a36ff14867ef8d65557432172c2a42f19aeac04d1b/Nullable.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/7d81b2d4f22bee75e5438c707251ae43cb0974c207db91ffc159118c84b4eb9/ServiceProvider.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/c092928882a17a51a62a367685d90a0a613eb91fb453b9f50147e19c1f3ff40/NullReferenceException.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/c439425da351c75ac7d966a1cc8324b51a9c471865af79d2f2f3fcb65e392/HttpClient.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/e497db2a4ab53bdce6335c79064f15a515e338cd0f9c039a9b6914b9eeb3/AggregateException.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/ebe65732adf281db03e388c6486e28a574c76c8be32d99ca59dcfbecc65/Uri.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/f7e838f3c047ee76488fa4c2b9b1bffb2b33b04a2780de4664de937e024e97/CallSiteFactory.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock://E:/Programming/TradingWithGuys/MetaTraderWorkerService/MetaTraderWorkerService/Services/IMetaApiService.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://E:/Programming/TradingWithGuys/MetaTraderWorkerService/MetaTraderWorkerService/Services/OrderServices/OrderProcessor.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://E:/Programming/TradingWithGuys/MetaTraderWorkerService/MetaTraderWorkerService/Services/OrderServices/OrderProcessor.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://E:/Programming/TradingWithGuys/MetaTraderWorkerService/MetaTraderWorkerService/Workers/Worker.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProblemsViewState">
@@ -131,7 +123,8 @@
       <workItem from="1731656986175" duration="2262000" />
       <workItem from="1731734045764" duration="3512000" />
       <workItem from="1731830786330" duration="10569000" />
-      <workItem from="1731909283008" duration="27785000" />
+      <workItem from="1731909283008" duration="28679000" />
+      <workItem from="1732000615820" duration="327000" />
     </task>
     <task id="LOCAL-00001" summary="Add initial implementation for MetaTraderWorkerService&#10;&#10;This commit includes the setup for the MetaTraderWorkerService project. Added configurations, data model, HTTP services, and necessary project files like `appsettings.json`. The project structure and initial classes have been defined to support database interactions and API requests.">
       <option name="closed" value="true" />
@@ -381,7 +374,15 @@
       <option name="project" value="LOCAL" />
       <updated>1731949411878</updated>
     </task>
-    <option name="localTasksCounter" value="32" />
+    <task id="LOCAL-00032" summary="Optimize order status checking and processing logic&#10;&#10;Refactored the order status checking process to skip orders not in &quot;ORDER_STATE_PLACED&quot;. Changed the delay for OrderStatusWorker to 1 second. Updated CancelOrderProcessor to handle order cancellations more accurately.">
+      <option name="closed" value="true" />
+      <created>1731952461250</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1731952461250</updated>
+    </task>
+    <option name="localTasksCounter" value="33" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -405,7 +406,6 @@
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Add OrderStatusResponseDto and refactor order status handling.&#10;&#10;Introduced OrderStatusResponseDto for a better structure of order status responses. Refactored OrderProcessor and OrderStatusService to utilize the new DTO and improved the order status update logic. Also, updated repository method names for clarity." />
     <MESSAGE value="Refactor `OrderActionType` to `ActionType`&#10;&#10;Renamed `OrderActionType` to `ActionType` for consistency. Updated references across multiple files including `MetaTraderOrder`, `InitialTradeSignal`, and `OrderProcessor`." />
     <MESSAGE value="Rename and refactor MetaTrader order response DTO&#10;&#10;Renamed MetaTraderOrderResponseDto to MetaTraderOpenTradeOrderResponseDto for clarity. Refactored associated service methods to use the new DTO name and updated the NumericCode property to use an enum type for better type safety. Added handling of additional fields in OrderProcessor to capture more details from the response." />
     <MESSAGE value="Rename MetaTraderOrderResponseDto and update related logic&#10;&#10;Renamed MetaTraderOrderResponseDto to MetaTraderOpenTradeOrderResponseDto for clarity. Updated method signatures, type references, and field assignments to align with the new class name. Enhanced order status management by adding more descriptive fields to MetaTraderOrder." />
@@ -430,23 +430,50 @@
     <MESSAGE value="Refactor StopLoss processors&#10;&#10;Merged StopLossToBreakEvenProcessor and StopLossToPriceProcessor into a unified StopLossProcessor class. Updated OrderProcessor to use the new consolidated StopLossProcessor, simplifying the order processing workflow." />
     <MESSAGE value="Add OrderAction processors to Program.cs&#10;&#10;Registered multiple OrderAction processors with the DI container. This change ensures that specific order actions like BuyLimit, CancelOrder, PartialPositionClose, SellLimit, and StopLoss can be processed dynamically." />
     <MESSAGE value="Refactor logger injection in order processors&#10;&#10;Reorganized logger dependency injection in `SellLimitProcessor`, `BuyLimitProcessor`, and `BaseOpenTradeProcessor` classes. This adjustment ensures that `ILogger&lt;T&gt;` instances are properly utilized and passed to the base processor class." />
-    <option name="LAST_COMMIT_MESSAGE" value="Refactor logger injection in order processors&#10;&#10;Reorganized logger dependency injection in `SellLimitProcessor`, `BuyLimitProcessor`, and `BaseOpenTradeProcessor` classes. This adjustment ensures that `ILogger&lt;T&gt;` instances are properly utilized and passed to the base processor class." />
+    <MESSAGE value="Optimize order status checking and processing logic&#10;&#10;Refactored the order status checking process to skip orders not in &quot;ORDER_STATE_PLACED&quot;. Changed the delay for OrderStatusWorker to 1 second. Updated CancelOrderProcessor to handle order cancellations more accurately." />
+    <option name="LAST_COMMIT_MESSAGE" value="" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/MetaTraderWorkerService/Services/Processors/CancelOrderProcessor.cs</url>
-          <line>25</line>
-          <properties documentPath="E:\Programming\TradingWithGuys\MetaTraderWorkerService\MetaTraderWorkerService\Services\Processors\CancelOrderProcessor.cs" containingFunctionPresentation="Method 'ProcessAsync'">
+          <url>file://$PROJECT_DIR$/MetaTraderWorkerService/Services/Processors/PartialPositionCloseProcessor.cs</url>
+          <line>64</line>
+          <properties documentPath="E:\Programming\TradingWithGuys\MetaTraderWorkerService\MetaTraderWorkerService\Services\Processors\PartialPositionCloseProcessor.cs" containingFunctionPresentation="Method 'ProcessAsync'">
             <startOffsets>
-              <option value="914" />
+              <option value="2587" />
             </startOffsets>
             <endOffsets>
-              <option value="1121" />
+              <option value="2667" />
             </endOffsets>
           </properties>
-          <option name="timeStamp" value="89" />
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/MetaTraderWorkerService/Services/MetaApiService.cs</url>
+          <line>77</line>
+          <properties documentPath="E:\Programming\TradingWithGuys\MetaTraderWorkerService\MetaTraderWorkerService\Services\MetaApiService.cs" containingFunctionPresentation="Method 'ClosePartialPositionAsync'">
+            <startOffsets>
+              <option value="2794" />
+            </startOffsets>
+            <endOffsets>
+              <option value="2849" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/MetaTraderWorkerService/Services/OrderServices/OrderProcessor.cs</url>
+          <line>41</line>
+          <properties documentPath="E:\Programming\TradingWithGuys\MetaTraderWorkerService\MetaTraderWorkerService\Services\OrderServices\OrderProcessor.cs" containingFunctionPresentation="Method 'ProcessCreatedOrdersAsync'">
+            <startOffsets>
+              <option value="1706" />
+            </startOffsets>
+            <endOffsets>
+              <option value="1742" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="5" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

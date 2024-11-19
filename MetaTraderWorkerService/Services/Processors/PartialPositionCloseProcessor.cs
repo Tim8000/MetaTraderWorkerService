@@ -14,6 +14,14 @@ public class PartialPositionCloseProcessor : IOrderActionProcessor
     private readonly IMetaApiService _metaApiService;
     private readonly ITradeRepository _tradeRepository;
 
+    public PartialPositionCloseProcessor(ILogger<CancelOrderProcessor> logger, IOrderRepository orderRepository, IMetaApiService metaApiService, ITradeRepository tradeRepository)
+    {
+        _logger = logger;
+        _orderRepository = orderRepository;
+        _metaApiService = metaApiService;
+        _tradeRepository = tradeRepository;
+    }
+
     public async Task ProcessAsync(MetaTraderOrder metaTraderOrder)
     {
         if (metaTraderOrder.Trade == null)
@@ -27,6 +35,12 @@ public class PartialPositionCloseProcessor : IOrderActionProcessor
 
         // Calculate the new partial volume
         var partialVolume = metaTraderOrder.Trade.Volume * 0.5m; // Example: Closing 50% of the volume
+
+        if (partialVolume < 0.01m)
+        {
+            partialVolume = 0.01m;
+        }
+
         if (partialVolume <= 0 || metaTraderOrder.Trade.Volume < partialVolume)
         {
             _logger.LogError($"Invalid partial volume for MetaTraderOrder with ID: {metaTraderOrder.Id}");
