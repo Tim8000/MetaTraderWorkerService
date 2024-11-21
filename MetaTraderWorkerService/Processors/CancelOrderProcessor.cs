@@ -2,9 +2,9 @@ using MetaTraderWorkerService.Dtos;
 using MetaTraderWorkerService.Enums;
 using MetaTraderWorkerService.Models;
 using MetaTraderWorkerService.Repository.Orders;
-using MetaTraderWorkerService.Services.OrderServices;
+using MetaTraderWorkerService.Services;
 
-namespace MetaTraderWorkerService.Services.Processors;
+namespace MetaTraderWorkerService.Processors;
 
 public class CancelOrderProcessor : IOrderActionProcessor
 {

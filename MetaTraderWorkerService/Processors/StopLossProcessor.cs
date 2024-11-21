@@ -2,8 +2,9 @@ using MetaTraderWorkerService.Dtos.Mt5Trades;
 using MetaTraderWorkerService.Enums;
 using MetaTraderWorkerService.Models;
 using MetaTraderWorkerService.Repository.Orders;
+using MetaTraderWorkerService.Services;
 
-namespace MetaTraderWorkerService.Services.Processors;
+namespace MetaTraderWorkerService.Processors;
 
 public class StopLossProcessor : IOrderActionProcessor
 {

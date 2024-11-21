@@ -32,7 +32,8 @@ public class OrderRepository : IOrderRepository
     {
         return await _dbContext.MetaTraderOrders
             .Include(o => o.MetaTraderInitialTradeSignal) // Eagerly load the InitialTradeSignal
-            .FirstOrDefaultAsync(o => o.MetaTraderInitialTradeSignal.Id == initialTradeSignalId && o.Status != OrderStatus.Canceled);
+            .FirstOrDefaultAsync(o =>
+                o.MetaTraderInitialTradeSignal.Id == initialTradeSignalId && o.Status != OrderStatus.Canceled);
     }
 
     public async Task<List<MetaTraderOrder>> GetSentToMetaTraderOrdersAsync()
@@ -59,5 +60,11 @@ public class OrderRepository : IOrderRepository
         return await _dbContext.MetaTraderOrders
             .Include(o => o.Trade) // Include associated trade
             .FirstOrDefaultAsync(o => o.MetaTraderOrderId == metaTraderOrderId.ToString() && o.Symbol == tradeSymbol);
+    }
+
+    public async Task<List<MetaTraderOrder>> GetTryToCloseOrdersAsync()
+    {
+        return await _dbContext.MetaTraderOrders.Include(o => o.Trade)
+            .Where(o => o.Status == OrderStatus.PendingTryToCLose).ToListAsync();
     }
 }

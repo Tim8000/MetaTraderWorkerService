@@ -5,6 +5,7 @@ using MetaTraderWorkerService.Http;
 using MetaTraderWorkerService.Models;
 using MetaTraderWorkerService.Repository.Orders;
 using MetaTraderWorkerService.Repository.Trades;
+using MetaTraderWorkerService.Services.MarketServices;
 using Newtonsoft.Json;
 
 namespace MetaTraderWorkerService.Services.TradeServices;
@@ -16,22 +17,24 @@ public class TradeProcessor : ITradeProcessor
     private readonly ITradeRepository _tradeRepository;
     private readonly ILogger<TradeProcessor> _logger;
     private readonly IMetaApiService _metaApiService;
+    private readonly IMarketService _marketService;
     private readonly string _accountId;
 
     private const string GetPositionsEndpoint = "/users/current/accounts/{0}/positions";
     private const string CreateTradeEndpoint = "/users/current/accounts/{0}/trade";
 
     public TradeProcessor(IHttpService httpService, IConfiguration configuration, IOrderRepository orderRepository,
-        ITradeRepository tradeRepository, ILogger<TradeProcessor> logger, IMetaApiService metaApiService)
+        ITradeRepository tradeRepository, ILogger<TradeProcessor> logger, IMetaApiService metaApiService, IMarketService marketService)
     {
         _httpService = httpService;
         _orderRepository = orderRepository;
         _tradeRepository = tradeRepository;
         _logger = logger;
         _metaApiService = metaApiService;
+        _marketService = marketService;
 
         // Retrieve accountId from the configuration
-        _accountId = configuration["MetaApi:ProvisioningProfileId"];
+        _accountId = configuration["MetaApi:AccountId"];
         if (string.IsNullOrEmpty(_accountId))
             throw new ArgumentException("Account ID is not configured in appsettings.");
     }
@@ -152,5 +155,28 @@ public class TradeProcessor : ITradeProcessor
     {
         var trades = await _metaApiService.GetTradeHistoryByPositionIdAsync("39500984");
         Console.WriteLine("hello");
+    }
+
+    public async Task ProcessTryToCloseTradesAsync()
+    {
+        var orders = await _orderRepository.GetTryToCloseOrdersAsync();
+
+        if (orders.Count > 0)
+        {
+            var currentPrice = await _marketService.GetCurrentPriceAsync("XAUUSD");
+
+
+            foreach (var metaTraderOrder in orders)
+            {
+                // here i need to
+                if (metaTraderOrder.Trade.Type == "POSITION_TYPE_BUY")
+                {
+                    if (currentPrice.Bid == metaTraderOrder.OpenPrice)
+                    {
+
+                    }
+                }
+            }
+        }
     }
 }

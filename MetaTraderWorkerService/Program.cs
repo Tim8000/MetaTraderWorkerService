@@ -3,14 +3,15 @@ using Microsoft.Extensions.Hosting;
 using MetaTraderWorkerService;
 using MetaTraderWorkerService.Data;
 using MetaTraderWorkerService.Http;
+using MetaTraderWorkerService.Processors;
 using MetaTraderWorkerService.Repository;
 using MetaTraderWorkerService.Repository.Orders;
 using MetaTraderWorkerService.Repository.Trades;
 using MetaTraderWorkerService.Services;
+using MetaTraderWorkerService.Services.MarketServices;
 using MetaTraderWorkerService.Services.OrderServices;
-using MetaTraderWorkerService.Services.Processors;
-using MetaTraderWorkerService.Services.Processors.BaseProcessors;
 using MetaTraderWorkerService.Services.TradeServices;
+using MetaTraderWorkerService.Settings;
 using MetaTraderWorkerService.Workers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -24,13 +25,14 @@ builder.Configuration.AddJsonFile("appsettings.json", true, true);
 var accountBaseUrl = builder.Configuration["MetaApi:AccountBaseUrl"];
 var tradeBaseUrl = builder.Configuration["MetaApi:TradeBaseUrl"];
 var authToken = builder.Configuration["MetaApi:AuthToken"]; // auth-token from config
-var provisioningProfileId = builder.Configuration["MetaApi:ProvisioningProfileId"]; // provisioningProfileId from config
+var provisioningProfileId = builder.Configuration["MetaApi:AccountId"]; // provisioningProfileId from config
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))); // Adjust for your database
-
+builder.Services.Configure<MetaApiSettings>(builder.Configuration.GetSection("MetaApi"));
 // Register HttpService and MetaApiService
 builder.Services.AddScoped<IHttpService>(sp => new HttpService(accountBaseUrl, tradeBaseUrl, authToken));
+builder.Services.AddScoped<IMarketService, MarketService>();
 builder.Services.AddScoped<IOrderProcessor, OrderProcessor>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IOrderStatusService, OrderStatusService>();
@@ -41,6 +43,7 @@ builder.Services.AddScoped<IOrderActionProcessor, CancelOrderProcessor>();
 builder.Services.AddScoped<IOrderActionProcessor, PartialPositionCloseProcessor>();
 builder.Services.AddScoped<IOrderActionProcessor, SellLimitProcessor>();
 builder.Services.AddScoped<IOrderActionProcessor, StopLossProcessor>();
+builder.Services.AddScoped<IOrderActionProcessor, TryToCloseProcessor>();
 builder.Services.AddScoped<IMetaApiService, MetaApiService>(sp =>
     new MetaApiService(
         sp.GetRequiredService<IHttpService>(),
@@ -53,6 +56,7 @@ builder.Services.AddScoped<IMetaApiService, MetaApiService>(sp =>
 builder.Services.AddHostedService<Worker>();
 builder.Services.AddHostedService<OrderStatusWorker>();
 builder.Services.AddHostedService<TradeWorker>();
+builder.Services.AddHostedService<TryToCloseTradeWorker>();
 
 var host = builder.Build();
 host.Run();

@@ -1,10 +1,6 @@
-using MetaTraderWorkerService.Enums;
 using Newtonsoft.Json;
 
-namespace MetaTraderWorkerService.Dtos;
-
-using Newtonsoft.Json;
-using MetaTraderWorkerService.Enums;
+namespace MetaTraderWorkerService.Dtos.Mt5Trades;
 
 public class PartialCloseTradeOrderDto
 {

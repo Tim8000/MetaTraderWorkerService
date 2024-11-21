@@ -3,8 +3,9 @@ using MetaTraderWorkerService.Dtos.Mt5Trades;
 using MetaTraderWorkerService.Enums;
 using MetaTraderWorkerService.Models;
 using MetaTraderWorkerService.Repository.Orders;
+using MetaTraderWorkerService.Services;
 
-namespace MetaTraderWorkerService.Services.Processors.BaseProcessors;
+namespace MetaTraderWorkerService.Processors.BaseProcessors;
 
 public abstract class BaseOpenTradeProcessor : IOrderActionProcessor
 {
@@ -81,7 +82,7 @@ public abstract class BaseOpenTradeProcessor : IOrderActionProcessor
 
     private void SetOrderConfigurations(MetaTraderOrder metaTraderOrder)
     {
-        metaTraderOrder.Volume = 0.01m; // Example volume, you can customize this
+        metaTraderOrder.Volume = 0.02m; // Example volume, you can customize this
         metaTraderOrder.Status = OrderStatus.Pending;
         metaTraderOrder.Slippage = 1;
         metaTraderOrder.Magic = GenerateMagic();

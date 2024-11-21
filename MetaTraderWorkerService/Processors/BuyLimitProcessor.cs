@@ -1,26 +1,26 @@
-using MetaTraderWorkerService.Dtos;
 using MetaTraderWorkerService.Dtos.Mt5Trades;
 using MetaTraderWorkerService.Enums;
 using MetaTraderWorkerService.Models;
+using MetaTraderWorkerService.Processors.BaseProcessors;
 using MetaTraderWorkerService.Repository.Orders;
-using MetaTraderWorkerService.Services.OrderServices;
-using MetaTraderWorkerService.Services.Processors.BaseProcessors;
+using MetaTraderWorkerService.Services;
 
-namespace MetaTraderWorkerService.Services.Processors;
+namespace MetaTraderWorkerService.Processors;
 
-public class SellLimitProcessor : BaseOpenTradeProcessor
+public class BuyLimitProcessor : BaseOpenTradeProcessor
 {
-    public SellLimitProcessor(
+    public BuyLimitProcessor(
         IOrderRepository orderRepository,
         IMetaApiService metaApiService,
-        ILogger<SellLimitProcessor> logger) // Use ILogger<T>
+        ILogger<BuyLimitProcessor> logger) // Use ILogger<T>
         : base(orderRepository, metaApiService, logger) // Pass logger to base class
     {
     }
 
+
     protected override void SetActionTypeForMarketOrder(MetaTraderOrder metaTraderOrder, OpenTradeByMarketPriceRequestDto marketOrderDto)
     {
-        marketOrderDto.ActionType = ActionType.ORDER_TYPE_SELL.ToString();
-        metaTraderOrder.ActionType = ActionType.ORDER_TYPE_SELL;
+        marketOrderDto.ActionType = ActionType.ORDER_TYPE_BUY.ToString();
+        metaTraderOrder.ActionType = ActionType.ORDER_TYPE_BUY;
     }
 }
