@@ -11,5 +11,5 @@ public interface IOrderRepository
     Task<List<MetaTraderOrder>> GetPlacedOrdersAsync();
     Task<MetaTraderOrder> GetOrderByMagicAndSymbolAsync(int tradeMagic, string tradeSymbol);
     Task<MetaTraderOrder> GetOrderByMetaTraderOrderId(string metaTraderOrderId, string tradeSymbol);
-    Task<List<MetaTraderOrder>> GetTryToCloseOrdersAsync();
+    Task<List<MetaTraderOrder>> GetOpenedOrdersFromOneInitialSignal(int messageId);
 }

@@ -1,5 +1,6 @@
 using MetaTraderWorkerService.Data;
 using MetaTraderWorkerService.Enums;
+using MetaTraderWorkerService.Enums.Mt5Trades;
 using MetaTraderWorkerService.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -62,9 +63,11 @@ public class OrderRepository : IOrderRepository
             .FirstOrDefaultAsync(o => o.MetaTraderOrderId == metaTraderOrderId.ToString() && o.Symbol == tradeSymbol);
     }
 
-    public async Task<List<MetaTraderOrder>> GetTryToCloseOrdersAsync()
+    public async Task<List<MetaTraderOrder>> GetOpenedOrdersFromOneInitialSignal(int messageId)
     {
-        return await _dbContext.MetaTraderOrders.Include(o => o.Trade)
-            .Where(o => o.Status == OrderStatus.PendingTryToCLose).ToListAsync();
+        return await _dbContext.MetaTraderOrders
+            .Include(o => o.Trade) // Ensure Trade navigation property is included
+            .Where(o => o.MetaTraderInitialTradeSignal.MessageId == messageId && o.Trade.State == TradeState.Active)
+            .ToListAsync();
     }
 }

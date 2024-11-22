@@ -18,13 +18,14 @@ public class TradeProcessor : ITradeProcessor
     private readonly ILogger<TradeProcessor> _logger;
     private readonly IMetaApiService _metaApiService;
     private readonly IMarketService _marketService;
+    private readonly ITradeHistoryRepository _tradeHistoryRepository;
     private readonly string _accountId;
 
     private const string GetPositionsEndpoint = "/users/current/accounts/{0}/positions";
     private const string CreateTradeEndpoint = "/users/current/accounts/{0}/trade";
 
     public TradeProcessor(IHttpService httpService, IConfiguration configuration, IOrderRepository orderRepository,
-        ITradeRepository tradeRepository, ILogger<TradeProcessor> logger, IMetaApiService metaApiService, IMarketService marketService)
+        ITradeRepository tradeRepository, ILogger<TradeProcessor> logger, IMetaApiService metaApiService, IMarketService marketService, ITradeHistoryRepository tradeHistoryRepository)
     {
         _httpService = httpService;
         _orderRepository = orderRepository;
@@ -32,6 +33,7 @@ public class TradeProcessor : ITradeProcessor
         _logger = logger;
         _metaApiService = metaApiService;
         _marketService = marketService;
+        _tradeHistoryRepository = tradeHistoryRepository;
 
         // Retrieve accountId from the configuration
         _accountId = configuration["MetaApi:AccountId"];
@@ -153,30 +155,90 @@ public class TradeProcessor : ITradeProcessor
 
     public async Task ProcessTradeHistoryAsync()
     {
-        var trades = await _metaApiService.GetTradeHistoryByPositionIdAsync("39500984");
+        var openedTrades = await _tradeRepository.GetAllOpenedTradesAsync();
+
+        // Retrieve trade histories in parallel for all opened trades
+        var tradeHistories = await Task.WhenAll(
+            openedTrades.Select(async trade => new
+            {
+                Trade = trade,
+                History = await _metaApiService.GetTradeHistoryByPositionIdAsync(trade.Id)
+            })
+        );
+
+        foreach (var tradeHistory in tradeHistories)
+        {
+            var trade = tradeHistory.Trade;
+            var trades = tradeHistory.History;
+
+            // Check if there are exactly 2 trades and one is DEAL_ENTRY_OUT
+            if (trades.Count > 0)
+            {
+                var metaTraderTradeHistories = trades
+                    .Select(dto => dto.ToMetaTraderTradeHistory())
+                    .ToList();
+
+                foreach (var history in metaTraderTradeHistories)
+                {
+                    // Check if the entity already exists in the database
+                    var existingEntity = await _tradeHistoryRepository
+                        .GetByIdAsync(history.Id);
+
+                    if (existingEntity == null)
+                    {
+                        // Add the new trade history to the database
+                        await _tradeHistoryRepository.AddAsync(history);
+                    }
+                }
+
+                trade.State = TradeState.Closed;
+                trade.Status = TradeStatus.Closed;
+
+                // Asynchronously update the trade
+                await _tradeRepository.UpdateTradeAsync(trade);
+            }
+        }
+
         Console.WriteLine("hello");
     }
 
     public async Task ProcessTryToCloseTradesAsync()
     {
-        var orders = await _orderRepository.GetTryToCloseOrdersAsync();
+        var openedTrades = await _tradeRepository.GetAllOpenedTradesAsync();
 
-        if (orders.Count > 0)
-        {
-            var currentPrice = await _marketService.GetCurrentPriceAsync("XAUUSD");
-
-
-            foreach (var metaTraderOrder in orders)
-            {
-                // here i need to
-                if (metaTraderOrder.Trade.Type == "POSITION_TYPE_BUY")
+        var tradesFromOneInitialSignal = openedTrades
+            .SelectMany(trade => trade.MetaTraderOrders
+                .Where(order => order.MetaTraderInitialTradeSignal.IsInitialSignal) // Only include orders where IsInitialSignal is true
+                .Select(order => new
                 {
-                    if (currentPrice.Bid == metaTraderOrder.OpenPrice)
-                    {
+                    Trade = trade,
+                    MessageId = order.MetaTraderInitialTradeSignal.MessageId
+                }))
+            .GroupBy(x => x.MessageId)
+            .Where(group => group.Count() > 1) // Only include groups with the same MessageId
+            .ToDictionary(
+                group => group.Key,
+                group => group.Select(x => x.Trade).Distinct().ToList()
+            );
 
-                    }
-                }
-            }
-        }
+
+        // var orders = new List<MetaTraderOrder>();
+        //
+        // if (orders.Count > 0)
+        // {
+        //     var currentPrice = await _marketService.GetCurrentPriceAsync("XAUUSD");
+        //
+        //     foreach (var metaTraderOrder in orders)
+        //     {
+        //         // here i need to
+        //         if (metaTraderOrder.Trade.Type == "POSITION_TYPE_BUY")
+        //         {
+        //             if (currentPrice.Bid == metaTraderOrder.OpenPrice)
+        //             {
+        //
+        //             }
+        //         }
+        //     }
+        // }
     }
 }

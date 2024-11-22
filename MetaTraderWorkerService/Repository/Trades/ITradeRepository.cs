@@ -12,4 +12,5 @@ public interface ITradeRepository
     Task DeleteTradeAsync(string tradeId);
     Task<IEnumerable<MetaTraderTrade>> GetTradesByMagicAsync(int magic);
     Task<IEnumerable<MetaTraderTrade>> GetTradesByStatusAsync(TradeStatus status);
+    Task<List<MetaTraderTrade>> GetAllOpenedTradesAsync();
 }
