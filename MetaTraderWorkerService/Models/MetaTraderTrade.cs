@@ -1,4 +1,5 @@
 using MetaTraderWorkerService.Enums.Mt5Trades;
+using TradeSignalsDatabaseUpdater.Models;
 using TradeStatus = MetaTraderWorkerService.Enums.Mt5Trades.TradeStatus;
 
 namespace MetaTraderWorkerService.Models;
@@ -35,4 +36,5 @@ public class MetaTraderTrade
     public TradeState State { get; set; }
     public TradeStatus Status { get; set; }
     public List<MetaTraderOrder>? MetaTraderOrders { get; set; }
+    public List<MetaTraderTradeHistory>? MetaTraderTradeHistories { get; set; }
 }
