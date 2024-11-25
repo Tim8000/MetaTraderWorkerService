@@ -20,9 +20,9 @@ public class TradeHistoryRepository : ITradeHistoryRepository
         await _context.SaveChangesAsync();
     }
 
-    public async Task<MetaTraderTradeHistory> GetByIdAsync(long id)
+    public async Task<MetaTraderTradeHistory> GetByTradeHistoryIdAsync(string id)
     {
-        return await _context.MetaTraderTradeHistories.FindAsync(id);
+        return await _context.MetaTraderTradeHistories.FirstOrDefaultAsync(t => t.TradeHistoryId == id);
     }
 
     public async Task<IEnumerable<MetaTraderTradeHistory>> GetAllAsync()
@@ -37,9 +37,9 @@ public class TradeHistoryRepository : ITradeHistoryRepository
         await _context.SaveChangesAsync();
     }
 
-    public async Task DeleteAsync(long id)
+    public async Task DeleteAsync(string id)
     {
-        var tradeHistory = await GetByIdAsync(id);
+        var tradeHistory = await GetByTradeHistoryIdAsync(id);
         if (tradeHistory == null) throw new KeyNotFoundException($"TradeHistory with ID {id} not found.");
         _context.MetaTraderTradeHistories.Remove(tradeHistory);
         await _context.SaveChangesAsync();

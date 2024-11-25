@@ -7,9 +7,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="194ecc76-e850-4399-92c6-6dc93bcb977e" name="Changes" comment="Increase delay and comment out trade status updates&#10;&#10;Changed the delay interval in TradeWorker.cs from 5 seconds to 120 seconds to optimize performance and reduce CPU usage. Additionally, commented out sections in TradeProcessor.cs related to updating and closing trade statuses, to be revisited with enhanced trade history handling logic.">
+    <list default="true" id="194ecc76-e850-4399-92c6-6dc93bcb977e" name="Changes" comment="Add TradeHistoryRepository to DI container&#10;&#10;Included TradeHistoryRepository in the dependency injection container to manage trade history operations. Updated IntelliJ IDEA configuration to reflect recent changes in the project setup.">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.MetaTraderWorkerService/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.MetaTraderWorkerService/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService/Repository/Trades/ITradeHistoryRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Repository/Trades/ITradeHistoryRepository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService/Repository/Trades/TradeHistoryRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Repository/Trades/TradeHistoryRepository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService/Services/TradeServices/TradeProcessor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Services/TradeServices/TradeProcessor.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,6 +41,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/99f9cf07abc74d3fb3bed9a41bc5b3141a68b0/63/080ec53a/HttpClient.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/13e79b2a7b78394ccf591d3454bff5bfb14e692da011a7e38b66c2312b365a/String.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/2c8e7ca976f350cba9836d5565dac56b11e0b56656fa786460eb1395857a6fa/ThrowHelper.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/4b21fc3f8a3abb5d25f06c622276fbec0fd3932f169cc6af520bf5abc6a46b4/DbSet.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/5acc345db3c207bc9d886a36ff14867ef8d65557432172c2a42f19aeac04d1b/Nullable.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/7d81b2d4f22bee75e5438c707251ae43cb0974c207db91ffc159118c84b4eb9/ServiceProvider.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/b05fc3ef644b7632d4481b3defa11634da02637d896cb5eca3eca7cf2f3ee3/String.Manipulation.cs" root0="FORCE_HIGHLIGHTING" />
@@ -47,6 +50,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/e497db2a4ab53bdce6335c79064f15a515e338cd0f9c039a9b6914b9eeb3/AggregateException.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/ebe65732adf281db03e388c6486e28a574c76c8be32d99ca59dcfbecc65/Uri.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/f7e838f3c047ee76488fa4c2b9b1bffb2b33b04a2780de4664de937e024e97/CallSiteFactory.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://E:/Programming/TradingWithGuys/MetaTraderWorkerService/MetaTraderWorkerService/Program.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProblemsViewState">
@@ -132,7 +136,7 @@
       <workItem from="1732288385041" duration="560000" />
       <workItem from="1732345472437" duration="58000" />
       <workItem from="1732556339415" duration="368000" />
-      <workItem from="1732560817800" duration="66000" />
+      <workItem from="1732560817800" duration="1140000" />
     </task>
     <task id="LOCAL-00001" summary="Add initial implementation for MetaTraderWorkerService&#10;&#10;This commit includes the setup for the MetaTraderWorkerService project. Added configurations, data model, HTTP services, and necessary project files like `appsettings.json`. The project structure and initial classes have been defined to support database interactions and API requests.">
       <option name="closed" value="true" />
@@ -422,7 +426,15 @@
       <option name="project" value="LOCAL" />
       <updated>1732556519709</updated>
     </task>
-    <option name="localTasksCounter" value="37" />
+    <task id="LOCAL-00037" summary="Add TradeHistoryRepository to DI container&#10;&#10;Included TradeHistoryRepository in the dependency injection container to manage trade history operations. Updated IntelliJ IDEA configuration to reflect recent changes in the project setup.">
+      <option name="closed" value="true" />
+      <created>1732561396158</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1732561396158</updated>
+    </task>
+    <option name="localTasksCounter" value="38" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -446,7 +458,6 @@
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Rename models and properties to include MetaTrader prefix&#10;&#10;Updated various class names and properties to include the MetaTrader prefix for consistency. This includes classes such as MetaTraderTrade, MetaTraderSignal, and MetaTraderInitialTradeSignal. Adjusted related references throughout the project to match the new naming conventions." />
     <MESSAGE value="Update MetaTrader order processing and DTOs&#10;&#10;Changed the type of 'Magic' property to long in DTO and updated 'OrderStatus' enum to include 'Executed'. Enhanced OrderProcessor with account ID configuration and modified order status handling for better accuracy. Replaced Console.WriteLine with Debug.WriteLine in HttpService for better debugging." />
     <MESSAGE value="Refactor namespaces and organize services&#10;&#10;Updated namespaces for consistency and moved relevant files into subdirectories. Enhanced readability by adjusting formatting and removing unused imports. Added `MetaTraderWorkerService.Services.TradeServices` and `MetaTraderWorkerService.Services.OrderServices` namespaces." />
     <MESSAGE value="Update log delay and add logging for trade requests&#10;&#10;Increased delay interval in TradeWorker to improve order spacing. Added logging in MetaApiService to track trade requests for better monitoring. Commented out `GetActiveTradesAsync` for future reactivation." />
@@ -471,7 +482,8 @@
     <MESSAGE value="Refactor and add new trade processing functionality&#10;&#10;Renamed and restructured existing processors and services for better organization. Added new TryToCloseProcessor and associated worker to handle 'Try to Close' trades. Introduced MarketService for retrieving market prices, and updated configuration settings to support new features." />
     <MESSAGE value="Add Trade History Processing and Repository&#10;&#10;Integrated trade history processing in TradeProcessor and added TradeHistoryRepository. Updated ApplicationDbContext to include MetaTraderTradeHistories DbSet and introduced essential methods for handling trade histories." />
     <MESSAGE value="Increase delay and comment out trade status updates&#10;&#10;Changed the delay interval in TradeWorker.cs from 5 seconds to 120 seconds to optimize performance and reduce CPU usage. Additionally, commented out sections in TradeProcessor.cs related to updating and closing trade statuses, to be revisited with enhanced trade history handling logic." />
-    <option name="LAST_COMMIT_MESSAGE" value="Increase delay and comment out trade status updates&#10;&#10;Changed the delay interval in TradeWorker.cs from 5 seconds to 120 seconds to optimize performance and reduce CPU usage. Additionally, commented out sections in TradeProcessor.cs related to updating and closing trade statuses, to be revisited with enhanced trade history handling logic." />
+    <MESSAGE value="Add TradeHistoryRepository to DI container&#10;&#10;Included TradeHistoryRepository in the dependency injection container to manage trade history operations. Updated IntelliJ IDEA configuration to reflect recent changes in the project setup." />
+    <option name="LAST_COMMIT_MESSAGE" value="Add TradeHistoryRepository to DI container&#10;&#10;Included TradeHistoryRepository in the dependency injection container to manage trade history operations. Updated IntelliJ IDEA configuration to reflect recent changes in the project setup." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -491,16 +503,16 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/MetaTraderWorkerService/Services/TradeServices/TradeProcessor.cs</url>
-          <line>157</line>
+          <line>185</line>
           <properties documentPath="E:\Programming\TradingWithGuys\MetaTraderWorkerService\MetaTraderWorkerService\Services\TradeServices\TradeProcessor.cs" containingFunctionPresentation="Method 'ProcessTradeHistoryAsync'">
             <startOffsets>
-              <option value="7707" />
+              <option value="8838" />
             </startOffsets>
             <endOffsets>
-              <option value="7775" />
+              <option value="8938" />
             </endOffsets>
           </properties>
-          <option name="timeStamp" value="25" />
+          <option name="timeStamp" value="26" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

@@ -180,17 +180,16 @@ public class TradeProcessor : ITradeProcessor
 
                 foreach (var history in metaTraderTradeHistories)
                 {
-                    // Check if the entity already exists in the database
-                    var existingEntity = await _tradeHistoryRepository
-                        .GetByIdAsync(history.Id);
+                    history.Time = DateTime.SpecifyKind(history.Time, DateTimeKind.Utc);
+                    history.BrokerTime = DateTime.SpecifyKind(history.BrokerTime, DateTimeKind.Utc);
+
+                    var existingEntity = await _tradeHistoryRepository.GetByTradeHistoryIdAsync(history.TradeHistoryId);
 
                     if (existingEntity == null)
                     {
-                        // Add the new trade history to the database
                         await _tradeHistoryRepository.AddAsync(history);
                     }
                 }
-
                 //TODO: add trade history and check trade status if it was closed.
                 // trade.State = TradeState.Closed;
                 // trade.Status = TradeStatus.Closed;
