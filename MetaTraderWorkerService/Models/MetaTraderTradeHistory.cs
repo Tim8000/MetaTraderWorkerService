@@ -1,3 +1,5 @@
+using MetaTraderWorkerService.Models;
+
 namespace TradeSignalsDatabaseUpdater.Models;
 
 public class MetaTraderTradeHistory
@@ -23,4 +25,5 @@ public class MetaTraderTradeHistory
     public decimal TakeProfit { get; set; } // Take-profit value
     public string BrokerComment { get; set; } // Optional comment from the broker
     public decimal AccountCurrencyExchangeRate { get; set; } // Account currency exchange rate
+    public MetaTraderTrade? MetaTraderTrade { get; set; }
 }
