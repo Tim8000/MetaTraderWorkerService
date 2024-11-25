@@ -8,17 +8,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="194ecc76-e850-4399-92c6-6dc93bcb977e" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Mappers/TradeHistoryMapper.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Models/MetaTraderTradeHistory.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Repository/Trades/ITradeHistoryRepository.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Repository/Trades/TradeHistoryRepository.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.MetaTraderWorkerService/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.MetaTraderWorkerService/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService/Data/ApplicationDbContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Data/ApplicationDbContext.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService/Repository/Orders/IOrderRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Repository/Orders/IOrderRepository.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService/Repository/Orders/OrderRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Repository/Orders/OrderRepository.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService/Repository/Trades/ITradeRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Repository/Trades/ITradeRepository.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService/Repository/Trades/TradeRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Repository/Trades/TradeRepository.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService/Services/TradeServices/TradeProcessor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Services/TradeServices/TradeProcessor.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService/Workers/TradeWorker.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Workers/TradeWorker.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -89,7 +80,7 @@
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
-  <component name="RunManager" selected=".NET Launch Settings Profile.MetaTraderWorkerService">
+  <component name="RunManager" selected="Publish to custom server.PublishToDebian">
     <configuration name="PublishToFolder" type="DotNetFolderPublish" factoryName="Publish to folder">
       <riderPublish configuration="Release" delete_existing_files="true" platform="Any CPU" runtime="linux-x64" target_folder="$PROJECT_DIR$/MetaTraderWorkerService/bin/Release/net8.0/linux-x64/publish" target_framework="net8.0" uuid_high="1871667714893237941" uuid_low="-7699535203307637525" />
       <method v="2" />
@@ -137,7 +128,9 @@
       <workItem from="1732000615820" duration="1911000" />
       <workItem from="1732018933556" duration="10686000" />
       <workItem from="1732211447634" duration="4985000" />
-      <workItem from="1732284669247" duration="1574000" />
+      <workItem from="1732284669247" duration="1695000" />
+      <workItem from="1732288385041" duration="560000" />
+      <workItem from="1732345472437" duration="58000" />
     </task>
     <task id="LOCAL-00001" summary="Add initial implementation for MetaTraderWorkerService&#10;&#10;This commit includes the setup for the MetaTraderWorkerService project. Added configurations, data model, HTTP services, and necessary project files like `appsettings.json`. The project structure and initial classes have been defined to support database interactions and API requests.">
       <option name="closed" value="true" />
@@ -411,7 +404,15 @@
       <option name="project" value="LOCAL" />
       <updated>1732211574172</updated>
     </task>
-    <option name="localTasksCounter" value="35" />
+    <task id="LOCAL-00035" summary="Add Trade History Processing and Repository&#10;&#10;Integrated trade history processing in TradeProcessor and added TradeHistoryRepository. Updated ApplicationDbContext to include MetaTraderTradeHistories DbSet and introduced essential methods for handling trade histories.">
+      <option name="closed" value="true" />
+      <created>1732288232959</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1732288232959</updated>
+    </task>
+    <option name="localTasksCounter" value="36" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -435,7 +436,6 @@
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Rename MetaTraderOrderResponseDto and update related logic&#10;&#10;Renamed MetaTraderOrderResponseDto to MetaTraderOpenTradeOrderResponseDto for clarity. Updated method signatures, type references, and field assignments to align with the new class name. Enhanced order status management by adding more descriptive fields to MetaTraderOrder." />
     <MESSAGE value="Add TradeWorker and Trade processing features&#10;&#10;Introduced TradeWorker to fetch and process active trades periodically. Added TradeProcessor and related interfaces, DTOs, and enums to manage trade operations. Registered the new worker and services in the application startup." />
     <MESSAGE value="Rename models and properties to include MetaTrader prefix&#10;&#10;Updated various class names and properties to include the MetaTrader prefix for consistency. This includes classes such as MetaTraderTrade, MetaTraderSignal, and MetaTraderInitialTradeSignal. Adjusted related references throughout the project to match the new naming conventions." />
     <MESSAGE value="Update MetaTrader order processing and DTOs&#10;&#10;Changed the type of 'Magic' property to long in DTO and updated 'OrderStatus' enum to include 'Executed'. Enhanced OrderProcessor with account ID configuration and modified order status handling for better accuracy. Replaced Console.WriteLine with Debug.WriteLine in HttpService for better debugging." />
@@ -460,7 +460,8 @@
     <MESSAGE value="Optimize order status checking and processing logic&#10;&#10;Refactored the order status checking process to skip orders not in &quot;ORDER_STATE_PLACED&quot;. Changed the delay for OrderStatusWorker to 1 second. Updated CancelOrderProcessor to handle order cancellations more accurately." />
     <MESSAGE value="Add constructor to PartialPositionCloseProcessor&#10;&#10;Introduced a constructor to the PartialPositionCloseProcessor class, ensuring proper initialization of logger, order repository, meta API service, and trade repository dependencies. Additionally, adjusted the partial volume calculation to ensure a minimum value of 0.01." />
     <MESSAGE value="Refactor and add new trade processing functionality&#10;&#10;Renamed and restructured existing processors and services for better organization. Added new TryToCloseProcessor and associated worker to handle 'Try to Close' trades. Introduced MarketService for retrieving market prices, and updated configuration settings to support new features." />
-    <option name="LAST_COMMIT_MESSAGE" value="Refactor and add new trade processing functionality&#10;&#10;Renamed and restructured existing processors and services for better organization. Added new TryToCloseProcessor and associated worker to handle 'Try to Close' trades. Introduced MarketService for retrieving market prices, and updated configuration settings to support new features." />
+    <MESSAGE value="Add Trade History Processing and Repository&#10;&#10;Integrated trade history processing in TradeProcessor and added TradeHistoryRepository. Updated ApplicationDbContext to include MetaTraderTradeHistories DbSet and introduced essential methods for handling trade histories." />
+    <option name="LAST_COMMIT_MESSAGE" value="Add Trade History Processing and Repository&#10;&#10;Integrated trade history processing in TradeProcessor and added TradeHistoryRepository. Updated ApplicationDbContext to include MetaTraderTradeHistories DbSet and introduced essential methods for handling trade histories." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -490,19 +491,6 @@
             </endOffsets>
           </properties>
           <option name="timeStamp" value="25" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/MetaTraderWorkerService/Services/TradeServices/TradeProcessor.cs</url>
-          <line>171</line>
-          <properties documentPath="E:\Programming\TradingWithGuys\MetaTraderWorkerService\MetaTraderWorkerService\Services\TradeServices\TradeProcessor.cs" containingFunctionPresentation="Method 'ProcessTradeHistoryAsync'">
-            <startOffsets>
-              <option value="8229" />
-            </startOffsets>
-            <endOffsets>
-              <option value="8263" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="27" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

@@ -191,11 +191,12 @@ public class TradeProcessor : ITradeProcessor
                     }
                 }
 
-                trade.State = TradeState.Closed;
-                trade.Status = TradeStatus.Closed;
+                //TODO: add trade history and check trade status if it was closed.
+                // trade.State = TradeState.Closed;
+                // trade.Status = TradeStatus.Closed;
 
                 // Asynchronously update the trade
-                await _tradeRepository.UpdateTradeAsync(trade);
+                // await _tradeRepository.UpdateTradeAsync(trade);
             }
         }
 
