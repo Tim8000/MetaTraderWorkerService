@@ -9,7 +9,7 @@
   <component name="ChangeListManager">
     <list default="true" id="194ecc76-e850-4399-92c6-6dc93bcb977e" name="Changes" comment="Increase delay and comment out trade status updates&#10;&#10;Changed the delay interval in TradeWorker.cs from 5 seconds to 120 seconds to optimize performance and reduce CPU usage. Additionally, commented out sections in TradeProcessor.cs related to updating and closing trade statuses, to be revisited with enhanced trade history handling logic.">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.MetaTraderWorkerService/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.MetaTraderWorkerService/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService/Models/MetaTraderTrade.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Models/MetaTraderTrade.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Program.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -80,7 +80,7 @@
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
-  <component name="RunManager" selected="Publish to folder.PublishToFolder">
+  <component name="RunManager" selected=".NET Launch Settings Profile.MetaTraderWorkerService">
     <configuration name="PublishToFolder" type="DotNetFolderPublish" factoryName="Publish to folder">
       <riderPublish configuration="Release" delete_existing_files="true" platform="Any CPU" runtime="linux-x64" target_folder="$PROJECT_DIR$/MetaTraderWorkerService/bin/Release/net8.0/linux-x64/publish" target_framework="net8.0" uuid_high="1871667714893237941" uuid_low="-7699535203307637525" />
       <method v="2" />
@@ -132,6 +132,7 @@
       <workItem from="1732288385041" duration="560000" />
       <workItem from="1732345472437" duration="58000" />
       <workItem from="1732556339415" duration="368000" />
+      <workItem from="1732560817800" duration="66000" />
     </task>
     <task id="LOCAL-00001" summary="Add initial implementation for MetaTraderWorkerService&#10;&#10;This commit includes the setup for the MetaTraderWorkerService project. Added configurations, data model, HTTP services, and necessary project files like `appsettings.json`. The project structure and initial classes have been defined to support database interactions and API requests.">
       <option name="closed" value="true" />

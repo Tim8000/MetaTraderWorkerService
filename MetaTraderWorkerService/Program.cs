@@ -37,6 +37,7 @@ builder.Services.AddScoped<IOrderProcessor, OrderProcessor>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IOrderStatusService, OrderStatusService>();
 builder.Services.AddScoped<ITradeRepository, TradeRepository>();
+builder.Services.AddScoped<ITradeHistoryRepository, TradeHistoryRepository>();
 builder.Services.AddScoped<ITradeProcessor, TradeProcessor>();
 builder.Services.AddScoped<IOrderActionProcessor, BuyLimitProcessor>();
 builder.Services.AddScoped<IOrderActionProcessor, CancelOrderProcessor>();
