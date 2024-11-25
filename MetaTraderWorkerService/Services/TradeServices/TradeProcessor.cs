@@ -187,6 +187,9 @@ public class TradeProcessor : ITradeProcessor
 
                     if (existingEntity == null)
                     {
+                        history.MetaTraderTrade = trade;
+                        // trade.MetaTraderTradeHistories.Add(history);
+                        // await _tradeRepository.UpdateTradeAsync(trade);
                         await _tradeHistoryRepository.AddAsync(history);
                     }
                 }
