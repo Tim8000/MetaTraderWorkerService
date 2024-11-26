@@ -1,4 +1,4 @@
-using TradeSignalsDatabaseUpdater.Models;
+using MetaTraderWorkerService.Models;
 
 namespace MetaTraderWorkerService.Repository.Trades;
 

@@ -1,6 +1,4 @@
-using MetaTraderWorkerService.Models;
-
-namespace TradeSignalsDatabaseUpdater.Models;
+namespace MetaTraderWorkerService.Models;
 
 public class MetaTraderTradeHistory
 {

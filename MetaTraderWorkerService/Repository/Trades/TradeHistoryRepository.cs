@@ -1,6 +1,6 @@
 using MetaTraderWorkerService.Data;
+using MetaTraderWorkerService.Models;
 using Microsoft.EntityFrameworkCore;
-using TradeSignalsDatabaseUpdater.Models;
 
 namespace MetaTraderWorkerService.Repository.Trades;
 

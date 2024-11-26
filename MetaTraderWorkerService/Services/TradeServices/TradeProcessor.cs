@@ -2,6 +2,7 @@ using MetaTraderWorkerService.Dtos.Mt5Trades;
 using MetaTraderWorkerService.Enums;
 using MetaTraderWorkerService.Enums.Mt5Trades;
 using MetaTraderWorkerService.Http;
+using MetaTraderWorkerService.Mappers;
 using MetaTraderWorkerService.Models;
 using MetaTraderWorkerService.Repository.Orders;
 using MetaTraderWorkerService.Repository.Trades;

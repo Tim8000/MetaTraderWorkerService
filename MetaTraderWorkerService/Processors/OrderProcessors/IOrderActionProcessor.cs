@@ -1,6 +1,6 @@
 using MetaTraderWorkerService.Models;
 
-namespace MetaTraderWorkerService.Processors;
+namespace MetaTraderWorkerService.Processors.OrderProcessors;
 
 public interface IOrderActionProcessor
 {

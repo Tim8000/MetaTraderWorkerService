@@ -4,7 +4,7 @@ using MetaTraderWorkerService.Models;
 using MetaTraderWorkerService.Repository.Orders;
 using MetaTraderWorkerService.Services;
 
-namespace MetaTraderWorkerService.Processors;
+namespace MetaTraderWorkerService.Processors.OrderProcessors;
 
 public class StopLossProcessor : IOrderActionProcessor
 {

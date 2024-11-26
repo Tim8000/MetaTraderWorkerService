@@ -4,6 +4,7 @@ using MetaTraderWorkerService;
 using MetaTraderWorkerService.Data;
 using MetaTraderWorkerService.Http;
 using MetaTraderWorkerService.Processors;
+using MetaTraderWorkerService.Processors.OrderProcessors;
 using MetaTraderWorkerService.Repository;
 using MetaTraderWorkerService.Repository.Orders;
 using MetaTraderWorkerService.Repository.Trades;

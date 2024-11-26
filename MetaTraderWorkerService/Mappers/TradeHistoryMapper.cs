@@ -1,5 +1,7 @@
 using MetaTraderWorkerService.Dtos.Mt5Trades;
-using TradeSignalsDatabaseUpdater.Models;
+using MetaTraderWorkerService.Models;
+
+namespace MetaTraderWorkerService.Mappers;
 
 public static class TradeHistoryMapper
 {

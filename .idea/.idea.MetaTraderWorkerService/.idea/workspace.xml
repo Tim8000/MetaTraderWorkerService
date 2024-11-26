@@ -9,8 +9,6 @@
   <component name="ChangeListManager">
     <list default="true" id="194ecc76-e850-4399-92c6-6dc93bcb977e" name="Changes" comment="Refactor trade history repository methods for consistency">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.MetaTraderWorkerService/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.MetaTraderWorkerService/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService/Models/MetaTraderTrade.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Models/MetaTraderTrade.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService/Services/TradeServices/TradeProcessor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Services/TradeServices/TradeProcessor.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -29,12 +27,12 @@
     &quot;assignee&quot;: &quot;Tim8000&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/Tim8000/MetaTraderWorkerService&quot;,
-    &quot;accountId&quot;: &quot;e987b1fe-51d2-4ad5-a6ad-f0af2af17a2c&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/Tim8000/MetaTraderWorkerService.git",
+    "accountId": "e987b1fe-51d2-4ad5-a6ad-f0af2af17a2c"
   }
-}</component>
+}]]></component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/54c2c97bd5bd46e3961ad402640a3dd93818a0/f2/ab321122/Expression.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/99f9cf07abc74d3fb3bed9a41bc5b3141a68b0/63/080ec53a/HttpClient.cs" root0="SKIP_HIGHLIGHTING" />
@@ -136,6 +134,7 @@
       <workItem from="1732345472437" duration="58000" />
       <workItem from="1732556339415" duration="368000" />
       <workItem from="1732560817800" duration="1666000" />
+      <workItem from="1732627082493" duration="1019000" />
     </task>
     <task id="LOCAL-00001" summary="Add initial implementation for MetaTraderWorkerService&#10;&#10;This commit includes the setup for the MetaTraderWorkerService project. Added configurations, data model, HTTP services, and necessary project files like `appsettings.json`. The project structure and initial classes have been defined to support database interactions and API requests.">
       <option name="closed" value="true" />

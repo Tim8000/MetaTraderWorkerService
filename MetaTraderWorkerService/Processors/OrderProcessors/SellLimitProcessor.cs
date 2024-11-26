@@ -5,22 +5,21 @@ using MetaTraderWorkerService.Processors.BaseProcessors;
 using MetaTraderWorkerService.Repository.Orders;
 using MetaTraderWorkerService.Services;
 
-namespace MetaTraderWorkerService.Processors;
+namespace MetaTraderWorkerService.Processors.OrderProcessors;
 
-public class BuyLimitProcessor : BaseOpenTradeProcessor
+public class SellLimitProcessor : BaseOpenTradeProcessor
 {
-    public BuyLimitProcessor(
+    public SellLimitProcessor(
         IOrderRepository orderRepository,
         IMetaApiService metaApiService,
-        ILogger<BuyLimitProcessor> logger) // Use ILogger<T>
+        ILogger<SellLimitProcessor> logger) // Use ILogger<T>
         : base(orderRepository, metaApiService, logger) // Pass logger to base class
     {
     }
 
-
     protected override void SetActionTypeForMarketOrder(MetaTraderOrder metaTraderOrder, OpenTradeByMarketPriceRequestDto marketOrderDto)
     {
-        marketOrderDto.ActionType = ActionType.ORDER_TYPE_BUY.ToString();
-        metaTraderOrder.ActionType = ActionType.ORDER_TYPE_BUY;
+        marketOrderDto.ActionType = ActionType.ORDER_TYPE_SELL.ToString();
+        metaTraderOrder.ActionType = ActionType.ORDER_TYPE_SELL;
     }
 }

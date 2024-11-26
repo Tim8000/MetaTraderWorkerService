@@ -1,8 +1,7 @@
 using MetaTraderWorkerService.Enums;
-using MetaTraderWorkerService.Processors;
 using MetaTraderWorkerService.Repository.Orders;
 
-namespace MetaTraderWorkerService.Services.OrderServices;
+namespace MetaTraderWorkerService.Processors.OrderProcessors;
 
 public class OrderProcessor : IOrderProcessor
 {

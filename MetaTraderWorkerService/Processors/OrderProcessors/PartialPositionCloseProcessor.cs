@@ -6,7 +6,7 @@ using MetaTraderWorkerService.Repository.Orders;
 using MetaTraderWorkerService.Repository.Trades;
 using MetaTraderWorkerService.Services;
 
-namespace MetaTraderWorkerService.Processors;
+namespace MetaTraderWorkerService.Processors.OrderProcessors;
 
 public class PartialPositionCloseProcessor : IOrderActionProcessor
 {

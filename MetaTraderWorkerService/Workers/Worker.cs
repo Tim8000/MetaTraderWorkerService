@@ -1,3 +1,4 @@
+using MetaTraderWorkerService.Processors.OrderProcessors;
 using MetaTraderWorkerService.Services;
 using MetaTraderWorkerService.Services.OrderServices;
 

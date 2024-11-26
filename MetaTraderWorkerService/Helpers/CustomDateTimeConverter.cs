@@ -1,6 +1,7 @@
-using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+
+namespace MetaTraderWorkerService.Helpers;
 
 public class CustomDateTimeConverter : JsonConverter<DateTime>
 {

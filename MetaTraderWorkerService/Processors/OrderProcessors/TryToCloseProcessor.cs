@@ -2,7 +2,7 @@ using MetaTraderWorkerService.Enums;
 using MetaTraderWorkerService.Models;
 using MetaTraderWorkerService.Repository.Orders;
 
-namespace MetaTraderWorkerService.Processors;
+namespace MetaTraderWorkerService.Processors.OrderProcessors;
 
 public class TryToCloseProcessor : IOrderActionProcessor
 {
