@@ -7,11 +7,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="194ecc76-e850-4399-92c6-6dc93bcb977e" name="Changes" comment="Refactor trade processing and add new service order handling&#10;&#10;Commented out existing trade processing in various workers and moved it to the main `Worker` class. Introduced new `ServiceOrder` model and repository, as well as processors for handling service orders. Added logging and performance metrics tracking, updated logging levels in configurations.">
-      <change afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Helpers/PipCalculator.cs" afterDir="false" />
+    <list default="true" id="194ecc76-e850-4399-92c6-6dc93bcb977e" name="Changes" comment="Add dynamic stop-loss adjustment&#10;&#10;Introduced PipCalculator for pip and point conversions. Enhanced TradeProcessor to dynamically update stop-loss based on current trade profit and implemented ServiceOrder for stop-loss updates.">
+      <change afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Processors/OrderProcessors/BuyMarketProcessor.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Processors/OrderProcessors/SellMarketProcessor.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.MetaTraderWorkerService/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.MetaTraderWorkerService/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/MetaTraderWorkerService.sln.DotSettings.user" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService/Services/TradeServices/TradeProcessor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Services/TradeServices/TradeProcessor.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService/Processors/OrderProcessors/OrderProcessor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Processors/OrderProcessors/OrderProcessor.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Program.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,6 +52,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/e497db2a4ab53bdce6335c79064f15a515e338cd0f9c039a9b6914b9eeb3/AggregateException.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/ebe65732adf281db03e388c6486e28a574c76c8be32d99ca59dcfbecc65/Uri.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/f7e838f3c047ee76488fa4c2b9b1bffb2b33b04a2780de4664de937e024e97/CallSiteFactory.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://E:/Programming/TradingWithGuys/MetaTraderWorkerService/MetaTraderWorkerService/Processors/OrderProcessors/OrderProcessor.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProblemsViewState">
@@ -137,7 +139,7 @@
       <workItem from="1732345472437" duration="58000" />
       <workItem from="1732556339415" duration="368000" />
       <workItem from="1732560817800" duration="1666000" />
-      <workItem from="1732720175374" duration="7429000" />
+      <workItem from="1732720175374" duration="9768000" />
     </task>
     <task id="LOCAL-00001" summary="Add initial implementation for MetaTraderWorkerService&#10;&#10;This commit includes the setup for the MetaTraderWorkerService project. Added configurations, data model, HTTP services, and necessary project files like `appsettings.json`. The project structure and initial classes have been defined to support database interactions and API requests.">
       <option name="closed" value="true" />
@@ -451,7 +453,15 @@
       <option name="project" value="LOCAL" />
       <updated>1732723712148</updated>
     </task>
-    <option name="localTasksCounter" value="40" />
+    <task id="LOCAL-00040" summary="Add dynamic stop-loss adjustment&#10;&#10;Introduced PipCalculator for pip and point conversions. Enhanced TradeProcessor to dynamically update stop-loss based on current trade profit and implemented ServiceOrder for stop-loss updates.">
+      <option name="closed" value="true" />
+      <created>1732727749368</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1732727749368</updated>
+    </task>
+    <option name="localTasksCounter" value="41" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -475,7 +485,6 @@
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Update log delay and add logging for trade requests&#10;&#10;Increased delay interval in TradeWorker to improve order spacing. Added logging in MetaApiService to track trade requests for better monitoring. Commented out `GetActiveTradesAsync` for future reactivation." />
     <MESSAGE value="Add SignalCommandCode and enhance order processing&#10;&#10;Introduced new SignalCommandCode values and integrated them into MetaTraderOrder. Enhanced OrderProcessor with added methods for handling position modifications and partial closures. Improved error handling and status updates for order cancellations." />
     <MESSAGE value="Add trade repository and partial close handling&#10;&#10;Introduced ITradeRepository and its implementation for managing trades. Enhanced OrderProcessor to handle partial close orders and added corresponding DTOs. Removed the obsolete TradeStatus enum, improving the overall trade management logic." />
     <MESSAGE value="Add stop-loss modification functionality&#10;&#10;Introduced request and response DTOs for modifying stop-loss. Updated MetaTraderTrade model and order processing logic to support the new stop-loss modification feature. Enhanced MetaApiService with a method to handle stop-loss updates and improved order status handling." />
@@ -500,7 +509,8 @@
     <MESSAGE value="Add TradeHistoryRepository to DI container&#10;&#10;Included TradeHistoryRepository in the dependency injection container to manage trade history operations. Updated IntelliJ IDEA configuration to reflect recent changes in the project setup." />
     <MESSAGE value="Refactor trade history repository methods for consistency" />
     <MESSAGE value="Refactor trade processing and add new service order handling&#10;&#10;Commented out existing trade processing in various workers and moved it to the main `Worker` class. Introduced new `ServiceOrder` model and repository, as well as processors for handling service orders. Added logging and performance metrics tracking, updated logging levels in configurations." />
-    <option name="LAST_COMMIT_MESSAGE" value="Refactor trade processing and add new service order handling&#10;&#10;Commented out existing trade processing in various workers and moved it to the main `Worker` class. Introduced new `ServiceOrder` model and repository, as well as processors for handling service orders. Added logging and performance metrics tracking, updated logging levels in configurations." />
+    <MESSAGE value="Add dynamic stop-loss adjustment&#10;&#10;Introduced PipCalculator for pip and point conversions. Enhanced TradeProcessor to dynamically update stop-loss based on current trade profit and implemented ServiceOrder for stop-loss updates." />
+    <option name="LAST_COMMIT_MESSAGE" value="Add dynamic stop-loss adjustment&#10;&#10;Introduced PipCalculator for pip and point conversions. Enhanced TradeProcessor to dynamically update stop-loss based on current trade profit and implemented ServiceOrder for stop-loss updates." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -546,42 +556,16 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/MetaTraderWorkerService/Processors/OrderProcessors/OrderProcessor.cs</url>
-          <line>42</line>
+          <line>44</line>
           <properties documentPath="E:\Programming\TradingWithGuys\MetaTraderWorkerService\MetaTraderWorkerService\Processors\OrderProcessors\OrderProcessor.cs" containingFunctionPresentation="Method 'ProcessCreatedOrdersAsync'">
             <startOffsets>
-              <option value="1741" />
+              <option value="1944" />
             </startOffsets>
             <endOffsets>
-              <option value="1777" />
+              <option value="1980" />
             </endOffsets>
           </properties>
-          <option name="timeStamp" value="52" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/MetaTraderWorkerService/Processors/OrderProcessors/OrderProcessor.cs</url>
-          <line>35</line>
-          <properties documentPath="E:\Programming\TradingWithGuys\MetaTraderWorkerService\MetaTraderWorkerService\Processors\OrderProcessors\OrderProcessor.cs" containingFunctionPresentation="Method 'ProcessCreatedOrdersAsync'">
-            <startOffsets>
-              <option value="1472" />
-            </startOffsets>
-            <endOffsets>
-              <option value="1535" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="53" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/MetaTraderWorkerService/Processors/BaseProcessors/BaseOpenTradeProcessor.cs</url>
-          <line>31</line>
-          <properties documentPath="E:\Programming\TradingWithGuys\MetaTraderWorkerService\MetaTraderWorkerService\Processors\BaseProcessors\BaseOpenTradeProcessor.cs" containingFunctionPresentation="Method 'ProcessAsync'">
-            <startOffsets>
-              <option value="1126" />
-            </startOffsets>
-            <endOffsets>
-              <option value="1202" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="54" />
+          <option name="timeStamp" value="55" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

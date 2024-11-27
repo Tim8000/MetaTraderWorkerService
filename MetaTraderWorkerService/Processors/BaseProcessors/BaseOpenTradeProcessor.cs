@@ -29,9 +29,21 @@ public abstract class BaseOpenTradeProcessor : IOrderActionProcessor
         SetOrderConfigurations(metaTraderOrder);
         await _orderRepository.UpdateOrderAsync(metaTraderOrder);
 
-        var metaTraderOrderDto = CreateMetaTraderOpenTradeOrderDto(metaTraderOrder);
 
-        var orderResponseDto = await _metaApiService.PlacePendingOrderAsync(metaTraderOrderDto);
+
+        if (metaTraderOrder.ActionType == ActionType.ORDER_TYPE_BUY ||
+            metaTraderOrder.ActionType == ActionType.ORDER_TYPE_SELL)
+        {
+            var metaTraderOrderByMarketDto = CreateOpenTradeByMarketPriceRequestDto(metaTraderOrder);
+            var orderResponseDto = await _metaApiService.OpenTradeByMarketPriceAsync(metaTraderOrderByMarketDto);
+        }
+
+        if (metaTraderOrder.ActionType == ActionType.ORDER_TYPE_BUY_LIMIT ||
+            metaTraderOrder.ActionType == ActionType.ORDER_TYPE_SELL_LIMIT)
+        {
+            var metaTraderOrderDto = CreateMetaTraderOpenTradeOrderDto(metaTraderOrder);
+            var orderResponseDto = await _metaApiService.PlacePendingOrderAsync(metaTraderOrderDto);
+        }
 
         if (orderResponseDto != null)
         {
