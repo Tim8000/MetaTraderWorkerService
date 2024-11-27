@@ -268,74 +268,97 @@ public class TradeProcessor : ITradeProcessor
             var openPrice = openedTrade.OpenPrice;
             var currentPrice = (decimal)openedTrade.CurrentPrice;
             _logger.LogInformation($"CURRENT PRICE = {currentPrice}");
-            var currentStopLoss = (decimal?)openedTrade.StopLoss ?? openPrice;
+
+            // Calculate pip difference from open price
+            var pipDifference = PipCalculator.CalculatePipDifference(openPrice, currentPrice);
+
+            // Find the latest stop-loss adjustment (if any)
+            var latestStopLoss = openedTrade.ServiceOrders
+                .Where(so => so.ActionType == "MOVE_STOPLOSS")
+                .OrderByDescending(so => so.CreatedAt)
+                .FirstOrDefault()?.StopLoss ?? openedTrade.StopLoss;
+
+            // Determine the next threshold based on the latest stop-loss
+            var latestPipDifference = PipCalculator.CalculatePipDifference(openPrice, (decimal?)latestStopLoss ?? openPrice);
+            var nextThreshold = latestPipDifference >= 20
+                ? latestPipDifference + 10
+                : 20; // Start at +20 pips if no valid threshold exists
 
             if (openedTrade.Type == "POSITION_TYPE_BUY")
             {
-                if (currentPrice > openPrice) // Only adjust if in profit
+                if (currentPrice > openPrice && pipDifference >= nextThreshold)
                 {
-                    var pipDifference = PipCalculator.CalculatePipDifference(openPrice, currentPrice);
-
-                    // Calculate the target stop-loss dynamically
-                    var targetStopLoss = openPrice + Math.Floor((pipDifference - 20) / 10) * (10 * 0.01m);
-
-                    if (pipDifference >= 20 && currentStopLoss < targetStopLoss)
+                    // Calculate the new target stop-loss based on the next threshold
+                    var targetStopLoss = nextThreshold switch
                     {
-                        // Update the stop-loss to the target value
-                        openedTrade.StopLoss = targetStopLoss;
+                        20 => openPrice, // At +20 pips, stop-loss = open price
+                        _ => openPrice + (nextThreshold - 10) * 0.01m // Increment stop-loss
+                    };
 
-                        // Create a ServiceOrder
-                        var serviceOrder = new ServiceOrder
-                        {
-                            Id = Guid.NewGuid(),
-                            ActionType = "MOVE_STOPLOSS",
-                            MetaTraderTrade = openedTrade,
-                            StopLoss = targetStopLoss,
-                            Status = ServiceOrderStatus.Pending,
-                            TakeProfit = openedTrade.TakeProfit,
-                            CreatedAt = DateTime.UtcNow,
-                            PositionId = openedTrade.Id
-                        };
-
-                        // Save the ServiceOrder
-                        await _serviceOrderRepository.AddAsync(serviceOrder);
+                    // Skip if the target stop-loss is already set
+                    if (latestStopLoss == targetStopLoss)
+                    {
+                        _logger.LogInformation($"Stop-loss already set to {targetStopLoss}, skipping.");
+                        continue;
                     }
+
+                    // Update the stop-loss
+                    openedTrade.StopLoss = targetStopLoss;
+
+                    // Create a ServiceOrder
+                    var serviceOrder = new ServiceOrder
+                    {
+                        Id = Guid.NewGuid(),
+                        ActionType = "MOVE_STOPLOSS",
+                        MetaTraderTrade = openedTrade,
+                        StopLoss = targetStopLoss,
+                        Status = ServiceOrderStatus.Pending,
+                        TakeProfit = openedTrade.TakeProfit,
+                        CreatedAt = DateTime.UtcNow,
+                        PositionId = openedTrade.Id
+                    };
+
+                    // Save the ServiceOrder
+                    await _serviceOrderRepository.AddAsync(serviceOrder);
                 }
             }
 
             if (openedTrade.Type == "POSITION_TYPE_SELL")
             {
-                if (currentPrice < openPrice) // Only adjust if in profit
+                if (currentPrice < openPrice && pipDifference >= nextThreshold)
                 {
-                    var pipDifference = PipCalculator.CalculatePipDifference(openPrice, currentPrice);
-
-                    // Calculate the target stop-loss dynamically
-                    var targetStopLoss = openPrice - Math.Floor((pipDifference - 20) / 10) * (10 * 0.01m);
-
-                    if (pipDifference >= 20 && currentStopLoss > targetStopLoss)
+                    // Calculate the new target stop-loss based on the next threshold
+                    var targetStopLoss = nextThreshold switch
                     {
-                        // Update the stop-loss to the target value
-                        openedTrade.StopLoss = targetStopLoss;
+                        20 => openPrice, // At +20 pips, stop-loss = open price
+                        _ => openPrice - (nextThreshold - 10) * 0.01m // Decrement stop-loss
+                    };
 
-                        // Create a ServiceOrder
-                        var serviceOrder = new ServiceOrder
-                        {
-                            Id = Guid.NewGuid(),
-                            ActionType = "MOVE_STOPLOSS",
-                            MetaTraderTrade = openedTrade,
-                            StopLoss = targetStopLoss,
-                            Status = ServiceOrderStatus.Pending,
-                            TakeProfit = openedTrade.TakeProfit,
-                            CreatedAt = DateTime.UtcNow,
-                            PositionId = openedTrade.Id
-                        };
-
-                        if (openedTrade.ServiceOrders.Any(so => so.StopLoss != targetStopLoss))
-                        {
-                            // Save the ServiceOrder
-                            await _serviceOrderRepository.AddAsync(serviceOrder);
-                        }
+                    // Skip if the target stop-loss is already set
+                    if (latestStopLoss == targetStopLoss)
+                    {
+                        _logger.LogInformation($"Stop-loss already set to {targetStopLoss}, skipping.");
+                        continue;
                     }
+
+                    // Update the stop-loss
+                    openedTrade.StopLoss = targetStopLoss;
+
+                    // Create a ServiceOrder
+                    var serviceOrder = new ServiceOrder
+                    {
+                        Id = Guid.NewGuid(),
+                        ActionType = "MOVE_STOPLOSS",
+                        MetaTraderTrade = openedTrade,
+                        StopLoss = targetStopLoss,
+                        Status = ServiceOrderStatus.Pending,
+                        TakeProfit = openedTrade.TakeProfit,
+                        CreatedAt = DateTime.UtcNow,
+                        PositionId = openedTrade.Id
+                    };
+
+                    // Save the ServiceOrder
+                    await _serviceOrderRepository.AddAsync(serviceOrder);
                 }
             }
         }

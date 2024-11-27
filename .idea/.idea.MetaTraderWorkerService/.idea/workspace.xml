@@ -7,13 +7,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="194ecc76-e850-4399-92c6-6dc93bcb977e" name="Changes" comment="Add dynamic stop-loss adjustment&#10;&#10;Introduced PipCalculator for pip and point conversions. Enhanced TradeProcessor to dynamically update stop-loss based on current trade profit and implemented ServiceOrder for stop-loss updates.">
+    <list default="true" id="194ecc76-e850-4399-92c6-6dc93bcb977e" name="Changes" comment="Enhance ServiceOrder and Trade Handling&#10;&#10;Added new fields such as `TakeProfit`, `CreatedAt`, and `PositionId` to the `ServiceOrder` model and ensured they are properly populated throughout the codebase. Enhanced trade processing logic to handle different order responses, including distinct handling for market and limit orders, with improved logging and error handling. Included related entities in database queries to maintain consistency and integrity.">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.MetaTraderWorkerService/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.MetaTraderWorkerService/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService/Models/ServiceOrder.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Models/ServiceOrder.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService/Processors/BaseProcessors/BaseOpenTradeProcessor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Processors/BaseProcessors/BaseOpenTradeProcessor.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService/Processors/ServiceOrderProcessors/ServiceOrderMoveStopLossProcessor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Processors/ServiceOrderProcessors/ServiceOrderMoveStopLossProcessor.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService/Repository/ServiceOrders/ServiceOrderRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Repository/ServiceOrders/ServiceOrderRepository.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService/Repository/Trades/TradeRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Repository/Trades/TradeRepository.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MetaTraderWorkerService/Services/TradeServices/TradeProcessor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MetaTraderWorkerService/Services/TradeServices/TradeProcessor.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -92,7 +87,7 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager" selected=".NET Launch Settings Profile.MetaTraderWorkerService">
+  <component name="RunManager" selected="Publish to custom server.PublishToDebian">
     <configuration name="PublishToFolder" type="DotNetFolderPublish" factoryName="Publish to folder">
       <riderPublish configuration="Release" delete_existing_files="true" platform="Any CPU" runtime="linux-x64" target_folder="$PROJECT_DIR$/MetaTraderWorkerService/bin/Release/net8.0/linux-x64/publish" target_framework="net8.0" uuid_high="1871667714893237941" uuid_low="-7699535203307637525" />
       <method v="2" />
@@ -467,7 +462,15 @@
       <option name="project" value="LOCAL" />
       <updated>1732727749368</updated>
     </task>
-    <option name="localTasksCounter" value="41" />
+    <task id="LOCAL-00041" summary="Enhance ServiceOrder and Trade Handling&#10;&#10;Added new fields such as `TakeProfit`, `CreatedAt`, and `PositionId` to the `ServiceOrder` model and ensured they are properly populated throughout the codebase. Enhanced trade processing logic to handle different order responses, including distinct handling for market and limit orders, with improved logging and error handling. Included related entities in database queries to maintain consistency and integrity.">
+      <option name="closed" value="true" />
+      <created>1732737223974</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1732737223974</updated>
+    </task>
+    <option name="localTasksCounter" value="42" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -491,7 +494,6 @@
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Add SignalCommandCode and enhance order processing&#10;&#10;Introduced new SignalCommandCode values and integrated them into MetaTraderOrder. Enhanced OrderProcessor with added methods for handling position modifications and partial closures. Improved error handling and status updates for order cancellations." />
     <MESSAGE value="Add trade repository and partial close handling&#10;&#10;Introduced ITradeRepository and its implementation for managing trades. Enhanced OrderProcessor to handle partial close orders and added corresponding DTOs. Removed the obsolete TradeStatus enum, improving the overall trade management logic." />
     <MESSAGE value="Add stop-loss modification functionality&#10;&#10;Introduced request and response DTOs for modifying stop-loss. Updated MetaTraderTrade model and order processing logic to support the new stop-loss modification feature. Enhanced MetaApiService with a method to handle stop-loss updates and improved order status handling." />
     <MESSAGE value="Add stop-loss modification functionality&#10;&#10;Introduced request and response DTOs for modifying stop-loss. Updated MetaTraderTrade model and order processing logic to support stop-loss modifications. Enhanced MetaApiService to handle stop-loss updates and improved order status handling." />
@@ -516,24 +518,12 @@
     <MESSAGE value="Refactor trade history repository methods for consistency" />
     <MESSAGE value="Refactor trade processing and add new service order handling&#10;&#10;Commented out existing trade processing in various workers and moved it to the main `Worker` class. Introduced new `ServiceOrder` model and repository, as well as processors for handling service orders. Added logging and performance metrics tracking, updated logging levels in configurations." />
     <MESSAGE value="Add dynamic stop-loss adjustment&#10;&#10;Introduced PipCalculator for pip and point conversions. Enhanced TradeProcessor to dynamically update stop-loss based on current trade profit and implemented ServiceOrder for stop-loss updates." />
-    <option name="LAST_COMMIT_MESSAGE" value="Add dynamic stop-loss adjustment&#10;&#10;Introduced PipCalculator for pip and point conversions. Enhanced TradeProcessor to dynamically update stop-loss based on current trade profit and implemented ServiceOrder for stop-loss updates." />
+    <MESSAGE value="Enhance ServiceOrder and Trade Handling&#10;&#10;Added new fields such as `TakeProfit`, `CreatedAt`, and `PositionId` to the `ServiceOrder` model and ensured they are properly populated throughout the codebase. Enhanced trade processing logic to handle different order responses, including distinct handling for market and limit orders, with improved logging and error handling. Included related entities in database queries to maintain consistency and integrity." />
+    <option name="LAST_COMMIT_MESSAGE" value="Enhance ServiceOrder and Trade Handling&#10;&#10;Added new fields such as `TakeProfit`, `CreatedAt`, and `PositionId` to the `ServiceOrder` model and ensured they are properly populated throughout the codebase. Enhanced trade processing logic to handle different order responses, including distinct handling for market and limit orders, with improved logging and error handling. Included related entities in database queries to maintain consistency and integrity." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/MetaTraderWorkerService/Services/TradeServices/TradeProcessor.cs</url>
-          <line>300</line>
-          <properties documentPath="E:\Programming\TradingWithGuys\MetaTraderWorkerService\MetaTraderWorkerService\Services\TradeServices\TradeProcessor.cs" containingFunctionPresentation="Method 'ProcessMovingStopLossAsync'">
-            <startOffsets>
-              <option value="13569" />
-            </startOffsets>
-            <endOffsets>
-              <option value="13622" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="49" />
-        </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/MetaTraderWorkerService/Processors/ServiceOrderProcessors/ServiceOrderProcessor.cs</url>
           <line>47</line>
@@ -559,32 +549,6 @@
             </endOffsets>
           </properties>
           <option name="timeStamp" value="55" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/MetaTraderWorkerService/Services/TradeServices/TradeProcessor.cs</url>
-          <line>263</line>
-          <properties documentPath="E:\Programming\TradingWithGuys\MetaTraderWorkerService\MetaTraderWorkerService\Services\TradeServices\TradeProcessor.cs" containingFunctionPresentation="Method 'ProcessMovingStopLossAsync'">
-            <startOffsets>
-              <option value="11795" />
-            </startOffsets>
-            <endOffsets>
-              <option value="11863" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="56" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/MetaTraderWorkerService/Services/TradeServices/TradeProcessor.cs</url>
-          <line>332</line>
-          <properties documentPath="E:\Programming\TradingWithGuys\MetaTraderWorkerService\MetaTraderWorkerService\Services\TradeServices\TradeProcessor.cs" containingFunctionPresentation="Method 'ProcessMovingStopLossAsync'">
-            <startOffsets>
-              <option value="15006" />
-            </startOffsets>
-            <endOffsets>
-              <option value="15077" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="58" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
