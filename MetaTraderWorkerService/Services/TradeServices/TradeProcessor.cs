@@ -1,10 +1,12 @@
 using MetaTraderWorkerService.Dtos.Mt5Trades;
 using MetaTraderWorkerService.Enums;
 using MetaTraderWorkerService.Enums.Mt5Trades;
+using MetaTraderWorkerService.Helpers;
 using MetaTraderWorkerService.Http;
 using MetaTraderWorkerService.Mappers;
 using MetaTraderWorkerService.Models;
 using MetaTraderWorkerService.Repository.Orders;
+using MetaTraderWorkerService.Repository.ServiceOrders;
 using MetaTraderWorkerService.Repository.Trades;
 using MetaTraderWorkerService.Services.MarketServices;
 using Newtonsoft.Json;
@@ -20,13 +22,16 @@ public class TradeProcessor : ITradeProcessor
     private readonly IMetaApiService _metaApiService;
     private readonly IMarketService _marketService;
     private readonly ITradeHistoryRepository _tradeHistoryRepository;
+    private readonly IServiceOrderRepository _serviceOrderRepository;
     private readonly string _accountId;
 
     private const string GetPositionsEndpoint = "/users/current/accounts/{0}/positions";
     private const string CreateTradeEndpoint = "/users/current/accounts/{0}/trade";
 
     public TradeProcessor(IHttpService httpService, IConfiguration configuration, IOrderRepository orderRepository,
-        ITradeRepository tradeRepository, ILogger<TradeProcessor> logger, IMetaApiService metaApiService, IMarketService marketService, ITradeHistoryRepository tradeHistoryRepository)
+        ITradeRepository tradeRepository, ILogger<TradeProcessor> logger, IMetaApiService metaApiService,
+        IMarketService marketService, ITradeHistoryRepository tradeHistoryRepository,
+        IServiceOrderRepository serviceOrderRepository)
     {
         _httpService = httpService;
         _orderRepository = orderRepository;
@@ -35,6 +40,7 @@ public class TradeProcessor : ITradeProcessor
         _metaApiService = metaApiService;
         _marketService = marketService;
         _tradeHistoryRepository = tradeHistoryRepository;
+        _serviceOrderRepository = serviceOrderRepository;
 
         // Retrieve accountId from the configuration
         _accountId = configuration["MetaApi:AccountId"];
@@ -201,7 +207,8 @@ public class TradeProcessor : ITradeProcessor
                         trade.Status = TradeStatus.Closed;
 
                         await _tradeRepository.UpdateTradeAsync(trade);
-                        _logger.LogInformation($"Trade {trade.Id} marked as closed due to BrokerComment: {brokerComment}");
+                        _logger.LogInformation(
+                            $"Trade {trade.Id} marked as closed due to BrokerComment: {brokerComment}");
                     }
                 }
             }
@@ -216,7 +223,9 @@ public class TradeProcessor : ITradeProcessor
 
         var tradesFromOneInitialSignal = openedTrades
             .SelectMany(trade => trade.MetaTraderOrders
-                .Where(order => order.MetaTraderInitialTradeSignal.IsInitialSignal) // Only include orders where IsInitialSignal is true
+                .Where(order =>
+                    order.MetaTraderInitialTradeSignal
+                        .IsInitialSignal) // Only include orders where IsInitialSignal is true
                 .Select(order => new
                 {
                     Trade = trade,
@@ -254,6 +263,72 @@ public class TradeProcessor : ITradeProcessor
     {
         var openedTrades = await _tradeRepository.GetAllOpenedTradesAsync();
 
-        throw new NotImplementedException();
+        foreach (var openedTrade in openedTrades)
+        {
+            var openPrice = openedTrade.OpenPrice;
+            var currentPrice = (decimal)openedTrade.CurrentPrice;
+            _logger.LogInformation($"CURRENT PRICE = {currentPrice}");
+            var currentStopLoss = (decimal?)openedTrade.StopLoss ?? openPrice;
+
+            if (openedTrade.Type == "POSITION_TYPE_BUY")
+            {
+                if (currentPrice > openPrice) // Only adjust if in profit
+                {
+                    var pipDifference = PipCalculator.CalculatePipDifference(openPrice, currentPrice);
+
+                    // Calculate the target stop-loss dynamically
+                    var targetStopLoss = openPrice + Math.Floor((pipDifference - 20) / 10) * (10 * 0.01m);
+
+                    if (pipDifference >= 20 && currentStopLoss < targetStopLoss)
+                    {
+                        // Update the stop-loss to the target value
+                        openedTrade.StopLoss = targetStopLoss;
+
+                        // Create a ServiceOrder
+                        var serviceOrder = new ServiceOrder
+                        {
+                            Id = Guid.NewGuid(),
+                            ActionType = "MOVE_STOPLOSS",
+                            MetaTraderTrade = openedTrade,
+                            StopLoss = targetStopLoss,
+                            Status = ServiceOrderStatus.Pending
+                        };
+
+                        // Save the ServiceOrder
+                        await _serviceOrderRepository.AddAsync(serviceOrder);
+                    }
+                }
+            }
+
+            if (openedTrade.Type == "POSITION_TYPE_SELL")
+            {
+                if (currentPrice < openPrice) // Only adjust if in profit
+                {
+                    var pipDifference = PipCalculator.CalculatePipDifference(openPrice, currentPrice);
+
+                    // Calculate the target stop-loss dynamically
+                    var targetStopLoss = openPrice - Math.Floor((pipDifference - 20) / 10) * (10 * 0.01m);
+
+                    if (pipDifference >= 20 && currentStopLoss > targetStopLoss)
+                    {
+                        // Update the stop-loss to the target value
+                        openedTrade.StopLoss = targetStopLoss;
+
+                        // Create a ServiceOrder
+                        var serviceOrder = new ServiceOrder
+                        {
+                            Id = Guid.NewGuid(),
+                            ActionType = "MOVE_STOPLOSS",
+                            MetaTraderTrade = openedTrade,
+                            StopLoss = targetStopLoss,
+                            Status = ServiceOrderStatus.Pending
+                        };
+
+                        // Save the ServiceOrder
+                        await _serviceOrderRepository.AddAsync(serviceOrder);
+                    }
+                }
+            }
+        }
     }
 }
