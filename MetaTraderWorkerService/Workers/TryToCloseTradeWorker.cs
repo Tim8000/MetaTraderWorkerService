@@ -25,9 +25,8 @@ public class TryToCloseTradeWorker : BackgroundService
         {
             using (var scope = _serviceProvider.CreateScope())
             {
-                var tradeProcessorService = scope.ServiceProvider.GetRequiredService<ITradeProcessor>();
-
-                await tradeProcessorService.ProcessTryToCloseTradesAsync();
+                // var tradeProcessorService = scope.ServiceProvider.GetRequiredService<ITradeProcessor>();
+                // await tradeProcessorService.ProcessTryToCloseTradesAsync();
             }
 
             // Wait for a defined interval before the next iteration

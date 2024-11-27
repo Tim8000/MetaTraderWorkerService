@@ -1,6 +1,8 @@
+using System.Diagnostics;
 using MetaTraderWorkerService.Processors.OrderProcessors;
 using MetaTraderWorkerService.Services;
 using MetaTraderWorkerService.Services.OrderServices;
+using MetaTraderWorkerService.Services.TradeServices;
 
 namespace MetaTraderWorkerService.Workers;
 
@@ -21,38 +23,20 @@ public class Worker : BackgroundService
         {
             using (var scope = _serviceProvider.CreateScope())
             {
+                var stopwatch = Stopwatch.StartNew();
                 var metaApiService = scope.ServiceProvider.GetRequiredService<IMetaApiService>();
-// await metaApiService.InitializeAsync();
+                var orderStatusService = scope.ServiceProvider.GetRequiredService<IOrderStatusService>();
                 var orderProcessor = scope.ServiceProvider.GetRequiredService<IOrderProcessor>();
+                var tradeProcessorService = scope.ServiceProvider.GetRequiredService<ITradeProcessor>();
                 await orderProcessor.ProcessCreatedOrdersAsync();
-
-
-
-                // Use metaApiService as needed, e.g., metaApiService.PlaceMarketOrderAsync("XAUUSD", 0.1, "BUY");
-                // Remember to handle exceptions as needed
+                await orderStatusService.CheckOrderStatus();
+                await tradeProcessorService.ProcessActiveTradesAsync();
+                await tradeProcessorService.ProcessTradeHistoryAsync();
+                await tradeProcessorService.ProcessMovingStopLossAsync();
+                await tradeProcessorService.ProcessTryToCloseTradesAsync();
+                _logger.LogDebug("All processes running time: {time}", stopwatch.Elapsed);
             }
 
-            // await _metaApiService.PlacePendingOrderAsync(
-            //     symbol: "XAUUSD",
-            //     volume: 0.1,
-            //     actionType: "ORDER_TYPE_SELL_LIMIT",
-            //     openPrice: 2600.00,
-            //     stopLoss: 2620.00,
-            //     takeProfit: 2580.00,
-            //     slippage: 2,
-            //     clientId: "123",
-            //     comment: "Pending order for XAUUSD",
-            //     stopLossUnits: "ABSOLUTE_PRICE",
-            //     takeProfitUnits: "ABSOLUTE_PRICE",
-            //     stopPriceBase: "OPEN_PRICE",
-            //     expirationType: "ORDER_TIME_SPECIFIED",
-            //     expirationTime: DateTime.Parse("2024-12-01T12:00:00Z")
-            // );
-
-            // Place a market order as an example
-            // await _metaApiService.PlaceMarketOrderAsync("XAUUSD", 0.1, "BUY");
-
-            // Wait for a defined interval before placing the next order
             await Task.Delay(TimeSpan.FromSeconds(1), stoppingToken);
         }
     }

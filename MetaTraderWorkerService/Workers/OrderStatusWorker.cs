@@ -20,8 +20,8 @@ public class OrderStatusWorker : BackgroundService
         {
             using (var scope = _serviceProvider.CreateScope())
             {
-                var orderStatusService = scope.ServiceProvider.GetRequiredService<IOrderStatusService>();
-                await orderStatusService.CheckOrderStatus();
+                // var orderStatusService = scope.ServiceProvider.GetRequiredService<IOrderStatusService>();
+                // await orderStatusService.CheckOrderStatus();
             }
 
             await Task.Delay(TimeSpan.FromSeconds(1), stoppingToken);

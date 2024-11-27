@@ -8,4 +8,5 @@ public interface ITradeProcessor
     Task ProcessActiveTradesAsync();
     Task ProcessTradeHistoryAsync();
     Task ProcessTryToCloseTradesAsync();
+    Task ProcessMovingStopLossAsync();
 }

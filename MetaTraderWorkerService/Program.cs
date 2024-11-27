@@ -5,8 +5,10 @@ using MetaTraderWorkerService.Data;
 using MetaTraderWorkerService.Http;
 using MetaTraderWorkerService.Processors;
 using MetaTraderWorkerService.Processors.OrderProcessors;
+using MetaTraderWorkerService.Processors.ServiceOrderProcessors;
 using MetaTraderWorkerService.Repository;
 using MetaTraderWorkerService.Repository.Orders;
+using MetaTraderWorkerService.Repository.ServiceOrders;
 using MetaTraderWorkerService.Repository.Trades;
 using MetaTraderWorkerService.Services;
 using MetaTraderWorkerService.Services.MarketServices;
@@ -32,6 +34,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))); // Adjust for your database
 builder.Services.Configure<MetaApiSettings>(builder.Configuration.GetSection("MetaApi"));
 // Register HttpService and MetaApiService
+// Hosted services
+builder.Services.AddHostedService<ServiceOrderProcessor>();
+
 builder.Services.AddScoped<IHttpService>(sp => new HttpService(accountBaseUrl, tradeBaseUrl, authToken));
 builder.Services.AddScoped<IMarketService, MarketService>();
 builder.Services.AddScoped<IOrderProcessor, OrderProcessor>();
@@ -46,6 +51,9 @@ builder.Services.AddScoped<IOrderActionProcessor, PartialPositionCloseProcessor>
 builder.Services.AddScoped<IOrderActionProcessor, SellLimitProcessor>();
 builder.Services.AddScoped<IOrderActionProcessor, StopLossProcessor>();
 builder.Services.AddScoped<IOrderActionProcessor, TryToCloseProcessor>();
+builder.Services.AddScoped<IServiceOrderRepository, ServiceOrderRepository>();
+builder.Services.AddScoped<IServiceOrderActionProcessor, ServiceOrderMoveStopLossProcessor>();
+// builder.Services.AddScoped<IServiceOrderActionProcessor, CloseTradeProcessor>();
 builder.Services.AddScoped<IMetaApiService, MetaApiService>(sp =>
     new MetaApiService(
         sp.GetRequiredService<IHttpService>(),

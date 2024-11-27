@@ -172,7 +172,6 @@ public class TradeProcessor : ITradeProcessor
             var trade = tradeHistory.Trade;
             var trades = tradeHistory.History;
 
-            // Check if there are exactly 2 trades and one is DEAL_ENTRY_OUT
             if (trades.Count > 0)
             {
                 var metaTraderTradeHistories = trades
@@ -189,17 +188,22 @@ public class TradeProcessor : ITradeProcessor
                     if (existingEntity == null)
                     {
                         history.MetaTraderTrade = trade;
-                        // trade.MetaTraderTradeHistories.Add(history);
-                        // await _tradeRepository.UpdateTradeAsync(trade);
                         await _tradeHistoryRepository.AddAsync(history);
                     }
-                }
-                //TODO: add trade history and check trade status if it was closed.
-                // trade.State = TradeState.Closed;
-                // trade.Status = TradeStatus.Closed;
 
-                // Asynchronously update the trade
-                // await _tradeRepository.UpdateTradeAsync(trade);
+                    var brokerComment = history.BrokerComment;
+                    var containsSlOrTp = brokerComment?.ToLowerInvariant().Contains("sl") == true ||
+                                         brokerComment?.ToLowerInvariant().Contains("tp") == true;
+
+                    if (containsSlOrTp && trade.State != TradeState.Closed)
+                    {
+                        trade.State = TradeState.Closed;
+                        trade.Status = TradeStatus.Closed;
+
+                        await _tradeRepository.UpdateTradeAsync(trade);
+                        _logger.LogInformation($"Trade {trade.Id} marked as closed due to BrokerComment: {brokerComment}");
+                    }
+                }
             }
         }
 
@@ -244,5 +248,12 @@ public class TradeProcessor : ITradeProcessor
         //         }
         //     }
         // }
+    }
+
+    public async Task ProcessMovingStopLossAsync()
+    {
+        var openedTrades = await _tradeRepository.GetAllOpenedTradesAsync();
+
+        throw new NotImplementedException();
     }
 }

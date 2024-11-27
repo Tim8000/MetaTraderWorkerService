@@ -25,10 +25,11 @@ public class TradeWorker : BackgroundService
         {
             using (var scope = _serviceProvider.CreateScope())
             {
-                var tradeProcessorService = scope.ServiceProvider.GetRequiredService<ITradeProcessor>();
-
-                await tradeProcessorService.ProcessActiveTradesAsync();
-                await tradeProcessorService.ProcessTradeHistoryAsync();
+                // var tradeProcessorService = scope.ServiceProvider.GetRequiredService<ITradeProcessor>();
+                //
+                // await tradeProcessorService.ProcessActiveTradesAsync();
+                // await tradeProcessorService.ProcessTradeHistoryAsync();
+                // await tradeProcessorService.ProcessMovingStopLossAsync();
             }
 
             // Wait for a defined interval before the next iteration
