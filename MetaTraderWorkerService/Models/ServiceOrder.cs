@@ -13,4 +13,5 @@ public class ServiceOrder
     public string? ErrorMessage { get; set; } // Error message on failure
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow; // Creation timestamp
     public DateTime? ExecutedAt { get; set; } // Execution timestamp
+    public string PositionId { get; set; } // MetaTrader position ID
 }

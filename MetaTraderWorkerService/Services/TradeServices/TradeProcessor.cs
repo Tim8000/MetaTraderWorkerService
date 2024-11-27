@@ -291,7 +291,10 @@ public class TradeProcessor : ITradeProcessor
                             ActionType = "MOVE_STOPLOSS",
                             MetaTraderTrade = openedTrade,
                             StopLoss = targetStopLoss,
-                            Status = ServiceOrderStatus.Pending
+                            Status = ServiceOrderStatus.Pending,
+                            TakeProfit = openedTrade.TakeProfit,
+                            CreatedAt = DateTime.UtcNow,
+                            PositionId = openedTrade.Id
                         };
 
                         // Save the ServiceOrder
@@ -321,11 +324,17 @@ public class TradeProcessor : ITradeProcessor
                             ActionType = "MOVE_STOPLOSS",
                             MetaTraderTrade = openedTrade,
                             StopLoss = targetStopLoss,
-                            Status = ServiceOrderStatus.Pending
+                            Status = ServiceOrderStatus.Pending,
+                            TakeProfit = openedTrade.TakeProfit,
+                            CreatedAt = DateTime.UtcNow,
+                            PositionId = openedTrade.Id
                         };
 
-                        // Save the ServiceOrder
-                        await _serviceOrderRepository.AddAsync(serviceOrder);
+                        if (openedTrade.ServiceOrders.Any(so => so.StopLoss != targetStopLoss))
+                        {
+                            // Save the ServiceOrder
+                            await _serviceOrderRepository.AddAsync(serviceOrder);
+                        }
                     }
                 }
             }

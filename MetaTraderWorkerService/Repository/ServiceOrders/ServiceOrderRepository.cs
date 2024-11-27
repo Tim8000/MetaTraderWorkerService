@@ -18,6 +18,7 @@ public class ServiceOrderRepository : IServiceOrderRepository
     {
         return await _dbContext.Set<ServiceOrder>()
             .Where(order => order.Status == ServiceOrderStatus.Pending)
+            .Include(o => o.MetaTraderTrade)
             .ToListAsync();
     }
 

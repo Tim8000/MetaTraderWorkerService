@@ -24,7 +24,8 @@ public class ServiceOrderMoveStopLossProcessor : IServiceOrderActionProcessor
         {
             PositionId = order.MetaTraderTrade.Id,
             StopLoss = (decimal)order.StopLoss!,
-            ActionType = "POSITION_MODIFY"
+            ActionType = "POSITION_MODIFY",
+            TakeProfit = order.TakeProfit
         };
 
         try

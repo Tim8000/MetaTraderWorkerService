@@ -29,32 +29,92 @@ public abstract class BaseOpenTradeProcessor : IOrderActionProcessor
         SetOrderConfigurations(metaTraderOrder);
         await _orderRepository.UpdateOrderAsync(metaTraderOrder);
 
+        OpenTradeByMarketPriceResponseDto marketResponseDto = null;
+        MetaTraderOpenTradeOrderResponseDto limitResponseDto = null;
 
-
+        // Handle market orders
         if (metaTraderOrder.ActionType == ActionType.ORDER_TYPE_BUY ||
             metaTraderOrder.ActionType == ActionType.ORDER_TYPE_SELL)
         {
-            var metaTraderOrderByMarketDto = CreateOpenTradeByMarketPriceRequestDto(metaTraderOrder);
-            var orderResponseDto = await _metaApiService.OpenTradeByMarketPriceAsync(metaTraderOrderByMarketDto);
+            var marketOrderDto = CreateOpenTradeByMarketPriceRequestDto(metaTraderOrder);
+            marketResponseDto = await _metaApiService.OpenTradeByMarketPriceAsync(marketOrderDto);
+
+            if (marketResponseDto != null)
+            {
+                await HandleMarketResponseAsync(metaTraderOrder, marketResponseDto);
+            }
+            else
+            {
+                _logger.LogError($"Market order failed: no response for Order ID {metaTraderOrder.Id}");
+                metaTraderOrder.Status = OrderStatus.Failed;
+                await _orderRepository.UpdateOrderAsync(metaTraderOrder);
+            }
         }
 
+        // Handle limit orders
         if (metaTraderOrder.ActionType == ActionType.ORDER_TYPE_BUY_LIMIT ||
             metaTraderOrder.ActionType == ActionType.ORDER_TYPE_SELL_LIMIT)
         {
-            var metaTraderOrderDto = CreateMetaTraderOpenTradeOrderDto(metaTraderOrder);
-            var orderResponseDto = await _metaApiService.PlacePendingOrderAsync(metaTraderOrderDto);
+            var limitOrderDto = CreateMetaTraderOpenTradeOrderDto(metaTraderOrder);
+            limitResponseDto = await _metaApiService.PlacePendingOrderAsync(limitOrderDto);
+
+            if (limitResponseDto != null)
+            {
+                await HandleLimitResponseAsync(metaTraderOrder, limitResponseDto);
+            }
+            else
+            {
+                _logger.LogError($"Limit order failed: no response for Order ID {metaTraderOrder.Id}");
+                metaTraderOrder.Status = OrderStatus.Failed;
+                await _orderRepository.UpdateOrderAsync(metaTraderOrder);
+            }
         }
 
-        if (orderResponseDto != null)
+
+        async Task HandleMarketResponseAsync(MetaTraderOrder metaTraderOrder,
+            OpenTradeByMarketPriceResponseDto responseDto)
         {
-            await HandleResponseAsync(metaTraderOrder, orderResponseDto);
-        }
-        else
-        {
-            _logger.LogError($"Order failed: no response for Order ID {metaTraderOrder.Id}");
-            metaTraderOrder.Status = OrderStatus.Failed;
+            if (responseDto.PositionId != null)
+            {
+                SetValuesToMetaTraderOrderFromOpenByMarketResponseDto(metaTraderOrder, responseDto);
+                _logger.LogInformation($"Market order successfully created for ID: {metaTraderOrder.Id}");
+            }
+            else
+            {
+                metaTraderOrder.Status = OrderStatus.Failed;
+                metaTraderOrder.MetaTraderMessage = "Market order failed due to invalid response.";
+                _logger.LogError($"Market order creation failed for ID {metaTraderOrder.Id}");
+            }
+
             await _orderRepository.UpdateOrderAsync(metaTraderOrder);
         }
+
+        async Task HandleLimitResponseAsync(MetaTraderOrder metaTraderOrder,
+            MetaTraderOpenTradeOrderResponseDto responseDto)
+        {
+            if (responseDto.NumericCode == TradeResultCode.Done)
+            {
+                SetValuesToMetaTraderOrderFromResponseDto(metaTraderOrder, responseDto);
+                _logger.LogInformation($"Limit order successfully created for ID: {metaTraderOrder.Id}");
+            }
+            else
+            {
+                metaTraderOrder.Status = OrderStatus.Failed;
+                metaTraderOrder.MetaTraderStringCode = responseDto.StringCode;
+                metaTraderOrder.MetaTraderTradeResultCode = responseDto.NumericCode;
+                metaTraderOrder.MetaTraderMessage = responseDto.Message;
+                _logger.LogError($"Limit order creation failed for ID {metaTraderOrder.Id}: {responseDto.Message}");
+            }
+
+            await _orderRepository.UpdateOrderAsync(metaTraderOrder);
+        }
+
+        // else
+        // {
+        //     _logger.LogError($"Order failed: no response for Order ID {metaTraderOrder.Id}");
+        //     metaTraderOrder.Status = OrderStatus.Failed;
+        //     await _orderRepository.UpdateOrderAsync(metaTraderOrder);
+        // }
     }
 
     protected abstract void SetActionTypeForMarketOrder(MetaTraderOrder metaTraderOrder,
