@@ -70,7 +70,8 @@ public class TradeRepository : ITradeRepository
 
     public async Task<List<MetaTraderTrade>> GetAllOpenedTradesAsync()
     {
-        return await _dbContext.MetaTraderTrades.Where(t => t.Status == TradeStatus.Open && t.State == TradeState.Active)
+        return await _dbContext.MetaTraderTrades
+            .Where(t => t.Status == TradeStatus.Open && t.State == TradeState.Active)
             .Include(t => t.ServiceOrders)
             .Include(t => t.MetaTraderOrders)
             .ThenInclude(o => o.MetaTraderInitialTradeSignal)

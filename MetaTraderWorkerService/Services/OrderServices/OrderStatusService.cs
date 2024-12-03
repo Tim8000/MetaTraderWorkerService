@@ -24,7 +24,6 @@ public class OrderStatusService : IOrderStatusService
         var pendingOrders = await _orderRepository.GetSentToMetaTraderOrdersAsync();
 
         foreach (var pendingOrder in pendingOrders)
-        {
             if (pendingOrder.OrderState != OrderState.ORDER_STATE_PLACED)
             {
                 var response = await _metaApiService.GetOrderStatusById(pendingOrder.MetaTraderOrderId);
@@ -37,6 +36,5 @@ public class OrderStatusService : IOrderStatusService
                     await _orderRepository.UpdateOrderAsync(pendingOrder);
                 }
             }
-        }
     }
 }

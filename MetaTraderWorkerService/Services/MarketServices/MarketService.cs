@@ -26,8 +26,8 @@ public class MarketService : IMarketService
         var url = $"/users/current/accounts/{_accountId}/symbols/{symbol}/current-price";
         var response = await _httpService.GetAsync(url, false);
 
-       var responseDto = JsonSerializer.Deserialize<SymbolPriceResponseDto>(response);
+        var responseDto = JsonSerializer.Deserialize<SymbolPriceResponseDto>(response);
 
-       return responseDto;
+        return responseDto;
     }
 }

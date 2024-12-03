@@ -18,10 +18,8 @@ public class CustomDateTimeConverter : JsonConverter<DateTime>
     public override DateTime Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         var stringValue = reader.GetString();
-        if (DateTime.TryParseExact(stringValue, SupportedFormats, null, System.Globalization.DateTimeStyles.RoundtripKind, out var dateTime))
-        {
-            return dateTime;
-        }
+        if (DateTime.TryParseExact(stringValue, SupportedFormats, null,
+                System.Globalization.DateTimeStyles.RoundtripKind, out var dateTime)) return dateTime;
         throw new JsonException($"Invalid date format. Supported formats: {string.Join(", ", SupportedFormats)}");
     }
 

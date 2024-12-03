@@ -12,7 +12,8 @@ public class StopLossProcessor : IOrderActionProcessor
     private readonly ILogger<StopLossProcessor> _logger;
     private readonly IOrderRepository _orderRepository;
 
-    public StopLossProcessor(IMetaApiService metaApiService, ILogger<StopLossProcessor> logger, IOrderRepository orderRepository)
+    public StopLossProcessor(IMetaApiService metaApiService, ILogger<StopLossProcessor> logger,
+        IOrderRepository orderRepository)
     {
         _metaApiService = metaApiService;
         _logger = logger;

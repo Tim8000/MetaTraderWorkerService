@@ -42,7 +42,6 @@ public class ServiceOrderProcessor : IHostedService
                 var pendingOrders = await serviceOrderRepository.GetPendingServiceOrdersAsync();
 
                 foreach (var order in pendingOrders)
-                {
                     if (actionProcessors.TryGetValue(order.ActionType, out var processor))
                     {
                         await processor.ProcessAsync(order);
@@ -55,7 +54,6 @@ public class ServiceOrderProcessor : IHostedService
                         order.ErrorMessage = $"Unsupported ActionType: {order.ActionType}";
                         await serviceOrderRepository.UpdateAsync(order);
                     }
-                }
             }
 
             await Task.Delay(1000, stoppingToken); // Adjust interval as needed

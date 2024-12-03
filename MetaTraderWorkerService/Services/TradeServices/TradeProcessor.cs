@@ -279,13 +279,13 @@ public class TradeProcessor : ITradeProcessor
                 .FirstOrDefault()?.StopLoss ?? openedTrade.StopLoss;
 
             // Determine the next threshold based on the latest stop-loss
-            var latestPipDifference = PipCalculator.CalculatePipDifference(openPrice, (decimal?)latestStopLoss ?? openPrice);
+            var latestPipDifference =
+                PipCalculator.CalculatePipDifference(openPrice, (decimal?)latestStopLoss ?? openPrice);
             var nextThreshold = latestPipDifference >= 20
                 ? latestPipDifference + 10
                 : 20; // Start at +20 pips if no valid threshold exists
 
             if (openedTrade.Type == "POSITION_TYPE_BUY")
-            {
                 if (currentPrice > openPrice && pipDifference >= nextThreshold)
                 {
                     // Calculate the new target stop-loss based on the next threshold
@@ -321,10 +321,8 @@ public class TradeProcessor : ITradeProcessor
                     // Save the ServiceOrder
                     await _serviceOrderRepository.AddAsync(serviceOrder);
                 }
-            }
 
             if (openedTrade.Type == "POSITION_TYPE_SELL")
-            {
                 if (currentPrice < openPrice && pipDifference >= nextThreshold)
                 {
                     // Calculate the new target stop-loss based on the next threshold
@@ -360,7 +358,6 @@ public class TradeProcessor : ITradeProcessor
                     // Save the ServiceOrder
                     await _serviceOrderRepository.AddAsync(serviceOrder);
                 }
-            }
         }
     }
 }

@@ -10,13 +10,17 @@ public class ServiceOrderMoveStopLossProcessor : IServiceOrderActionProcessor
     private readonly IMetaApiService _metaApiService;
     private readonly ILogger<ServiceOrderMoveStopLossProcessor> _logger;
 
-    public ServiceOrderMoveStopLossProcessor(IMetaApiService metaApiService, ILogger<ServiceOrderMoveStopLossProcessor> logger)
+    public ServiceOrderMoveStopLossProcessor(IMetaApiService metaApiService,
+        ILogger<ServiceOrderMoveStopLossProcessor> logger)
     {
         _metaApiService = metaApiService;
         _logger = logger;
     }
 
-    public string GetSupportedActionType() => "MOVE_STOPLOSS";
+    public string GetSupportedActionType()
+    {
+        return "MOVE_STOPLOSS";
+    }
 
     public async Task ProcessAsync(ServiceOrder order)
     {

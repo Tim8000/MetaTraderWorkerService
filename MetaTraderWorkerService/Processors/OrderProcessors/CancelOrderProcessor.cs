@@ -12,7 +12,8 @@ public class CancelOrderProcessor : IOrderActionProcessor
     private readonly IOrderRepository _orderRepository;
     private readonly IMetaApiService _metaApiService;
 
-    public CancelOrderProcessor(ILogger<CancelOrderProcessor> logger, IOrderRepository orderRepository, IMetaApiService metaApiService)
+    public CancelOrderProcessor(ILogger<CancelOrderProcessor> logger, IOrderRepository orderRepository,
+        IMetaApiService metaApiService)
     {
         _logger = logger;
         _orderRepository = orderRepository;
@@ -23,8 +24,9 @@ public class CancelOrderProcessor : IOrderActionProcessor
     {
         var orders = await _orderRepository.GetPlacedOrdersAsync();
 
-        var order = orders.FirstOrDefault(o => o.OpenPrice == metaTraderOrder.OpenPrice && o.Symbol == metaTraderOrder.Symbol && o.MetaTraderInitialTradeSignal.Id == metaTraderOrder.MetaTraderInitialTradeSignal.Id);
-
+        var order = orders.FirstOrDefault(o =>
+            o.OpenPrice == metaTraderOrder.OpenPrice && o.Symbol == metaTraderOrder.Symbol &&
+            o.MetaTraderInitialTradeSignal.Id == metaTraderOrder.MetaTraderInitialTradeSignal.Id);
 
 
         if (order.OrderState == OrderState.ORDER_STATE_PLACED)

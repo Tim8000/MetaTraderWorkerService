@@ -34,8 +34,7 @@ public static class PipCalculator
     public static decimal CalculatePipDifference(decimal price1, decimal price2)
     {
         var priceDifference = Math.Abs(price1 - price2); // Price difference
-        var points = priceDifference / PointValue;       // Convert to points
-        return PointsToPips(points);                    // Convert points to pips
+        var points = priceDifference / PointValue; // Convert to points
+        return PointsToPips(points); // Convert points to pips
     }
 }
-

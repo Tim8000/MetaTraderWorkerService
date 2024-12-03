@@ -120,7 +120,8 @@ public class MetaApiService : IMetaApiService
         }
     }
 
-    public async Task<OpenTradeByMarketPriceResponseDto> OpenTradeByMarketPriceAsync(OpenTradeByMarketPriceRequestDto marketOrderDto)
+    public async Task<OpenTradeByMarketPriceResponseDto> OpenTradeByMarketPriceAsync(
+        OpenTradeByMarketPriceRequestDto marketOrderDto)
     {
         var url = $"users/current/accounts/{_accountId}/trade";
 
@@ -130,7 +131,8 @@ public class MetaApiService : IMetaApiService
         // Create HTTP content for the POST request
         var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
 
-        _logger.LogInformation($"Sending request to URL: {url} to open trade by market price for symbol {marketOrderDto.Symbol}");
+        _logger.LogInformation(
+            $"Sending request to URL: {url} to open trade by market price for symbol {marketOrderDto.Symbol}");
 
         try
         {
@@ -147,7 +149,8 @@ public class MetaApiService : IMetaApiService
             }
 
             // Log the successful response
-            _logger.LogInformation($"Market order created successfully. Symbol: {marketOrderDto.Symbol}, Volume: {marketOrderDto.Volume}, ActionType: {marketOrderDto.ActionType}");
+            _logger.LogInformation(
+                $"Market order created successfully. Symbol: {marketOrderDto.Symbol}, Volume: {marketOrderDto.Volume}, ActionType: {marketOrderDto.ActionType}");
             return response;
         }
         catch (Exception ex)
@@ -156,5 +159,4 @@ public class MetaApiService : IMetaApiService
             throw;
         }
     }
-
 }

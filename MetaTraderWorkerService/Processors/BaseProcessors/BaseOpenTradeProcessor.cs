@@ -135,9 +135,7 @@ public abstract class BaseOpenTradeProcessor : IOrderActionProcessor
 
             var marketOrderResponse = await _metaApiService.OpenTradeByMarketPriceAsync(marketOrderDto);
             if (marketOrderResponse.PositionId != null)
-            {
                 SetValuesToMetaTraderOrderFromOpenByMarketResponseDto(metaTraderOrder, marketOrderResponse);
-            }
 
             await _orderRepository.UpdateOrderAsync(metaTraderOrder);
         }

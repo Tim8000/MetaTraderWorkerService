@@ -17,7 +17,8 @@ public class SellMarketProcessor : BaseOpenTradeProcessor
     {
     }
 
-    protected override void SetActionTypeForMarketOrder(MetaTraderOrder metaTraderOrder, OpenTradeByMarketPriceRequestDto marketOrderDto)
+    protected override void SetActionTypeForMarketOrder(MetaTraderOrder metaTraderOrder,
+        OpenTradeByMarketPriceRequestDto marketOrderDto)
     {
         marketOrderDto.ActionType = ActionType.ORDER_TYPE_SELL.ToString();
         metaTraderOrder.ActionType = ActionType.ORDER_TYPE_SELL;

@@ -18,7 +18,8 @@ public class BuyLimitProcessor : BaseOpenTradeProcessor
     }
 
 
-    protected override void SetActionTypeForMarketOrder(MetaTraderOrder metaTraderOrder, OpenTradeByMarketPriceRequestDto marketOrderDto)
+    protected override void SetActionTypeForMarketOrder(MetaTraderOrder metaTraderOrder,
+        OpenTradeByMarketPriceRequestDto marketOrderDto)
     {
         marketOrderDto.ActionType = ActionType.ORDER_TYPE_BUY.ToString();
         metaTraderOrder.ActionType = ActionType.ORDER_TYPE_BUY;

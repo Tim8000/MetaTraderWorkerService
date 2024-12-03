@@ -4,21 +4,15 @@ namespace MetaTraderWorkerService.Dtos.Mt5Trades;
 
 public class PartialCloseTradeOrderDto
 {
-    [JsonProperty("positionId")]
-    public string PositionId { get; set; } // Required field based on the error message
+    [JsonProperty("positionId")] public string PositionId { get; set; } // Required field based on the error message
 
-    [JsonProperty("volume")]
-    public decimal Volume { get; set; } // Volume to partially close the position
+    [JsonProperty("volume")] public decimal Volume { get; set; } // Volume to partially close the position
 
-    [JsonProperty("magic")]
-    public int Magic { get; set; } // Magic number for trade identification
+    [JsonProperty("magic")] public int Magic { get; set; } // Magic number for trade identification
 
-    [JsonProperty("clientId")]
-    public string? ClientId { get; set; } // Optional client ID
+    [JsonProperty("clientId")] public string? ClientId { get; set; } // Optional client ID
 
-    [JsonProperty("comment")]
-    public string? Comment { get; set; } // Optional comment for the request
+    [JsonProperty("comment")] public string? Comment { get; set; } // Optional comment for the request
 
-    [JsonProperty("actionType")]
-    public string ActionType { get; set; } // Action type, e.g., POSITION_CLOSE_ID
+    [JsonProperty("actionType")] public string ActionType { get; set; } // Action type, e.g., POSITION_CLOSE_ID
 }

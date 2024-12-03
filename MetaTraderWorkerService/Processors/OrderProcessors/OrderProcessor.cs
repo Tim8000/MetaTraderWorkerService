@@ -24,7 +24,7 @@ public class OrderProcessor : IOrderProcessor
                 nameof(SellLimitProcessor) => ActionType.ORDER_TYPE_SELL_LIMIT,
                 nameof(BuyLimitProcessor) => ActionType.ORDER_TYPE_BUY_LIMIT,
                 nameof(SellMarketProcessor) => ActionType.ORDER_TYPE_SELL, // Add SellMarketProcessor
-                nameof(BuyMarketProcessor) => ActionType.ORDER_TYPE_BUY,   // Add BuyMarketProcessor
+                nameof(BuyMarketProcessor) => ActionType.ORDER_TYPE_BUY, // Add BuyMarketProcessor
                 nameof(CancelOrderProcessor) => ActionType.ORDER_CANCEL,
                 nameof(PartialPositionCloseProcessor) => ActionType.POSITION_PARTIAL,
                 nameof(StopLossProcessor) => ActionType.POSITION_MODIFY, // Consolidate StopLoss logic
@@ -39,15 +39,9 @@ public class OrderProcessor : IOrderProcessor
         if (orders == null) return;
 
         foreach (var order in orders)
-        {
             if (_actionProcessors.TryGetValue(order.ActionType.Value, out var processor))
-            {
                 await processor.ProcessAsync(order);
-            }
             else
-            {
                 _logger.LogWarning($"No processor found for ActionType: {order.ActionType}");
-            }
-        }
     }
 }
