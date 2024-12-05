@@ -7,14 +7,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="194ecc76-e850-4399-92c6-6dc93bcb977e" name="Changes" comment="" />
+    <list default="true" id="194ecc76-e850-4399-92c6-6dc93bcb977e" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.MetaTraderWorkerService/.idea/shelf/Uncommitted_changes_before_Update_at_11_26_2024_11_16_PM_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.MetaTraderWorkerService/.idea/shelf/Uncommitted_changes_before_Update_at_11_26_2024_11_16_PM__Changes_.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.MetaTraderWorkerService/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.MetaTraderWorkerService/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="DpaMonitoringSettings">
-    <option name="autoShow" value="false" />
+    <option name="firstShow" value="false" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -32,25 +36,9 @@
   }
 }</component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/54c2c97bd5bd46e3961ad402640a3dd93818a0/f2/ab321122/Expression.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/99f9cf07abc74d3fb3bed9a41bc5b3141a68b0/63/080ec53a/HttpClient.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/cca5cfb955e146648d91eb22ffe4627a84930/a0/f6ea3ed0/Enumerable.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/13e79b2a7b78394ccf591d3454bff5bfb14e692da011a7e38b66c2312b365a/String.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/2c8e7ca976f350cba9836d5565dac56b11e0b56656fa786460eb1395857a6fa/ThrowHelper.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/4b21fc3f8a3abb5d25f06c622276fbec0fd3932f169cc6af520bf5abc6a46b4/DbSet.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/5acc345db3c207bc9d886a36ff14867ef8d65557432172c2a42f19aeac04d1b/Nullable.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/7d81b2d4f22bee75e5438c707251ae43cb0974c207db91ffc159118c84b4eb9/ServiceProvider.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/b05fc3ef644b7632d4481b3defa11634da02637d896cb5eca3eca7cf2f3ee3/String.Manipulation.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/c092928882a17a51a62a367685d90a0a613eb91fb453b9f50147e19c1f3ff40/NullReferenceException.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/c439425da351c75ac7d966a1cc8324b51a9c471865af79d2f2f3fcb65e392/HttpClient.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/e497db2a4ab53bdce6335c79064f15a515e338cd0f9c039a9b6914b9eeb3/AggregateException.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/ebe65732adf281db03e388c6486e28a574c76c8be32d99ca59dcfbecc65/Uri.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/f7e838f3c047ee76488fa4c2b9b1bffb2b33b04a2780de4664de937e024e97/CallSiteFactory.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="mock://E:/Programming/TradingWithGuys/MetaTraderWorkerService/MetaTraderWorkerService/Processors/BaseProcessors/BaseOpenTradeProcessor.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://E:/Programming/TradingWithGuys/MetaTraderWorkerService/MetaTraderWorkerService/Processors/OrderProcessors/BuyLimitProcessor.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://E:/Programming/TradingWithGuys/MetaTraderWorkerService/MetaTraderWorkerService/Processors/OrderProcessors/OrderProcessor.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://E:/Programming/TradingWithGuys/MetaTraderWorkerService/MetaTraderWorkerService/Processors/OrderProcessors/BuyMarketProcessor.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProblemsViewState">
@@ -65,25 +53,26 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;.NET Launch Settings Profile.MetaTraderWorkerService.executor&quot;: &quot;Debug&quot;,
-    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;Publish to custom server.PublishToDebian.executor&quot;: &quot;Run&quot;,
-    &quot;Publish to folder.PublishToFolder.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;XThreadsFramesViewSplitterKey&quot;: &quot;0.49871466&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;project.propVCSSupport.DirectoryMappings&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    ".NET Launch Settings Profile.MetaTraderWorkerService.executor": "Debug",
+    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "Publish to custom server.PublishToDebian.executor": "Run",
+    "Publish to folder.PublishToFolder.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "XThreadsFramesViewSplitterKey": "0.49871466",
+    "git-widget-placeholder": "master",
+    "ignore.virus.scanning.warn.message": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "project.propVCSSupport.DirectoryMappings",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RunManager" selected=".NET Launch Settings Profile.MetaTraderWorkerService">
     <configuration name="PublishToFolder" type="DotNetFolderPublish" factoryName="Publish to folder">
       <riderPublish configuration="Release" delete_existing_files="true" platform="Any CPU" runtime="linux-x64" target_folder="$PROJECT_DIR$/MetaTraderWorkerService/bin/Release/net8.0/linux-x64/publish" target_framework="net8.0" uuid_high="1871667714893237941" uuid_low="-7699535203307637525" />
@@ -138,6 +127,7 @@
       <workItem from="1732556339415" duration="368000" />
       <workItem from="1732560817800" duration="1666000" />
       <workItem from="1732720175374" duration="9768000" />
+      <workItem from="1733403809666" duration="465000" />
     </task>
     <task id="LOCAL-00001" summary="Add initial implementation for MetaTraderWorkerService&#10;&#10;This commit includes the setup for the MetaTraderWorkerService project. Added configurations, data model, HTTP services, and necessary project files like `appsettings.json`. The project structure and initial classes have been defined to support database interactions and API requests.">
       <option name="closed" value="true" />
@@ -467,7 +457,15 @@
       <option name="project" value="LOCAL" />
       <updated>1732737223974</updated>
     </task>
-    <option name="localTasksCounter" value="42" />
+    <task id="LOCAL-00042" summary="Add new configuration and shelved changes files&#10;&#10;Introduce a new configuration file for Material Theme settings and a shelved patch file for uncommitted changes. These additions provide metadata state management and preserve work prior to updates, ensuring consistent project settings and backup for essential modifications.">
+      <option name="closed" value="true" />
+      <created>1733245073406</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1733245073406</updated>
+    </task>
+    <option name="localTasksCounter" value="43" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -491,7 +489,6 @@
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Add trade repository and partial close handling&#10;&#10;Introduced ITradeRepository and its implementation for managing trades. Enhanced OrderProcessor to handle partial close orders and added corresponding DTOs. Removed the obsolete TradeStatus enum, improving the overall trade management logic." />
     <MESSAGE value="Add stop-loss modification functionality&#10;&#10;Introduced request and response DTOs for modifying stop-loss. Updated MetaTraderTrade model and order processing logic to support the new stop-loss modification feature. Enhanced MetaApiService with a method to handle stop-loss updates and improved order status handling." />
     <MESSAGE value="Add stop-loss modification functionality&#10;&#10;Introduced request and response DTOs for modifying stop-loss. Updated MetaTraderTrade model and order processing logic to support stop-loss modifications. Enhanced MetaApiService to handle stop-loss updates and improved order status handling." />
     <MESSAGE value="Update TradeWorker to process active trades and associate orders&#10;&#10;This commit enhances the TradeWorker to retrieve and process active trades, associating them with corresponding orders in the database. It also includes updates to TradeState and TradeStatusResponseDto, and adds a new method in IOrderRepository for fetching orders by magic and symbol." />
@@ -516,36 +513,63 @@
     <MESSAGE value="Refactor trade processing and add new service order handling&#10;&#10;Commented out existing trade processing in various workers and moved it to the main `Worker` class. Introduced new `ServiceOrder` model and repository, as well as processors for handling service orders. Added logging and performance metrics tracking, updated logging levels in configurations." />
     <MESSAGE value="Add dynamic stop-loss adjustment&#10;&#10;Introduced PipCalculator for pip and point conversions. Enhanced TradeProcessor to dynamically update stop-loss based on current trade profit and implemented ServiceOrder for stop-loss updates." />
     <MESSAGE value="Enhance ServiceOrder and Trade Handling&#10;&#10;Added new fields such as `TakeProfit`, `CreatedAt`, and `PositionId` to the `ServiceOrder` model and ensured they are properly populated throughout the codebase. Enhanced trade processing logic to handle different order responses, including distinct handling for market and limit orders, with improved logging and error handling. Included related entities in database queries to maintain consistency and integrity." />
-    <option name="LAST_COMMIT_MESSAGE" value="" />
+    <MESSAGE value="Add new configuration and shelved changes files&#10;&#10;Introduce a new configuration file for Material Theme settings and a shelved patch file for uncommitted changes. These additions provide metadata state management and preserve work prior to updates, ensuring consistent project settings and backup for essential modifications." />
+    <option name="LAST_COMMIT_MESSAGE" value="Add new configuration and shelved changes files&#10;&#10;Introduce a new configuration file for Material Theme settings and a shelved patch file for uncommitted changes. These additions provide metadata state management and preserve work prior to updates, ensuring consistent project settings and backup for essential modifications." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/MetaTraderWorkerService/Processors/ServiceOrderProcessors/ServiceOrderProcessor.cs</url>
-          <line>47</line>
+          <line>46</line>
           <properties documentPath="E:\Programming\TradingWithGuys\MetaTraderWorkerService\MetaTraderWorkerService\Processors\ServiceOrderProcessors\ServiceOrderProcessor.cs" containingFunctionPresentation="Method 'ProcessPendingServiceOrdersAsync'">
             <startOffsets>
-              <option value="1844" />
+              <option value="1826" />
             </startOffsets>
             <endOffsets>
-              <option value="1880" />
+              <option value="1862" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="50" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/MetaTraderWorkerService/Processors/OrderProcessors/OrderProcessor.cs</url>
-          <line>44</line>
+          <line>42</line>
           <properties documentPath="E:\Programming\TradingWithGuys\MetaTraderWorkerService\MetaTraderWorkerService\Processors\OrderProcessors\OrderProcessor.cs" containingFunctionPresentation="Method 'ProcessCreatedOrdersAsync'">
             <startOffsets>
-              <option value="1944" />
+              <option value="1918" />
             </startOffsets>
             <endOffsets>
-              <option value="1980" />
+              <option value="1954" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="55" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/MetaTraderWorkerService/Workers/Worker.cs</url>
+          <line>25</line>
+          <properties documentPath="E:\Programming\TradingWithGuys\MetaTraderWorkerService\MetaTraderWorkerService\Workers\Worker.cs" containingFunctionPresentation="Method 'ExecuteAsync'">
+            <startOffsets>
+              <option value="825" />
+            </startOffsets>
+            <endOffsets>
+              <option value="862" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="56" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/MetaTraderWorkerService/Workers/Worker.cs</url>
+          <line>32</line>
+          <properties documentPath="E:\Programming\TradingWithGuys\MetaTraderWorkerService\MetaTraderWorkerService\Workers\Worker.cs" containingFunctionPresentation="Method 'ExecuteAsync'">
+            <startOffsets>
+              <option value="1413" />
+            </startOffsets>
+            <endOffsets>
+              <option value="1468" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="57" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
