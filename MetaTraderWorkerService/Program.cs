@@ -48,6 +48,7 @@ builder.Services.AddScoped<IOrderActionProcessor, SellMarketProcessor>();
 builder.Services.AddScoped<IOrderActionProcessor, StopLossProcessor>();
 builder.Services.AddScoped<IOrderActionProcessor, TryToCloseProcessor>();
 builder.Services.AddScoped<IServiceOrderRepository, ServiceOrderRepository>();
+builder.Services.AddScoped<ITradeProcessingService, TradeProcessingService>();
 builder.Services.AddScoped<IServiceOrderActionProcessor, ServiceOrderMoveStopLossProcessor>();
 // builder.Services.AddScoped<IServiceOrderActionProcessor, CloseTradeProcessor>();
 builder.Services.AddScoped<IMetaApiService, MetaApiService>(sp =>

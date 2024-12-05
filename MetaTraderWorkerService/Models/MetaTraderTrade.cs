@@ -22,7 +22,7 @@ public class MetaTraderTrade
     public double UnrealizedSwap { get; set; } // Unrealized swap value
     public double UnrealizedCommission { get; set; } // Unrealized commission value
     public string Reason { get; set; } // Reason for the position (e.g., POSITION_REASON_EXPERT)
-    public double CurrentPrice { get; set; } // Current market price
+    public decimal CurrentPrice { get; set; } // Current market price
     public double CurrentTickValue { get; set; } // Current tick value
     public double RealizedProfit { get; set; } // Realized profit
     public double UnrealizedProfit { get; set; } // Unrealized profit

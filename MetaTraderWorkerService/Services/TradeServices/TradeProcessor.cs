@@ -24,6 +24,7 @@ public class TradeProcessor : ITradeProcessor
     private readonly ITradeHistoryRepository _tradeHistoryRepository;
     private readonly IServiceOrderRepository _serviceOrderRepository;
     private readonly string _accountId;
+private readonly ITradeProcessingService _tradeProcessingService;
 
     private const string GetPositionsEndpoint = "/users/current/accounts/{0}/positions";
     private const string CreateTradeEndpoint = "/users/current/accounts/{0}/trade";
@@ -31,7 +32,7 @@ public class TradeProcessor : ITradeProcessor
     public TradeProcessor(IHttpService httpService, IConfiguration configuration, IOrderRepository orderRepository,
         ITradeRepository tradeRepository, ILogger<TradeProcessor> logger, IMetaApiService metaApiService,
         IMarketService marketService, ITradeHistoryRepository tradeHistoryRepository,
-        IServiceOrderRepository serviceOrderRepository)
+        IServiceOrderRepository serviceOrderRepository, ITradeProcessingService tradeProcessingService)
     {
         _httpService = httpService;
         _orderRepository = orderRepository;
@@ -41,6 +42,7 @@ public class TradeProcessor : ITradeProcessor
         _marketService = marketService;
         _tradeHistoryRepository = tradeHistoryRepository;
         _serviceOrderRepository = serviceOrderRepository;
+        _tradeProcessingService = tradeProcessingService;
 
         // Retrieve accountId from the configuration
         _accountId = configuration["MetaApi:AccountId"];
@@ -265,99 +267,7 @@ public class TradeProcessor : ITradeProcessor
 
         foreach (var openedTrade in openedTrades)
         {
-            var openPrice = openedTrade.OpenPrice;
-            var currentPrice = (decimal)openedTrade.CurrentPrice;
-            _logger.LogInformation($"CURRENT PRICE = {currentPrice}");
-
-            // Calculate pip difference from open price
-            var pipDifference = PipCalculator.CalculatePipDifference(openPrice, currentPrice);
-
-            // Find the latest stop-loss adjustment (if any)
-            var latestStopLoss = openedTrade.ServiceOrders
-                .Where(so => so.ActionType == "MOVE_STOPLOSS")
-                .OrderByDescending(so => so.CreatedAt)
-                .FirstOrDefault()?.StopLoss ?? openedTrade.StopLoss;
-
-            // Determine the next threshold based on the latest stop-loss
-            var latestPipDifference =
-                PipCalculator.CalculatePipDifference(openPrice, (decimal?)latestStopLoss ?? openPrice);
-            var nextThreshold = latestPipDifference >= 20
-                ? latestPipDifference + 10
-                : 20; // Start at +20 pips if no valid threshold exists
-
-            if (openedTrade.Type == "POSITION_TYPE_BUY")
-                if (currentPrice > openPrice && pipDifference >= nextThreshold)
-                {
-                    // Calculate the new target stop-loss based on the next threshold
-                    var targetStopLoss = nextThreshold switch
-                    {
-                        20 => openPrice, // At +20 pips, stop-loss = open price
-                        _ => openPrice + (nextThreshold - 10) * 0.01m // Increment stop-loss
-                    };
-
-                    // Skip if the target stop-loss is already set
-                    if (latestStopLoss == targetStopLoss)
-                    {
-                        _logger.LogInformation($"Stop-loss already set to {targetStopLoss}, skipping.");
-                        continue;
-                    }
-
-                    // Update the stop-loss
-                    openedTrade.StopLoss = targetStopLoss;
-
-                    // Create a ServiceOrder
-                    var serviceOrder = new ServiceOrder
-                    {
-                        Id = Guid.NewGuid(),
-                        ActionType = "MOVE_STOPLOSS",
-                        MetaTraderTrade = openedTrade,
-                        StopLoss = targetStopLoss,
-                        Status = ServiceOrderStatus.Pending,
-                        TakeProfit = openedTrade.TakeProfit,
-                        CreatedAt = DateTime.UtcNow,
-                        PositionId = openedTrade.Id
-                    };
-
-                    // Save the ServiceOrder
-                    await _serviceOrderRepository.AddAsync(serviceOrder);
-                }
-
-            if (openedTrade.Type == "POSITION_TYPE_SELL")
-                if (currentPrice < openPrice && pipDifference >= nextThreshold)
-                {
-                    // Calculate the new target stop-loss based on the next threshold
-                    var targetStopLoss = nextThreshold switch
-                    {
-                        20 => openPrice, // At +20 pips, stop-loss = open price
-                        _ => openPrice - (nextThreshold - 10) * 0.01m // Decrement stop-loss
-                    };
-
-                    // Skip if the target stop-loss is already set
-                    if (latestStopLoss == targetStopLoss)
-                    {
-                        _logger.LogInformation($"Stop-loss already set to {targetStopLoss}, skipping.");
-                        continue;
-                    }
-
-                    // Update the stop-loss
-                    openedTrade.StopLoss = targetStopLoss;
-
-                    // Create a ServiceOrder
-                    var serviceOrder = new ServiceOrder
-                    {
-                        Id = Guid.NewGuid(),
-                        ActionType = "MOVE_STOPLOSS",
-                        MetaTraderTrade = openedTrade,
-                        StopLoss = targetStopLoss,
-                        Status = ServiceOrderStatus.Pending,
-                        TakeProfit = openedTrade.TakeProfit,
-                        CreatedAt = DateTime.UtcNow,
-                        PositionId = openedTrade.Id
-                    };
-
-                    // Save the ServiceOrder
-                    await _serviceOrderRepository.AddAsync(serviceOrder);
-                }
+            await _tradeProcessingService.ProcessMoveStopLossToOpenPrice(openedTrade);
         }
     }
 }

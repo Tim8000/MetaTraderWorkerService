@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetaTraderWorkerService", "MetaTraderWorkerService\MetaTraderWorkerService.csproj", "{19F97FDE-C3C7-4EB5-9525-C186C73BB4EB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetaTraderWorkerService.Tests", "MetaTraderWorkerService.Tests\MetaTraderWorkerService.Tests.csproj", "{99692BE6-55C8-41D3-97C8-4FAAB0A6A85D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{19F97FDE-C3C7-4EB5-9525-C186C73BB4EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{19F97FDE-C3C7-4EB5-9525-C186C73BB4EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{19F97FDE-C3C7-4EB5-9525-C186C73BB4EB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99692BE6-55C8-41D3-97C8-4FAAB0A6A85D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99692BE6-55C8-41D3-97C8-4FAAB0A6A85D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99692BE6-55C8-41D3-97C8-4FAAB0A6A85D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99692BE6-55C8-41D3-97C8-4FAAB0A6A85D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
