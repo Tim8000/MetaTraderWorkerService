@@ -61,9 +61,6 @@ builder.Services.AddScoped<IMetaApiService, MetaApiService>(sp =>
 
 // Register the Worker as a hosted service
 builder.Services.AddHostedService<Worker>();
-builder.Services.AddHostedService<OrderStatusWorker>();
-builder.Services.AddHostedService<TradeWorker>();
-builder.Services.AddHostedService<TryToCloseTradeWorker>();
 
 var host = builder.Build();
 host.Run();
