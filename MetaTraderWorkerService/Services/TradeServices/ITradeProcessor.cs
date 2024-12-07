@@ -9,4 +9,5 @@ public interface ITradeProcessor
     Task ProcessTradeHistoryAsync();
     Task ProcessTryToCloseTradesAsync();
     Task ProcessMovingStopLossAsync();
+    Task ProcessCancelOrderIfOneTradeInProfit();
 }

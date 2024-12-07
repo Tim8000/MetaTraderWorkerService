@@ -36,5 +36,5 @@ public class MetaTraderTrade
     public TradeStatus Status { get; set; }
     public List<MetaTraderOrder>? MetaTraderOrders { get; set; }
     public List<MetaTraderTradeHistory>? MetaTraderTradeHistories = new();
-    public List<ServiceOrder>? ServiceOrders { get; set; }
+    public List<ServiceOrder>? ServiceOrders { get; set; } = new();
 }

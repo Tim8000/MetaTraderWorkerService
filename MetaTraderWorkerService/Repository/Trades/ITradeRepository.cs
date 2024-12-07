@@ -13,4 +13,5 @@ public interface ITradeRepository
     Task<IEnumerable<MetaTraderTrade>> GetTradesByMagicAsync(int magic);
     Task<IEnumerable<MetaTraderTrade>> GetTradesByStatusAsync(TradeStatus status);
     Task<List<MetaTraderTrade>> GetAllOpenedTradesAsync();
+    Task<List<MetaTraderTrade>> GetTradesByInitialSignalMessageId(long messageId);
 }

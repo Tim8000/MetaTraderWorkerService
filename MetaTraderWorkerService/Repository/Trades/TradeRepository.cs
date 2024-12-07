@@ -1,11 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using MetaTraderWorkerService.Data;
 using MetaTraderWorkerService.Enums.Mt5Trades;
 using MetaTraderWorkerService.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace MetaTraderWorkerService.Repository.Trades;
 
@@ -76,5 +72,13 @@ public class TradeRepository : ITradeRepository
             .Include(t => t.MetaTraderOrders)
             .ThenInclude(o => o.MetaTraderInitialTradeSignal)
             .ToListAsync();
+    }
+
+    public async Task<List<MetaTraderTrade>> GetTradesByInitialSignalMessageId(long messageId)
+    {
+        var trades = await _dbContext.MetaTraderTrades.Where(t =>
+            t.MetaTraderOrders.Any(o => o.MetaTraderInitialTradeSignal.MessageId == messageId)).ToListAsync();
+
+        return trades;
     }
 }

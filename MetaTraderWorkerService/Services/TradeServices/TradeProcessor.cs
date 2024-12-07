@@ -1,7 +1,6 @@
 using MetaTraderWorkerService.Dtos.Mt5Trades;
 using MetaTraderWorkerService.Enums;
 using MetaTraderWorkerService.Enums.Mt5Trades;
-using MetaTraderWorkerService.Helpers;
 using MetaTraderWorkerService.Http;
 using MetaTraderWorkerService.Mappers;
 using MetaTraderWorkerService.Models;
@@ -24,7 +23,7 @@ public class TradeProcessor : ITradeProcessor
     private readonly ITradeHistoryRepository _tradeHistoryRepository;
     private readonly IServiceOrderRepository _serviceOrderRepository;
     private readonly string _accountId;
-private readonly ITradeProcessingService _tradeProcessingService;
+    private readonly ITradeProcessingService _tradeProcessingService;
 
     private const string GetPositionsEndpoint = "/users/current/accounts/{0}/positions";
     private const string CreateTradeEndpoint = "/users/current/accounts/{0}/trade";
@@ -268,6 +267,31 @@ private readonly ITradeProcessingService _tradeProcessingService;
         foreach (var openedTrade in openedTrades)
         {
             await _tradeProcessingService.ProcessMoveStopLossToOpenPrice(openedTrade);
+        }
+    }
+
+    public async Task ProcessCancelOrderIfOneTradeInProfit()
+    {
+        var openedTrades = await _tradeRepository.GetAllOpenedTradesAsync();
+
+        foreach (var openedTrade in openedTrades)
+        {
+            var initialTradeSignalMessageId =
+                openedTrade?.MetaTraderOrders?.FirstOrDefault()?.MetaTraderInitialTradeSignal.MessageId;
+
+            var sameMessageIdTrades =
+                await _tradeRepository.GetTradesByInitialSignalMessageId(initialTradeSignalMessageId!.Value);
+            var ordersFromSameMessageId =
+                await _orderRepository.GetOpenedOrdersFromOneInitialSignal(initialTradeSignalMessageId.Value);
+
+            foreach (var order in ordersFromSameMessageId)
+            {
+                if (order.ActionType == ActionType.ORDER_TYPE_BUY_LIMIT ||
+                    order.ActionType == ActionType.ORDER_TYPE_SELL_LIMIT ||
+                    order.ActionType == ActionType.ORDER_TYPE_BUY || order.ActionType == ActionType.ORDER_TYPE_SELL)
+                {
+                }
+            }
         }
     }
 }

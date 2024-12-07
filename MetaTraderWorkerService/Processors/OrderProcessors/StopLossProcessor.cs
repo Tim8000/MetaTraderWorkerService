@@ -51,8 +51,8 @@ public class StopLossProcessor : IOrderActionProcessor
         {
             ActionType = ActionType.POSITION_MODIFY.ToString(),
             PositionId = metaTraderOrder.Trade.Id,
-            StopLoss = metaTraderOrder.StopLoss.Value,
-            TakeProfit = metaTraderOrder.Trade.TakeProfit
+            StopLoss = decimal.Parse(metaTraderOrder.StopLoss.Value.ToString("F2")),
+            TakeProfit = decimal.Parse(metaTraderOrder.Trade.TakeProfit.ToString("F2"))
         };
 
         var response = await _metaApiService.ModifyStopLossAsync(modifyOrderDto);
@@ -92,8 +92,8 @@ public class StopLossProcessor : IOrderActionProcessor
         {
             ActionType = ActionType.POSITION_MODIFY.ToString(),
             PositionId = metaTraderOrder.Trade.Id,
-            StopLoss = breakEvenPrice,
-            TakeProfit = metaTraderOrder.Trade.TakeProfit
+            StopLoss = decimal.Parse(breakEvenPrice.ToString("F2")),
+            TakeProfit = decimal.Parse(metaTraderOrder.Trade.TakeProfit.ToString("F2"))
         };
 
         var response = await _metaApiService.ModifyStopLossAsync(modifyOrderDto);

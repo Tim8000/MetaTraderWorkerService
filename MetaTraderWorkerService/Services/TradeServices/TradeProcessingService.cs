@@ -32,11 +32,24 @@ public class TradeProcessingService : ITradeProcessingService
 
     public async Task ProcessMoveStopLossToOpenPrice(MetaTraderTrade trade)
     {
+        if (trade.ServiceOrders.Any(s => s.ActionType == "MOVE_STOPLOSS"))
+            return;
+
         var pipDifference = PipCalculator.CalculatePipDifference(trade.OpenPrice, trade.CurrentPrice);
 
-        if (pipDifference >= 20 && trade.StopLoss != trade.OpenPrice && trade.StopLoss < trade.OpenPrice )
+        if (pipDifference >= 20 && trade.StopLoss != trade.OpenPrice)
         {
-            await ProcessStopLossAdjustmentAsync(trade, trade.OpenPrice);
+            if (trade.Type == "POSITION_TYPE_SELL" && trade.StopLoss > trade.OpenPrice &&
+                trade.OpenPrice > trade.CurrentPrice)
+            {
+                await ProcessStopLossAdjustmentAsync(trade, trade.OpenPrice);
+            }
+
+            if (trade.Type == "POSITION_TYPE_BUY" && trade.StopLoss < trade.OpenPrice &&
+                trade.OpenPrice < trade.CurrentPrice)
+            {
+                await ProcessStopLossAdjustmentAsync(trade, trade.OpenPrice);
+            }
         }
     }
 
@@ -91,7 +104,6 @@ public class TradeProcessingService : ITradeProcessingService
 
     private async Task ProcessStopLossAdjustmentAsync(MetaTraderTrade trade, decimal targetStopLoss)
     {
-
         // Update the stop-loss
         trade.StopLoss = targetStopLoss;
 
@@ -111,6 +123,8 @@ public class TradeProcessingService : ITradeProcessingService
         // Save the ServiceOrder
         _logger.LogInformation($"Adjusting Stop-loss for trade {trade.Id}: New Stop-loss = {targetStopLoss}");
         await _serviceOrderRepository.AddAsync(serviceOrder);
+        trade.ServiceOrders.Add(serviceOrder);
+        await _tradeRepository.UpdateTradeAsync(trade);
     }
 
     private decimal CalculateTargetStopLoss(MetaTraderTrade trade, decimal openPrice, decimal nextThreshold)

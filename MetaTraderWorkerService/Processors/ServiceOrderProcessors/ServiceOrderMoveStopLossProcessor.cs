@@ -27,9 +27,9 @@ public class ServiceOrderMoveStopLossProcessor : IServiceOrderActionProcessor
         var modifyOrderDto = new ModifyStopLossRequestDto
         {
             PositionId = order.MetaTraderTrade.Id,
-            StopLoss = (decimal)order.StopLoss!,
             ActionType = "POSITION_MODIFY",
-            TakeProfit = order.TakeProfit
+            StopLoss = decimal.Parse(order.StopLoss!.Value.ToString("G")),
+            TakeProfit = decimal.Parse(order.TakeProfit!.Value.ToString("G"))
         };
 
         try

@@ -14,4 +14,5 @@ public class ServiceOrder
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow; // Creation timestamp
     public DateTime? ExecutedAt { get; set; } // Execution timestamp
     public string PositionId { get; set; } // MetaTrader position ID
+    public MetaTraderOrder? MetaTraderOrder { get; set; }
 }

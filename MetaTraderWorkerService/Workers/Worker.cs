@@ -34,6 +34,7 @@ public class Worker : BackgroundService
                 await tradeProcessorService.ProcessTradeHistoryAsync();
                 await tradeProcessorService.ProcessMovingStopLossAsync();
                 await tradeProcessorService.ProcessTryToCloseTradesAsync();
+                // await tradeProcessorService.ProcessCancelOrderIfOneTradeInProfit();
                 _logger.LogDebug("All processes running time: {time}", stopwatch.Elapsed);
             }
 
