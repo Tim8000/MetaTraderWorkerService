@@ -32,9 +32,6 @@ public class TradeProcessingService : ITradeProcessingService
 
     public async Task ProcessMoveStopLossToOpenPrice(MetaTraderTrade trade)
     {
-        if (trade.ServiceOrders.Any(s => s.ActionType == "MOVE_STOPLOSS"))
-            return;
-
         var pipDifference = PipCalculator.CalculatePipDifference(trade.OpenPrice, trade.CurrentPrice);
 
         if (pipDifference >= 20 && trade.StopLoss != trade.OpenPrice)

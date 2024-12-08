@@ -220,44 +220,24 @@ public class TradeProcessor : ITradeProcessor
 
     public async Task ProcessTryToCloseTradesAsync()
     {
-        var openedTrades = await _tradeRepository.GetAllOpenedTradesAsync();
-
-        var tradesFromOneInitialSignal = openedTrades
-            .SelectMany(trade => trade.MetaTraderOrders
-                .Where(order =>
-                    order.MetaTraderInitialTradeSignal
-                        .IsInitialSignal) // Only include orders where IsInitialSignal is true
-                .Select(order => new
-                {
-                    Trade = trade,
-                    MessageId = order.MetaTraderInitialTradeSignal.MessageId
-                }))
-            .GroupBy(x => x.MessageId)
-            .Where(group => group.Count() > 1) // Only include groups with the same MessageId
-            .ToDictionary(
-                group => group.Key,
-                group => group.Select(x => x.Trade).Distinct().ToList()
-            );
-
-
-        // var orders = new List<MetaTraderOrder>();
+        // var openedTrades = await _tradeRepository.GetAllOpenedTradesAsync();
         //
-        // if (orders.Count > 0)
-        // {
-        //     var currentPrice = await _marketService.GetCurrentPriceAsync("XAUUSD");
-        //
-        //     foreach (var metaTraderOrder in orders)
-        //     {
-        //         // here i need to
-        //         if (metaTraderOrder.Trade.Type == "POSITION_TYPE_BUY")
+        // var tradesFromOneInitialSignal = openedTrades
+        //     .SelectMany(trade => trade.MetaTraderOrders
+        //         .Where(order =>
+        //             order.MetaTraderInitialTradeSignal
+        //                 .IsInitialSignal) // Only include orders where IsInitialSignal is true
+        //         .Select(order => new
         //         {
-        //             if (currentPrice.Bid == metaTraderOrder.OpenPrice)
-        //             {
-        //
-        //             }
-        //         }
-        //     }
-        // }
+        //             Trade = trade,
+        //             MessageId = order.MetaTraderInitialTradeSignal.MessageId
+        //         }))
+        //     .GroupBy(x => x.MessageId)
+        //     .Where(group => group.Count() > 1) // Only include groups with the same MessageId
+        //     .ToDictionary(
+        //         group => group.Key,
+        //         group => group.Select(x => x.Trade).Distinct().ToList()
+        //     );
     }
 
     public async Task ProcessMovingStopLossAsync()
@@ -266,7 +246,9 @@ public class TradeProcessor : ITradeProcessor
 
         foreach (var openedTrade in openedTrades)
         {
-            await _tradeProcessingService.ProcessMoveStopLossToOpenPrice(openedTrade);
+            if (openedTrade.ServiceOrders != null &&
+                openedTrade.ServiceOrders.Any(s => s.ActionType == "MOVE_STOPLOSS"))
+                await _tradeProcessingService.ProcessMoveStopLossToOpenPrice(openedTrade);
         }
     }
 
@@ -276,6 +258,8 @@ public class TradeProcessor : ITradeProcessor
 
         foreach (var openedTrade in openedTrades)
         {
+            // TODO: If opened trade is in profit for 30 pips -> then do below.
+
             var initialTradeSignalMessageId =
                 openedTrade?.MetaTraderOrders?.FirstOrDefault()?.MetaTraderInitialTradeSignal.MessageId;
 
@@ -286,9 +270,10 @@ public class TradeProcessor : ITradeProcessor
 
             foreach (var order in ordersFromSameMessageId)
             {
-                if (order.ActionType == ActionType.ORDER_TYPE_BUY_LIMIT ||
-                    order.ActionType == ActionType.ORDER_TYPE_SELL_LIMIT ||
-                    order.ActionType == ActionType.ORDER_TYPE_BUY || order.ActionType == ActionType.ORDER_TYPE_SELL)
+                if ((order.ActionType == ActionType.ORDER_TYPE_BUY_LIMIT ||
+                     order.ActionType == ActionType.ORDER_TYPE_SELL_LIMIT ||
+                     order.ActionType == ActionType.ORDER_TYPE_BUY || order.ActionType == ActionType.ORDER_TYPE_SELL) &&
+                    order.OrderState == OrderState.ORDER_STATE_FILLED)
                 {
                 }
             }

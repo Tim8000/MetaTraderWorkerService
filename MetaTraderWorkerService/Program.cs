@@ -29,7 +29,6 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.Configure<MetaApiSettings>(builder.Configuration.GetSection("MetaApi"));
 // Register HttpService and MetaApiService
 // Hosted services
-builder.Services.AddHostedService<ServiceOrderProcessor>();
 
 builder.Services.AddScoped<IHttpService>(sp => new HttpService(accountBaseUrl, tradeBaseUrl, authToken));
 builder.Services.AddScoped<IMarketService, MarketService>();
@@ -61,6 +60,7 @@ builder.Services.AddScoped<IMetaApiService, MetaApiService>(sp =>
 
 // Register the Worker as a hosted service
 builder.Services.AddHostedService<Worker>();
+builder.Services.AddHostedService<ServiceOrderProcessor>();
 
 var host = builder.Build();
 host.Run();
