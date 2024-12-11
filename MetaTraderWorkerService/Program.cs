@@ -1,4 +1,6 @@
+using MetaTraderWorkerService.BackgroundServices;
 using MetaTraderWorkerService.Data;
+using MetaTraderWorkerService.HostedServices;
 using MetaTraderWorkerService.Http;
 using MetaTraderWorkerService.Processors.OrderProcessors;
 using MetaTraderWorkerService.Processors.ServiceOrderProcessors;
@@ -10,7 +12,6 @@ using MetaTraderWorkerService.Services.MarketServices;
 using MetaTraderWorkerService.Services.OrderServices;
 using MetaTraderWorkerService.Services.TradeServices;
 using MetaTraderWorkerService.Settings;
-using MetaTraderWorkerService.Workers;
 using Microsoft.EntityFrameworkCore;
 
 var builder = Host.CreateApplicationBuilder(args);
@@ -32,7 +33,7 @@ builder.Services.Configure<MetaApiSettings>(builder.Configuration.GetSection("Me
 
 builder.Services.AddScoped<IHttpService>(sp => new HttpService(accountBaseUrl, tradeBaseUrl, authToken));
 builder.Services.AddScoped<IMarketService, MarketService>();
-builder.Services.AddScoped<IOrderProcessor, OrderProcessor>();
+// builder.Services.AddScoped<IOrderProcessor, OrderProcessor>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IOrderStatusService, OrderStatusService>();
 builder.Services.AddScoped<ITradeRepository, TradeRepository>();
@@ -49,6 +50,7 @@ builder.Services.AddScoped<IOrderActionProcessor, TryToCloseProcessor>();
 builder.Services.AddScoped<IServiceOrderRepository, ServiceOrderRepository>();
 builder.Services.AddScoped<ITradeProcessingService, TradeProcessingService>();
 builder.Services.AddScoped<IServiceOrderActionProcessor, ServiceOrderMoveStopLossProcessor>();
+builder.Services.AddScoped<IServiceOrderActionProcessor, ServiceOrderRemoveOrderProcessor>();
 // builder.Services.AddScoped<IServiceOrderActionProcessor, CloseTradeProcessor>();
 builder.Services.AddScoped<IMetaApiService, MetaApiService>(sp =>
     new MetaApiService(
@@ -61,6 +63,7 @@ builder.Services.AddScoped<IMetaApiService, MetaApiService>(sp =>
 // Register the Worker as a hosted service
 builder.Services.AddHostedService<Worker>();
 builder.Services.AddHostedService<ServiceOrderProcessor>();
+builder.Services.AddHostedService<OrderProcessor>();
 
 var host = builder.Build();
 host.Run();

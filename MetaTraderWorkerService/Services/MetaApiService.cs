@@ -2,7 +2,6 @@ using System.Text;
 using MetaTraderWorkerService.Dtos;
 using MetaTraderWorkerService.Dtos.Mt5Trades;
 using MetaTraderWorkerService.Http;
-using MetaTraderWorkerService.Models;
 using Newtonsoft.Json;
 
 namespace MetaTraderWorkerService.Services;
@@ -138,7 +137,7 @@ public class MetaApiService : IMetaApiService
         {
             // Send the HTTP POST request
             var result = await _httpService.PostAsync(url, content, false);
-
+            _logger.LogInformation($"Response = {result}");
             // Deserialize the response to OpenTradeByMarketPriceResponseDto
             var response = JsonConvert.DeserializeObject<OpenTradeByMarketPriceResponseDto>(result);
 

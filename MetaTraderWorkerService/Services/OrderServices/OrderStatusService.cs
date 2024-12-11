@@ -36,5 +36,7 @@ public class OrderStatusService : IOrderStatusService
                     await _orderRepository.UpdateOrderAsync(pendingOrder);
                 }
             }
+
+        _logger.LogInformation("Order status check completed");
     }
 }

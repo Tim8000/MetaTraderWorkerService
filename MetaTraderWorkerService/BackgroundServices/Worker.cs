@@ -1,10 +1,8 @@
 using System.Diagnostics;
-using MetaTraderWorkerService.Processors.OrderProcessors;
-using MetaTraderWorkerService.Services;
 using MetaTraderWorkerService.Services.OrderServices;
 using MetaTraderWorkerService.Services.TradeServices;
 
-namespace MetaTraderWorkerService.Workers;
+namespace MetaTraderWorkerService.BackgroundServices;
 
 public class Worker : BackgroundService
 {
@@ -21,20 +19,25 @@ public class Worker : BackgroundService
     {
         while (!stoppingToken.IsCancellationRequested)
         {
+            var today = DateTime.UtcNow.DayOfWeek;
+            if (today == DayOfWeek.Saturday || today == DayOfWeek.Sunday)
+            {
+                _logger.LogInformation("Today is a weekend. Skipping processing.");
+                await Task.Delay(TimeSpan.FromHours(1), stoppingToken); // Delay for an hour or any suitable duration
+                continue;
+            }
+
             using (var scope = _serviceProvider.CreateScope())
             {
                 var stopwatch = Stopwatch.StartNew();
-                var metaApiService = scope.ServiceProvider.GetRequiredService<IMetaApiService>();
                 var orderStatusService = scope.ServiceProvider.GetRequiredService<IOrderStatusService>();
-                var orderProcessor = scope.ServiceProvider.GetRequiredService<IOrderProcessor>();
                 var tradeProcessorService = scope.ServiceProvider.GetRequiredService<ITradeProcessor>();
-                await orderProcessor.ProcessCreatedOrdersAsync();
                 await orderStatusService.CheckOrderStatus();
                 await tradeProcessorService.ProcessActiveTradesAsync();
                 await tradeProcessorService.ProcessTradeHistoryAsync();
                 await tradeProcessorService.ProcessMovingStopLossAsync();
-                await tradeProcessorService.ProcessTryToCloseTradesAsync();
-                // await tradeProcessorService.ProcessCancelOrderIfOneTradeInProfit();
+                await tradeProcessorService.ProcessCancelOrderIfOneTradeInProfit();
+                // await tradeProcessorService.ProcessTryToCloseTradesAsync();
                 _logger.LogDebug("All processes running time: {time}", stopwatch.Elapsed);
             }
 

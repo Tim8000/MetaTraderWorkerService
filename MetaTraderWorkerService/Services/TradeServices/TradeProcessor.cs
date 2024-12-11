@@ -1,6 +1,7 @@
 using MetaTraderWorkerService.Dtos.Mt5Trades;
 using MetaTraderWorkerService.Enums;
 using MetaTraderWorkerService.Enums.Mt5Trades;
+using MetaTraderWorkerService.Helpers;
 using MetaTraderWorkerService.Http;
 using MetaTraderWorkerService.Mappers;
 using MetaTraderWorkerService.Models;
@@ -159,13 +160,14 @@ public class TradeProcessor : ITradeProcessor
         {
             _logger.LogError(ex, "Error while processing active trades.");
         }
+
+        _logger.LogInformation("Active trades processed.");
     }
 
     public async Task ProcessTradeHistoryAsync()
     {
         var openedTrades = await _tradeRepository.GetAllOpenedTradesAsync();
 
-        // Retrieve trade histories in parallel for all opened trades
         var tradeHistories = await Task.WhenAll(
             openedTrades.Select(async trade => new
             {
@@ -215,7 +217,7 @@ public class TradeProcessor : ITradeProcessor
             }
         }
 
-        Console.WriteLine("hello");
+        _logger.LogInformation("Trade history processed.");
     }
 
     public async Task ProcessTryToCloseTradesAsync()
@@ -248,23 +250,39 @@ public class TradeProcessor : ITradeProcessor
         {
             if (openedTrade.ServiceOrders != null &&
                 openedTrade.ServiceOrders.Any(s => s.ActionType == "MOVE_STOPLOSS"))
-                await _tradeProcessingService.ProcessMoveStopLossToOpenPrice(openedTrade);
+                return;
+
+            await _tradeProcessingService.ProcessMoveStopLossToOpenPrice(openedTrade);
         }
+
+        _logger.LogInformation("Moving stop-loss processed.");
     }
 
     public async Task ProcessCancelOrderIfOneTradeInProfit()
     {
         var openedTrades = await _tradeRepository.GetAllOpenedTradesAsync();
 
-        foreach (var openedTrade in openedTrades)
+        foreach (var trade in openedTrades)
         {
             // TODO: If opened trade is in profit for 30 pips -> then do below.
 
-            var initialTradeSignalMessageId =
-                openedTrade?.MetaTraderOrders?.FirstOrDefault()?.MetaTraderInitialTradeSignal.MessageId;
+            var pipsDifference = PipCalculator.CalculatePipDifference(trade.OpenPrice, trade.CurrentPrice);
 
-            var sameMessageIdTrades =
-                await _tradeRepository.GetTradesByInitialSignalMessageId(initialTradeSignalMessageId!.Value);
+            if (trade.Type == "POSITION_TYPE_SELL" && trade.StopLoss > trade.OpenPrice &&
+                trade.OpenPrice > trade.CurrentPrice && pipsDifference >= 30)
+            {
+            }
+
+            if (trade.Type == "POSITION_TYPE_BUY" && trade.StopLoss < trade.OpenPrice &&
+                trade.OpenPrice < trade.CurrentPrice && pipsDifference >= 30)
+            {
+            }
+
+            var initialTradeSignalMessageId =
+                trade?.MetaTraderOrders?.FirstOrDefault()?.MetaTraderInitialTradeSignal.MessageId;
+
+            // var sameMessageIdTrades =
+            //     await _tradeRepository.GetTradesByInitialSignalMessageId(initialTradeSignalMessageId!.Value);
             var ordersFromSameMessageId =
                 await _orderRepository.GetOpenedOrdersFromOneInitialSignal(initialTradeSignalMessageId.Value);
 
@@ -273,8 +291,29 @@ public class TradeProcessor : ITradeProcessor
                 if ((order.ActionType == ActionType.ORDER_TYPE_BUY_LIMIT ||
                      order.ActionType == ActionType.ORDER_TYPE_SELL_LIMIT ||
                      order.ActionType == ActionType.ORDER_TYPE_BUY || order.ActionType == ActionType.ORDER_TYPE_SELL) &&
-                    order.OrderState == OrderState.ORDER_STATE_FILLED)
+                    order.OrderState == OrderState.ORDER_STATE_PLACED)
                 {
+                    var existingOrder =
+                        await _serviceOrderRepository.GetServiceOrderByMetaTraderOrderId(order.MetaTraderOrderId);
+
+                    if (existingOrder != null)
+                        return;
+
+                    var serviceOrder = new ServiceOrder
+                    {
+                        Id = Guid.NewGuid(),
+                        ActionType = "ORDER_CANCEL",
+                        MetaTraderTrade = trade,
+                        Status = ServiceOrderStatus.Pending,
+                        CreatedAt = DateTime.UtcNow,
+                        PositionId = trade.Id,
+                        MetaTraderOrder = order
+                    };
+
+                    // Save the ServiceOrder
+                    _logger.LogInformation(
+                        $"Cancelling second order for trade {trade.Id}: Order to be cancelled = {order.MetaTraderOrderId}");
+                    await _serviceOrderRepository.AddAsync(serviceOrder);
                 }
             }
         }

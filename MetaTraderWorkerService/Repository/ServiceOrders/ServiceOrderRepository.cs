@@ -19,6 +19,8 @@ public class ServiceOrderRepository : IServiceOrderRepository
         return await _dbContext.Set<ServiceOrder>()
             .Where(order => order.Status == ServiceOrderStatus.Pending)
             .Include(o => o.MetaTraderTrade)
+            .Include(o => o.MetaTraderOrder)
+            .AsNoTracking()
             .ToListAsync();
     }
 
@@ -32,5 +34,11 @@ public class ServiceOrderRepository : IServiceOrderRepository
     {
         _dbContext.Set<ServiceOrder>().Update(serviceOrder);
         await _dbContext.SaveChangesAsync();
+    }
+
+    public async Task<ServiceOrder> GetServiceOrderByMetaTraderOrderId(string metaTraderOrderID)
+    {
+        return await _dbContext.Set<ServiceOrder>()
+            .FirstOrDefaultAsync(order => order.MetaTraderOrder.MetaTraderOrderId == metaTraderOrderID);
     }
 }

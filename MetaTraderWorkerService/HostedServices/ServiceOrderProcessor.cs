@@ -1,7 +1,8 @@
 using MetaTraderWorkerService.Enums;
+using MetaTraderWorkerService.Processors.ServiceOrderProcessors;
 using MetaTraderWorkerService.Repository.ServiceOrders;
 
-namespace MetaTraderWorkerService.Processors.ServiceOrderProcessors;
+namespace MetaTraderWorkerService.HostedServices;
 
 public class ServiceOrderProcessor : IHostedService
 {

@@ -23,7 +23,7 @@ public class ServiceOrderRemoveOrderProcessor : IServiceOrderActionProcessor
         var cancelOrderDto = new CancelOrderDto()
         {
             ActionType = order.ActionType,
-            OrderId = order.Id.ToString()
+            OrderId = order.MetaTraderOrder.MetaTraderOrderId
         };
 
         var response = await _metaApiService.PlaceCancelOrderAsync(cancelOrderDto);
